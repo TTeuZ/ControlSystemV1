@@ -1,0 +1,24 @@
+html {
+    scroll-behavior: smooth;
+}
+
+@font-face {
+    font-family: 'Exo Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Exo-Regular'), url('exo/Exo-Regular.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Tuesday Night';
+    font-style: normal;
+    font-weight: normal;
+    src: local('TuesdayNIght-Regular'), url('tuesdaynight/TuesdayNight-Regular.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Bebas Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Bebas-Regular'), url('bebas/Bebas-Regular.woff') format('woff');
+}
