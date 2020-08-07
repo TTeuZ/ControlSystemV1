@@ -19,6 +19,9 @@ Route::post('registro', 'AuthController@registro')->name('registro');
 
 Route::get('arquivos/{arquivo}', 'ArquivoController@show');
 
+Route::apiResource('status', 'API\StatusController');
+Route::apiResource('equipamento', 'API\EquipamentosController');
+
 
 Route::middleware(['auth:api'])->group(function () {
 

@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <div id="nav-bar">
-      <span id="title"> PLK </span>
+      <span id="title"> PLK - MANUTENÇÃO </span>
     </div>
     <nuxt></nuxt>
   </v-app>
@@ -33,5 +33,23 @@ export default {
   font-family: 'Exo Regular';
 
   margin-left: 90px;
+}
+
+@media screen and (max-width: 640px) {
+  #title {
+    font-size: 40px;
+  }
+}
+
+@media screen and (max-width: 530px) {
+  #title {
+    font-size: 30px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  #title {
+    font-size: 20px;
+  }
 }
 </style>
