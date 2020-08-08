@@ -14,16 +14,15 @@ use Illuminate\Http\Request;
 */
 
 
-Route::post('login', 'AuthController@login')->name('login');
-Route::post('registro', 'AuthController@registro')->name('registro');
+Route::post('login', 'API\AuthController@login')->name('login');
+Route::post('registro', 'API\AuthController@registro')->name('registro');
 
 Route::get('arquivos/{arquivo}', 'ArquivoController@show');
 
-Route::apiResource('status', 'API\StatusController');
-Route::apiResource('equipamento', 'API\EquipamentosController');
-
-
 Route::middleware(['auth:api'])->group(function () {
+
+    Route::apiResource('status', 'API\StatusController');
+    Route::apiResource('equipamento', 'API\EquipamentosController');
 
     Route::get('meu-perfil', 'AuthController@meuPerfil')->name('perfil');
 

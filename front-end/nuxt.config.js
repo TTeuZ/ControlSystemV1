@@ -53,7 +53,8 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
-    '@nuxtjs/auth'
+    '@nuxtjs/auth',
+    '@nuxtjs/toast'
   ],
   /*
    ** Axios module configuration
@@ -73,7 +74,7 @@ export default {
       local: {
         endpoints: {
           login: { url: 'login', method: 'post', propertyName: 'dados.token' },
-          user: { url: 'meu-perfil', method: 'get', propertyName: 'dados' },
+          user: false,
           logout: false
         }
       }
