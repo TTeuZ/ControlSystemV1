@@ -80,4 +80,19 @@ class AuthController extends BaseController
         }
         return $this->enviarRespostaSucesso($request->user(), 'Usuário encontrado.', 200);
     }
+
+    public function show(Request $request)
+    {
+        if ($request->user() == null) {
+            return $this->enviarRespostaErro('Sem usuarios', null,400);
+        }
+        return $this->enviarRespostaSucesso($request->user()->all(), 'Usuários encontrados.', 200);
+    }
+
+
+    public function destroy(Request $request)
+    {
+        $user = User::find($request->id);
+        $user->delete();
+    }
 }

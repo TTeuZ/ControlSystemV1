@@ -1,14 +1,46 @@
 <template>
   <v-container fluid class="ma-0 pa-0">
-    <div id="footer">
+    <v-row class="ma-0 pa-0" justify="center" aling="center">
+      <v-col class="users-side" xl="4" lg="4" md="11" sm="11" xs="11" cols="11">
+        <users :usuarios="Users"
+      /></v-col>
+      <v-col xl="4" lg="4" md="11" sm="11" xs="11" cols="11">
+        <equipNoEsc :equip="equipamento" />
+      </v-col>
+      <v-col xl="4" lg="4" md="11" sm="11" xs="11" cols="11">
+        <buyList />
+      </v-col>
+    </v-row>
+    <!-- <div id="footer">
       <span id="footer-title">PLK - Feito por Paulo Mateus Luza Alves</span>
-    </div>
+    </div> -->
   </v-container>
 </template>
 
 <script>
+import users from '~/components/users'
+import equipNoEsc from '~/components/equipNoEsc'
+import buyList from '~/components/buyList'
+
 export default {
-  components: {},
+  components: {
+    users,
+    equipNoEsc,
+    buyList
+  },
+
+  async asyncData({ $axios }) {
+    const [equipamentoRes, statusRes, userRes] = await Promise.all([
+      $axios.get('equipamento'),
+      $axios.get('status'),
+      $axios.get('usuarios')
+    ])
+    return {
+      equipamento: equipamentoRes.data,
+      status: statusRes.data,
+      Users: userRes.data.dados
+    }
+  },
 
   middleware: 'auth'
 }
