@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <div id="estoque-total">
-      <span id="estoque-title"> EQUIPAMENTOS NO ESCRITORIO </span>
+      <span id="estoque-title"> LISTA DE COMPRAS </span>
 
       <div id="estoque-table">
         <div v-for="item in estoque" id="list-item" :key="item">
@@ -55,6 +55,8 @@ export default {
   align-self: center;
 
   overflow: auto;
+
+  box-shadow: 0px 0px 14px -2px rgba(0, 0, 0, 0.49);
 }
 
 #list-item {

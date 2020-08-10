@@ -57,6 +57,8 @@ export default {
   align-self: center;
 
   overflow: auto;
+
+  box-shadow: 0px 0px 14px -2px rgba(0, 0, 0, 0.49);
 }
 
 #list-item {

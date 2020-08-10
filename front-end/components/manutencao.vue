@@ -351,6 +351,8 @@ export default {
   max-height: 680px;
 
   overflow: auto;
+
+  box-shadow: 0px 0px 14px -2px rgba(0, 0, 0, 0.49);
 }
 
 #list-item {
@@ -379,6 +381,8 @@ export default {
   margin-top: 25px;
 
   background-color: black;
+
+  box-shadow: 0px 0px 14px -2px rgba(0, 0, 0, 0.49);
 }
 
 #add-item:focus {
@@ -395,6 +399,8 @@ export default {
   height: 690px;
 
   display: flex;
+
+  box-shadow: 0px 0px 14px -2px rgba(0, 0, 0, 0.49);
 }
 
 #title-section {
