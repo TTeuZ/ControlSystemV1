@@ -25,6 +25,7 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::apiResource('status', 'API\StatusController');
     Route::apiResource('equipamento', 'API\EquipamentosController');
+    Route::apiResource('estoque', 'API\EstoqueController');
 
     Route::get('meu-perfil', 'AuthController@meuPerfil')->name('perfil');
 

@@ -8,7 +8,7 @@
         <equipNoEsc :equip="equipamento" />
       </v-col>
       <v-col xl="4" lg="4" md="11" sm="11" xs="11" cols="11">
-        <buyList />
+        <buyList :estoque="estoque" />
       </v-col>
     </v-row>
     <!-- <div id="footer">
@@ -30,14 +30,16 @@ export default {
   },
 
   async asyncData({ $axios }) {
-    const [equipamentoRes, statusRes, userRes] = await Promise.all([
+    const [equipamentoRes, statusRes, estoqueRes, userRes] = await Promise.all([
       $axios.get('equipamento'),
       $axios.get('status'),
+      $axios.get('estoque'),
       $axios.get('usuarios')
     ])
     return {
       equipamento: equipamentoRes.data,
       status: statusRes.data,
+      estoque: estoqueRes.data,
       Users: userRes.data.dados
     }
   },
