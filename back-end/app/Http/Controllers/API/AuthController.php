@@ -60,12 +60,15 @@ class AuthController extends BaseController
             return $this->enviarRespostaErro('Erros de validação.', $validator->errors(), 400);
         }
 
-        $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $usuario = User::create($input);
-        $dadosResposta['token'] = $usuario->createToken('web')->accessToken;
-        $dadosResposta['user'] = $usuario;
-        return $this->enviarRespostaSucesso($dadosResposta, 'Usuário registrado com sucesso.', 201);
+        if ($request->user()->id == 1) {
+            $input = $request->all();
+            $input['password'] = bcrypt($input['password']);
+            $usuario = User::create($input);
+            $dadosResposta['token'] = $usuario->createToken('web')->accessToken;
+            $dadosResposta['user'] = $usuario;
+            return $this->enviarRespostaSucesso($dadosResposta, 'Usuário registrado com sucesso.', 201);
+        }
+        return $this->enviarRespostaErro('Vocẽ não pode criar usuarios');
     }
 
     /**
@@ -92,7 +95,10 @@ class AuthController extends BaseController
 
     public function destroy(Request $request)
     {
-        $user = User::find($request->id);
-        $user->delete();
+        if ($request->user()->id == 1) {
+            $user = User::find($request->id);
+            $user->delete();
+        }
+        return $this->enviarRespostaErro('Vocẽ nao pode deletar contas');
     }
 }

@@ -28,14 +28,25 @@
           </div>
 
           <!-- <div id="switches">
-            <v-btn
-              class="ma-4"
-              label="Cabo"
-              readonly
-              @click="caboFil === !caboFil"
-            />
-            <v-btn v-model="lacreFil" class="ma-4" label="Lacre" readonly />
+            <div v-for="(btn, b) in filters" :key="btn">
+              <v-btn
+                depressed
+                rounded
+                color="orange"
+                :@click="(filterSelected = btn.filter)"
+                :class="{ btnSelected: b === isSelected ? true : false }"
+                @click="isSelected = b"
+                ><span>{{ btn.label }}</span></v-btn
+              >
+            </div>
           </div> -->
+
+          <!-- <div id="switches">
+            <v-switch v-model="cabos" label="Cabos" />
+            <v-switch v-model="lacre" label="Lacre" />
+            <v-switch v-model="todos" label="Todos" />
+          </div> -->
+
           <div id="new-item">
             <v-btn rounded depressed color="green" @click="newItemModal = true">
               NOVO ITEM
@@ -196,6 +207,10 @@ export default {
       search: '',
       caboFil: false,
       lacreFil: false,
+
+      cabos: false,
+      lacre: false,
+      todos: true,
 
       editedItem: {
         id: 0,
@@ -399,7 +414,7 @@ export default {
   margin-top: 15px;
 }
 
-#switches {
+/* #switches {
   display: flex;
   flex-flow: row;
   justify-content: space-around;
@@ -409,7 +424,7 @@ export default {
   height: auto;
 
   margin-top: 30px;
-}
+} */
 
 #new-item {
   align-self: flex-end;

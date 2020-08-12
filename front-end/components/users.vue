@@ -110,9 +110,15 @@ export default {
         if (usuarioDeletado.id === 1) {
           window.alert('Usuario nao pode ser deletado')
         } else {
-          this.$axios.post('deleta', usuarioDeletado).then(() => {
-            this.reload()
-          })
+          this.$axios
+            .post('deleta', usuarioDeletado)
+            .then(() => {
+              this.reload()
+            })
+            .catch(({ response }) => {
+              const { mensagem } = !!response && response.data
+              this.$toast.error(mensagem, { duration: 5000 })
+            })
         }
       }
     },
