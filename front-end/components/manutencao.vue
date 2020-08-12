@@ -94,6 +94,9 @@
                     <span class="status-text">
                       {{ status.info }}
                     </span>
+                    <span class="status-text-time">
+                      {{ status.created_at }}
+                    </span>
                     <div class="change-flag">
                       <v-icon
                         class="change-icon"
@@ -130,6 +133,9 @@
                         mdi-arrow-left-bold
                       </v-icon>
                     </div>
+                    <span class="status-text-time">
+                      {{ status.updated_at }}
+                    </span>
                     <span class="status-text">
                       {{ status.info }}
                     </span>
@@ -225,14 +231,14 @@ export default {
     }
   },
 
-  computed: {
-    filtereditens() {
-      const listItens = this
-      return this.itens.filter(function(p) {
-        return p.label.toLowerCase().includes(listItens.search.toLowerCase())
-      })
-    }
-  },
+  // computed: {
+  //   filtereditens() {
+  //     const listItens = this
+  //     return this.itens.filter(function(p) {
+  //       return p.label.toLowerCase().includes(listItens.search.toLowerCase())
+  //     })
+  //   }
+  // },
 
   methods: {
     close() {
@@ -490,6 +496,11 @@ export default {
   padding: 0 10px;
 
   font-size: 18px;
+  font-family: 'Exo Regular';
+}
+
+.status-text-time {
+  font-size: 14px;
   font-family: 'Exo Regular';
 }
 
