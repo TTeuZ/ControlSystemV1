@@ -95,6 +95,10 @@ export default {
         {
           label: 'Estoque',
           link: '/estoque'
+        },
+        {
+          label: 'Histórico',
+          link: '/historico'
         }
       ],
 
@@ -107,6 +111,10 @@ export default {
         {
           drawerLabel: 'Estoque',
           drawerLink: '/estoque'
+        },
+        {
+          drawerLabel: 'Histórico',
+          drawerLink: '/historico'
         }
       ]
     }

@@ -162,9 +162,9 @@
               rounded
               depressed
               color="red"
-              @click="excluirEquip()"
+              @click="sendToHistory()"
             >
-              EXCLUIR EQUIPAMENTO
+              FINALIZAR
             </v-btn>
           </v-col>
 
@@ -185,7 +185,7 @@
                     v-model="infoStatus"
                     :rules="[(v) => !!v || 'Campo Obrigatório']"
                     color="cyan darken-2"
-                    label=" Status"
+                    label="Status"
                   />
                 </div>
               </div>
@@ -275,14 +275,20 @@ export default {
         })
     },
 
-    excluirEquip() {
+    sendToHistory() {
       const ok = window.confirm(
-        'Você tem certeza que deseja excluir esse equipamento?'
+        'Você tem certeza que deseja finalizar esse equipamento?'
       )
 
       if (ok) {
+        const sendToHis = {
+          done: 1
+        }
         this.$axios
-          .delete('equipamento/' + this.equipamentos[this.selectedEquip][0].id)
+          .put(
+            'equipamento/' + this.equipamentos[this.selectedEquip][0].id,
+            sendToHis
+          )
           .then(() => {
             this.reload()
           })
