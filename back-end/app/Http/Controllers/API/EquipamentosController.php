@@ -34,7 +34,8 @@ class EquipamentosController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'name' => 'required|string|max:15'
+            'name' => 'required|string|max:15',
+            'done' => 'boolean'
         ]);
         if ($validator->fails())
             return response()->json($validator->errors());
@@ -65,7 +66,8 @@ class EquipamentosController extends Controller
     public function update(Request $request, Equipamento $equipamento)
     {
         $validator = Validator::make($request->all(),[
-            'name' => 'string|max:15'
+            'name' => 'string|max:15',
+            'done' => 'boolean'
         ]);
         if ($validator->fails())
             return response()->json($validator->errors());

@@ -9,6 +9,7 @@
             <span id="item-title"> {{ item.name.toUpperCase() }} </span>
             <span id="quantidade"> {{ item.quantidade }} </span>
           </div>
+          <v-divider v-if="item.flag === 1" id="divider" />
         </div>
       </div>
     </div>
@@ -66,6 +67,7 @@ export default {
   width: 100%;
 
   display: flex;
+  flex-flow: column;
   justify-content: center;
   align-items: center;
 }
@@ -85,6 +87,11 @@ export default {
   flex-flow: row;
   justify-content: space-around;
   align-items: center;
+}
+
+#divider {
+  background-color: black;
+  width: 100%;
 }
 
 @media screen and (max-width: 1262px) {

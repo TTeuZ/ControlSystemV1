@@ -5,7 +5,7 @@
       <span class="login-title"> MANUTENÇÃO </span>
     </v-row>
     <v-row class="ma-0 pa-0" justify="center" align="center"> </v-row>
-    <input-auth v-model="email" placeholder="Email" />
+    <input-auth v-model="email" placeholder="Usuario" />
     <input-auth v-model="password" placeholder="Senha" type="password" />
     <v-flex class="text-xs-right"> </v-flex>
     <v-row class="ma-0 pa-0" justify="center" aling="center">
@@ -36,7 +36,7 @@ export default {
       await this.$auth
         .loginWith('local', {
           data: {
-            email: this.email,
+            email: this.email + '@plk.com.br',
             password: this.password
           }
         })

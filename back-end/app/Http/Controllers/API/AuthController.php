@@ -60,7 +60,7 @@ class AuthController extends BaseController
             return $this->enviarRespostaErro('Erros de validação.', $validator->errors(), 400);
         }
 
-        if ($request->user()->id == 1) {
+        if ($request->user()->id <= 5) {
             $input = $request->all();
             $input['password'] = bcrypt($input['password']);
             $usuario = User::create($input);
@@ -95,10 +95,12 @@ class AuthController extends BaseController
 
     public function destroy(Request $request)
     {
-        if ($request->user()->id == 1) {
+        if ($request->user()->id <= 5) {
             $user = User::find($request->id);
             $user->delete();
         }
-        return $this->enviarRespostaErro('Vocẽ nao pode deletar contas');
+        else {
+            return $this->enviarRespostaErro('Vocẽ nao pode deletar contas');
+        }
     }
 }

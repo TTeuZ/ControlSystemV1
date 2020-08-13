@@ -37,12 +37,9 @@
             />
             <v-text-field
               v-model="novoUsuario.email"
-              :rules="[
-                (v) => !!v || 'Email é necessário',
-                (v) => v.includes('@') || 'Insira um email válido'
-              ]"
+              :rules="[(v) => !!v || 'Usuário é necessário']"
               color="cyan darken-2"
-              label="Email"
+              label="Usuário"
             />
             <v-text-field
               v-model="novoUsuario.senha"
@@ -107,7 +104,7 @@ export default {
         const usuarioDeletado = {
           id: this.selected
         }
-        if (usuarioDeletado.id === 1) {
+        if (usuarioDeletado.id <= 5) {
           window.alert('Usuario nao pode ser deletado')
         } else {
           this.$axios
@@ -126,7 +123,7 @@ export default {
     criaUsuario() {
       const usuario = {
         name: this.novoUsuario.nome,
-        email: this.novoUsuario.email,
+        email: this.novoUsuario.email + '@plk.com.br',
         password: this.novoUsuario.senha,
         password_confirmation: this.novoUsuario.senhaConfirmada
       }

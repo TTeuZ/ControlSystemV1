@@ -13,9 +13,29 @@ class UsersSeeder extends Seeder
     public function run()
     {
         User::create([
-            'name' => 'PLKAdmin',
-            'email' => 'plkadmin@plk.com.br',
-            'password' => bcrypt('plk123plk'),
+            'name' => 'Paulo Mateus',
+            'email' => 'pauloalves@plk.com.br',
+            'password' => bcrypt('pregox99'),
+        ]);
+        User::create([
+            'name' => 'João Moreira',
+            'email' => 'joao@plk.com.br',
+            'password' => bcrypt('joaoadmin'),
+        ]);
+        User::create([
+            'name' => 'Jefferson',
+            'email' => 'jefferson@plk.com.br',
+            'password' => bcrypt('jeffersonadmin'),
+        ]);
+        User::create([
+            'name' => 'Luiz Menão',
+            'email' => 'luizmenao@plk.com.br',
+            'password' => bcrypt('luizadmin'),
+        ]);
+        User::create([
+            'name' => 'Jorge Peres',
+            'email' => 'jorge@plk.com.br',
+            'password' => bcrypt('jorgeadmin'),
         ]);
     }
 }

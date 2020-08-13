@@ -6,7 +6,10 @@
       <div id="equip-table">
         <nuxt-link to="/manutencao">
           <div v-for="item in equip" id="list-item" :key="item">
-            <span id="item-title"> {{ item[0].name.toUpperCase() }} </span>
+            <span v-if="item[0].done === 0" id="item-title">
+              {{ item[0].name.toUpperCase() }}
+            </span>
+            <v-divider v-if="item[0].done === 0" id="divider" />
           </div>
         </nuxt-link>
       </div>
@@ -63,23 +66,29 @@ export default {
 
 #list-item {
   width: 100%;
-  min-height: 40px;
 
   display: flex;
+  flex-flow: column;
   justify-content: center;
   align-items: center;
-
-  border-bottom: 1px solid black;
 }
 
 #item-title {
   font-family: 'Exo Regular';
   font-size: 16px;
+
+  padding-top: 15px !important;
+  padding-bottom: 15px !important;
 }
 
 a {
   text-decoration: none;
   color: black;
+}
+
+#divider {
+  background-color: black;
+  width: 100%;
 }
 
 @media screen and (max-width: 1262px) {

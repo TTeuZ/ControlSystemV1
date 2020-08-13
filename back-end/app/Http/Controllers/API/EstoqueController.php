@@ -37,11 +37,13 @@ class EstoqueController extends Controller
         // if ($validator->fails())
         //     return response()->json($validator->errors());
 
-        if ($request->user()->id == 1) {
+        if ($request->user()->id <= 5) {
             $estoque = Estoque::create($request->all());
             return response()->json($estoque);
         }
-        return $this->enviarRespostaErro('Vocẽ não pode criar itens');
+        else {
+            return $this->enviarRespostaErro('Vocẽ não pode criar itens');
+        }
     }
 
     /**
@@ -86,9 +88,11 @@ class EstoqueController extends Controller
      */
     public function destroy(Request $request, Estoque $estoque)
     {
-        if ($request->user()->id == 1) {
+        if ($request->user()->id <= 5) {
             $estoque->delete();
         }
-        return $this->enviarRespostaErro('Vocẽ não pode deletar itens');
+        else {
+            return $this->enviarRespostaErro('Vocẽ não pode deletar itens');
+        }
     }
 }

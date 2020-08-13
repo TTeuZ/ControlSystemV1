@@ -28,7 +28,10 @@
             :key="item"
             @click=";(showForm = true), (selectedEquip = i), filterStatus()"
           >
-            <span id="item-title"> {{ item[0].name.toUpperCase() }} </span>
+            <span v-if="item[0].done === 0" id="item-title">
+              {{ item[0].name.toUpperCase() }}
+            </span>
+            <v-divider v-if="item[0].done === 0" id="divider" />
           </div>
         </div>
 
@@ -363,18 +366,25 @@ export default {
 
 #list-item {
   width: 100%;
-  height: 60px;
+  height: auto;
 
   display: flex;
+  flex-flow: column;
   justify-content: center;
   align-items: center;
+}
 
-  border-bottom: 1px solid black;
+#divider {
+  background-color: black;
+  width: 100%;
 }
 
 #item-title {
   font-family: 'Exo Regular';
   font-size: 16px;
+
+  padding-bottom: 15px !important;
+  padding-top: 15px !important;
 }
 
 #add-item {

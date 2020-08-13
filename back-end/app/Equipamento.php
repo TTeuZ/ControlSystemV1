@@ -6,7 +6,7 @@ use App\Status;
 
 class Equipamento extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'done'];
 
     public function status() {
         return $this->hasMany(Status::class);
