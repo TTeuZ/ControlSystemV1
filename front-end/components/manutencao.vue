@@ -57,11 +57,26 @@
             </div>
           </div>
           <div class="btn-section">
+            <v-btn color="#43A047" text @click="criaEquipamento()">
+              Salvar
+            </v-btn>
+          </div>
+          <div class="modal-title-section">
+            <div class="form">
+              <v-select
+                v-model="returned"
+                :items="ids"
+                color="cyan darken-2"
+                label="Equipamento"
+              />
+            </div>
+          </div>
+          <div class="btn-section">
             <v-btn color="#43A047" text @click="close">
               Cancelar
             </v-btn>
-            <v-btn color="#43A047" text @click="criaEquipamento()">
-              Salvar
+            <v-btn color="#43A047" text @click="catchId(), returnEquip()">
+              Retornar
             </v-btn>
           </div>
         </v-card>
@@ -98,7 +113,17 @@
                       {{ status.info }}
                     </span>
                     <span class="status-text-time">
-                      {{ status.created_at }}
+                      {{
+                        status.created_at
+                          .split(' ')[0]
+                          .split('-')
+                          .reverse()
+                          .join('/') +
+                          ' ' +
+                          'às' +
+                          ' ' +
+                          status.created_at.split(' ')[1]
+                      }}
                     </span>
                     <div class="change-flag">
                       <v-icon
@@ -137,7 +162,17 @@
                       </v-icon>
                     </div>
                     <span class="status-text-time">
-                      {{ status.updated_at }}
+                      {{
+                        status.updated_at
+                          .split(' ')[0]
+                          .split('-')
+                          .reverse()
+                          .join('/') +
+                          ' ' +
+                          'às' +
+                          ' ' +
+                          status.updated_at.split(' ')[1]
+                      }}
                     </span>
                     <span class="status-text">
                       {{ status.info }}
@@ -230,7 +265,11 @@ export default {
       selectedEquip: '',
 
       statusFiltered: [],
-      flagId: ''
+      flagId: '',
+
+      ids: [],
+      returned: '',
+      id: ''
     }
   },
 
@@ -242,6 +281,10 @@ export default {
   //     })
   //   }
   // },
+
+  mounted() {
+    this.IDS()
+  },
 
   methods: {
     close() {
@@ -273,6 +316,16 @@ export default {
           const { mensagem } = !!response && response.data
           this.$toast.error(mensagem, { duration: 5000 })
         })
+    },
+
+    returnEquip() {
+      const retEquip = {
+        done: 0
+      }
+
+      this.$axios.put('equipamento/' + this.id, retEquip).then(() => {
+        this.reload()
+      })
     },
 
     sendToHistory() {
@@ -337,6 +390,33 @@ export default {
           const { mensagem } = !!response && response.data
           this.$toast.error(mensagem, { duration: 5000 })
         })
+    },
+
+    IDS() {
+      const self = this
+      // let i = 1
+
+      this.equipamentos.forEach(function(item) {
+        if (item[0].done === 1) {
+          self.ids.push(item[0].name)
+          // + ' ' + i.toString())
+          // i++
+        }
+      })
+
+      console.log(this.ids)
+    },
+
+    catchId() {
+      const self = this
+
+      this.equipamentos.forEach(function(item) {
+        if (self.returned === item[0].name) {
+          self.id = item[0].id
+        }
+      })
+
+      console.log(this.id)
     }
   }
 }

@@ -37,6 +37,68 @@
             {{ equipamentos[selectedEquip][0].name.toUpperCase() }}
           </span>
 
+          <div id="all-info">
+            <div id="part-info">
+              <span v-if="showForm" class="history-text"
+                >criado:
+                {{
+                  equipamentos[selectedEquip][0].created_at
+                    .split(' ')[0]
+                    .split('-')
+                    .reverse()
+                    .join('/') +
+                    ' ' +
+                    'às' +
+                    ' ' +
+                    equipamentos[selectedEquip][0].created_at.split(' ')[1]
+                }}</span
+              >
+              <span v-if="showForm" class="history-text">
+                finalizado:
+                {{
+                  equipamentos[selectedEquip][0].updated_at
+                    .split(' ')[0]
+                    .split('-')
+                    .reverse()
+                    .join('/') +
+                    ' ' +
+                    'às' +
+                    ' ' +
+                    equipamentos[selectedEquip][0].updated_at.split(' ')[1]
+                }}
+              </span>
+            </div>
+            <div id="part-info-two">
+              <span v-if="showForm" id="status-title">
+                Status
+              </span>
+              <div v-if="showForm" id="table">
+                <div
+                  v-for="status in statusFiltered"
+                  :key="status"
+                  class="status"
+                >
+                  <span class="status-text">
+                    {{ status.info }}
+                  </span>
+                  <span class="status-text-time">
+                    {{
+                      status.created_at
+                        .split(' ')[0]
+                        .split('-')
+                        .reverse()
+                        .join('/') +
+                        ' ' +
+                        'às' +
+                        ' ' +
+                        status.created_at.split(' ')[1]
+                    }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <v-col v-if="showForm" id="buttons" class="ma-o pa-0" cols="12">
             <v-btn
               class="form-btns"
@@ -191,6 +253,84 @@ export default {
   margin-left: 30px;
 }
 
+#all-info {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+
+  margin-left: 30px;
+  margin-right: 30px;
+
+  width: 100%;
+  height: 400px;
+}
+
+#part-info {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: flex-start;
+
+  width: 50%;
+}
+
+#part-info-two {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 50%;
+  height: 100%;
+}
+
+#table {
+  border: 1px solid black;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: auto;
+}
+
+#status-title {
+  font-family: 'Exo Regular';
+  font-size: 24px;
+}
+
+.history-text {
+  font-family: 'Exo Regular';
+  font-size: 18px;
+}
+
+.status {
+  width: 100%;
+  height: auto;
+  min-height: 40px;
+
+  border-bottom: 1px solid black;
+
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status-text {
+  padding: 0 10px;
+
+  font-size: 18px;
+  font-family: 'Exo Regular';
+}
+
+.status-text-time {
+  font-size: 14px;
+  font-family: 'Exo Regular';
+
+  padding-right: 10px !important;
+}
+
 #buttons {
   display: flex;
   flex-flow: row;
@@ -209,6 +349,8 @@ export default {
 
   #info-side {
     height: auto;
+
+    margin-top: 40px !important;
   }
 
   #buttons {
@@ -221,9 +363,23 @@ export default {
   }
 }
 
-@media screen and (max-width: 710px) {
+@media screen and (max-width: 730px) {
   #info-title {
     font-size: 26px;
+  }
+
+  #all-info {
+    flex-flow: column;
+  }
+
+  #part-info {
+    width: 100%;
+  }
+
+  #part-info-two {
+    margin-top: 20px !important;
+
+    width: 100%;
   }
 }
 
@@ -253,6 +409,24 @@ export default {
   #info-title {
     font-size: 15px;
     margin-left: 10px;
+  }
+
+  .history-text {
+    font-size: 15px;
+  }
+}
+
+@media screen and (max-width: 355px) {
+  .history-text {
+    font-size: 13px;
+  }
+
+  .status-text {
+    font-size: 13px;
+  }
+
+  .status-text-time {
+    font-size: 13px;
   }
 }
 </style>
