@@ -33,11 +33,11 @@
             <v-divider id="divider" />
           </div>
 
-          <span v-if="showForm" id="equip-title">
-            {{ equipamentos[selectedEquip][0].name.toUpperCase() }}
-          </span>
+          <div id="history-info">
+            <span v-if="showForm" id="equip-title">
+              {{ equipamentos[selectedEquip][0].name.toUpperCase() }}
+            </span>
 
-          <div id="all-info">
             <div id="part-info">
               <span v-if="showForm" class="history-text"
                 >criado:
@@ -68,6 +68,9 @@
                 }}
               </span>
             </div>
+          </div>
+
+          <div id="all-info">
             <div id="part-info-two">
               <span v-if="showForm" id="status-title">
                 Status
@@ -81,19 +84,61 @@
                   <span class="status-text">
                     {{ status.info }}
                   </span>
-                  <span class="status-text-time">
-                    {{
-                      status.created_at
-                        .split(' ')[0]
-                        .split('-')
-                        .reverse()
-                        .join('/') +
-                        ' ' +
-                        'às' +
-                        ' ' +
-                        status.created_at.split(' ')[1]
-                    }}
-                  </span>
+                  <div class="ajust-info">
+                    <span class="status-text-time">
+                      {{
+                        status.created_at
+                          .split(' ')[0]
+                          .split('-')
+                          .reverse()
+                          .join('/') +
+                          ' ' +
+                          'às' +
+                          ' ' +
+                          status.created_at.split(' ')[1]
+                      }}
+                    </span>
+
+                    <v-icon
+                      class="icons"
+                      @mouseover="created = true"
+                      @mouseleave="created = false"
+                    >
+                      mdi-comment-question-outline
+                    </v-icon>
+
+                    <div v-if="created" class="hover-info">
+                      <span class="hover-text"> criado em </span>
+                    </div>
+                  </div>
+
+                  <div class="ajust-info">
+                    <span class="status-text-time">
+                      {{
+                        status.updated_at
+                          .split(' ')[0]
+                          .split('-')
+                          .reverse()
+                          .join('/') +
+                          ' ' +
+                          'às' +
+                          ' ' +
+                          status.updated_at.split(' ')[1]
+                      }}
+                    </span>
+
+                    <v-icon
+                      class="icons"
+                      @mouseover="updated = true"
+                      @mouseleave="updated = false"
+                    >
+                      mdi-comment-question-outline
+                    </v-icon>
+
+                    <div v-if="updated" class="hover-info">
+                      <span class="hover-text"> finalizado em </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -132,7 +177,10 @@ export default {
     return {
       showForm: false,
       selectedEquip: '',
-      statusFiltered: []
+      statusFiltered: [],
+
+      created: false,
+      updated: false
     }
   },
 
@@ -247,10 +295,19 @@ export default {
   font-family: 'Exo Regular';
   font-size: 30px;
 
-  width: 100%;
+  width: 30%;
   height: 40px;
 
   margin-left: 30px;
+}
+
+#history-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-flow: row;
+
+  width: 100%;
 }
 
 #all-info {
@@ -270,9 +327,11 @@ export default {
   display: flex;
   flex-flow: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: flex-end;
 
-  width: 50%;
+  width: 70%;
+
+  margin-right: 30px;
 }
 
 #part-info-two {
@@ -281,7 +340,7 @@ export default {
   justify-content: center;
   align-items: center;
 
-  width: 50%;
+  width: 100%;
   height: 100%;
 }
 
@@ -341,6 +400,37 @@ export default {
   margin-right: 25px;
 }
 
+.ajust-info {
+  display: flex;
+  flex-flow: row;
+}
+
+.hover-info {
+  position: absolute;
+
+  height: 20px;
+  width: 90px;
+  background-color: white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-left: 70px;
+}
+
+.hover-text {
+  font-family: 'Exo Regular';
+  font-size: 12px;
+}
+
+.icons {
+  color: black;
+  font-size: 1em;
+
+  margin-right: 5px;
+}
+
 @media screen and (max-width: 1262px) {
   #itens-list {
     width: 100%;
@@ -396,6 +486,31 @@ export default {
     margin-top: 20px;
 
     width: 200px;
+  }
+
+  #history-info {
+    flex-flow: column;
+    justify-content: flex-start;
+  }
+
+  #equip-title {
+    width: 100%;
+  }
+
+  #part-info {
+    align-items: flex-start;
+
+    margin-left: 65px;
+  }
+
+  .status {
+    flex-flow: column;
+    align-items: flex-start;
+  }
+
+  .status-text-time {
+    padding-bottom: 5px;
+    padding-left: 10px;
   }
 }
 
