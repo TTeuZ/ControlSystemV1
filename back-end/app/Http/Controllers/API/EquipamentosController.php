@@ -40,6 +40,7 @@ class EquipamentosController extends Controller
         if ($validator->fails())
             return response()->json($validator->errors());
 
+        $request->request->add(['user_name_created' => $request->user()->name]);
         $equipamento = Equipamento::create($request->all());
         return response()->json($equipamento);
     }
@@ -72,6 +73,7 @@ class EquipamentosController extends Controller
         if ($validator->fails())
             return response()->json($validator->errors());
 
+        $request->request->add(['user_name_updated' => $request->user()->name]);
         $equipamento->update($request->all());
         return response()->json($equipamento);
     }

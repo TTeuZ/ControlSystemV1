@@ -20,6 +20,8 @@ class CreateEstoquesTable extends Migration
             $table->boolean('flag')->default(false);
             $table->integer('quantidade');
             $table->integer('quantidade_min');
+            $table->string('user_name_created');
+            $table->string('user_name_updated')->default('');
             $table->timestamps();
         });
     }

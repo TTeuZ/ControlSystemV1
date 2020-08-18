@@ -17,6 +17,8 @@ class CreateEquipamentosTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->boolean('done')->default(false);
+            $table->string('user_name_created');
+            $table->string('user_name_updated')->default('');
             $table->timestamps();
         });
     }

@@ -48,10 +48,118 @@
           </div> -->
 
           <div id="new-item">
+            <v-btn rounded depressed color="blue" @click="logModal = true">
+              LOG
+            </v-btn>
+
             <v-btn rounded depressed color="green" @click="newItemModal = true">
               NOVO ITEM
             </v-btn>
           </div>
+
+          <!-- Dialog de log -->
+          <v-dialog
+            v-model="logModal"
+            max-width="1600px"
+            no-click-animation
+            persistent
+          >
+            <v-card class="modal-card">
+              <div class="modal-title-section">
+                <span class="modal-title">
+                  LOG DO ESTOQUE
+                </span>
+              </div>
+              <v-row
+                id="log-total"
+                class="ma-0 pa-0"
+                justify="center"
+                align="center"
+              >
+                <v-col
+                  class="log-table-total"
+                  xl="6"
+                  lg="6"
+                  md="6"
+                  sm="11"
+                  xs="11"
+                  cols="11"
+                >
+                  <span class="log-title"> CRIADOS </span>
+                  <div class="log-table">
+                    <div v-for="item in itens" :key="item">
+                      <div class="log-item">
+                        <span class="log-text"> Nome: {{ item.name }} </span>
+                        <span class="log-text">
+                          {{
+                            item.created_at
+                              .split(' ')[0]
+                              .split('-')
+                              .reverse()
+                              .join('/') +
+                              ' às ' +
+                              item.created_at.split(' ')[1]
+                          }}
+                        </span>
+                        <span class="log-text">
+                          {{ item.user_name_created }}
+                        </span>
+                      </div>
+                      <v-divider class="divider" />
+                    </div>
+                  </div>
+                </v-col>
+                <v-col
+                  class="log-table-total"
+                  xl="6"
+                  lg="6"
+                  md="6"
+                  sm="11"
+                  xs="11"
+                  cols="11"
+                >
+                  <span class="log-title"> ATUALIZAÇÕES </span>
+                  <div class="log-table">
+                    <div v-for="item in itens" :key="item">
+                      <div
+                        v-if="item.user_name_updated !== ''"
+                        class="log-item"
+                      >
+                        <span class="log-text"> Nome: {{ item.name }} </span>
+                        <span class="log-text">
+                          {{
+                            item.updated_at
+                              .split(' ')[0]
+                              .split('-')
+                              .reverse()
+                              .join('/') +
+                              ' às ' +
+                              item.updated_at.split(' ')[1]
+                          }}
+                        </span>
+                        <span class="log-text">
+                          {{ item.user_name_updated }}
+                        </span>
+                        <span class="log-text">
+                          quant: {{ item.quantidade }}
+                        </span>
+                      </div>
+                      <v-divider
+                        v-if="item.user_name_updated !== ''"
+                        class="divider"
+                      />
+                    </div>
+                  </div>
+                </v-col>
+              </v-row>
+              <div class="btn-section">
+                <v-btn color="blue" text @click="close">
+                  SAIR
+                </v-btn>
+              </div>
+            </v-card>
+          </v-dialog>
+          <!-- Dialog de log -->
 
           <v-dialog
             v-model="newItemModal"
@@ -204,6 +312,8 @@ export default {
     return {
       attModel: false,
       newItemModal: false,
+      logModal: false,
+
       search: '',
       caboFil: false,
       lacreFil: false,
@@ -260,6 +370,7 @@ export default {
     close() {
       this.attModel = false
       this.newItemModal = false
+      this.logModal = false
     },
 
     deletaItem(item) {
@@ -435,6 +546,48 @@ export default {
   margin-right: 20px;
 }
 
+.log-table-total {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.log-table {
+  border: 1px solid black;
+  width: 97%;
+  height: auto;
+  max-height: 600px;
+
+  overflow: auto;
+}
+
+.log-title {
+  font-family: 'Exo Regular';
+  font-size: 20px;
+}
+
+.log-item {
+  width: 100%;
+
+  display: flex;
+  flex-flow: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.log-text {
+  font-family: 'Exo Regular';
+  font-size: 14px;
+
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.divider {
+  background-color: black;
+}
+
 @media screen and (max-width: 960px) {
   #options-side {
     height: 300px;
@@ -442,6 +595,18 @@ export default {
 
   #new-item {
     top: 180px;
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .log-item {
+    flex-flow: column;
+    justify-content: start;
+    align-items: flex-start;
+  }
+
+  .log-text {
+    margin-left: 5px;
   }
 }
 </style>

@@ -38,6 +38,7 @@ class EstoqueController extends Controller
         //     return response()->json($validator->errors());
 
         if ($request->user()->id <= 5) {
+            $request->request->add(['user_name_created' => $request->user()->name]);
             $estoque = Estoque::create($request->all());
             return response()->json($estoque);
         }
@@ -76,6 +77,7 @@ class EstoqueController extends Controller
         if ($validator->fails())
             return response()->json($validator->erros());
         
+        $request->request->add(['user_name_updated' => $request->user()->name]);
         $estoque->update($request->all());
         return response()->json($estoque);
     }

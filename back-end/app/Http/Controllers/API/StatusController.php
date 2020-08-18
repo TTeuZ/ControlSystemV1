@@ -39,6 +39,7 @@ class StatusController extends Controller
         if (!Equipamento::find($request->equipamento_id))
             return response()->json('Equipamento nao existe');
 
+        $request->request->add(['user_name_created' => $request->user()->name]);
         $status = Status::create($request->all());
         return response()->json($status);
     }
@@ -70,6 +71,7 @@ class StatusController extends Controller
         if ($validator->fails())
             return response()->json($validator->errors());
 
+        $request->request->add(['user_name_updated' => $request->user()->name]);
         $status->update($request->all());
         return response()->json($status);
     }

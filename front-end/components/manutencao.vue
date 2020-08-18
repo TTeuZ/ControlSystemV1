@@ -90,9 +90,21 @@
             <v-divider id="divider" />
           </div>
 
-          <span v-if="showForm" id="equip-title">
-            {{ equipamentos[selectedEquip][0].name.toUpperCase() }}
-          </span>
+          <div id="info-geral">
+            <span v-if="showForm" id="equip-title">
+              {{ equipamentos[selectedEquip][0].name.toUpperCase() }}
+            </span>
+            <div id="info-geral-2">
+              <span v-if="showForm" class="info-text">
+                Criado por:
+                {{ equipamentos[selectedEquip][0].user_name_created }}
+              </span>
+              <span v-if="showForm" class="info-text">
+                Retornado por:
+                {{ equipamentos[selectedEquip][0].user_name_updated }}
+              </span>
+            </div>
+          </div>
 
           <v-col
             v-if="showForm"
@@ -112,19 +124,32 @@
                     <span class="status-text">
                       {{ status.info }}
                     </span>
-                    <span class="status-text-time">
-                      {{
-                        status.created_at
-                          .split(' ')[0]
-                          .split('-')
-                          .reverse()
-                          .join('/') +
-                          ' ' +
-                          'às' +
-                          ' ' +
-                          status.created_at.split(' ')[1]
-                      }}
-                    </span>
+                    <div>
+                      <span class="status-text-time">
+                        {{
+                          status.created_at
+                            .split(' ')[0]
+                            .split('-')
+                            .reverse()
+                            .join('/') +
+                            ' às ' +
+                            status.created_at.split(' ')[1]
+                        }}
+                      </span>
+                      <v-icon
+                        class="icons"
+                        @mouseover="user_created = true"
+                        @mouseleave="user_created = false"
+                      >
+                        mdi-comment-question-outline
+                      </v-icon>
+
+                      <div v-if="user_created" class="hover-info">
+                        <span class="hover-text">
+                          Criado por: {{ status.user_name_created }}
+                        </span>
+                      </div>
+                    </div>
                     <div class="change-flag">
                       <v-icon
                         class="change-icon"
@@ -161,19 +186,33 @@
                         mdi-arrow-left-bold
                       </v-icon>
                     </div>
-                    <span class="status-text-time">
-                      {{
-                        status.updated_at
-                          .split(' ')[0]
-                          .split('-')
-                          .reverse()
-                          .join('/') +
-                          ' ' +
-                          'às' +
-                          ' ' +
-                          status.updated_at.split(' ')[1]
-                      }}
-                    </span>
+                    <div>
+                      <span class="status-text-time">
+                        {{
+                          status.updated_at
+                            .split(' ')[0]
+                            .split('-')
+                            .reverse()
+                            .join('/') +
+                            ' às ' +
+                            status.updated_at.split(' ')[1]
+                        }}
+                      </span>
+
+                      <v-icon
+                        class="icons"
+                        @mouseover="user_updated = true"
+                        @mouseleave="user_updated = false"
+                      >
+                        mdi-comment-question-outline
+                      </v-icon>
+
+                      <div v-if="user_updated" class="hover-info">
+                        <span class="hover-text">
+                          Finalizado por: {{ status.user_name_updated }}
+                        </span>
+                      </div>
+                    </div>
                     <span class="status-text">
                       {{ status.info }}
                     </span>
@@ -269,7 +308,10 @@ export default {
 
       ids: [],
       returned: '',
-      id: ''
+      id: '',
+
+      user_created: false,
+      user_updated: false
     }
   },
 
@@ -522,6 +564,31 @@ export default {
   margin-left: 20px;
 }
 
+#info-geral {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 100%;
+}
+
+#info-geral-2 {
+  display: flex;
+  flex-flow: column;
+  justify-content: start;
+  align-items: flex-end;
+
+  margin-right: 50px;
+
+  width: 50%;
+}
+
+.info-text {
+  font-family: 'Exo Regular';
+  font-size: 16px;
+}
+
 #divider {
   background-color: black;
 }
@@ -530,7 +597,7 @@ export default {
   font-family: 'Exo Regular';
   font-size: 30px;
 
-  width: 100%;
+  width: 50%;
   height: 40px;
 
   margin-left: 30px;
@@ -559,7 +626,7 @@ export default {
 .table {
   border: 1px solid black;
 
-  width: 80%;
+  width: 95%;
   height: 380px;
 
   overflow: auto;
@@ -638,6 +705,30 @@ export default {
   align-items: center;
 }
 
+.icons {
+  color: black;
+  font-size: 1em;
+}
+
+.hover-info {
+  position: absolute;
+
+  height: 20px;
+  width: auto;
+  background-color: white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-left: 70px;
+}
+
+.hover-text {
+  font-family: 'Exo Regular';
+  font-size: 12px;
+}
+
 @media screen and (max-width: 1262px) {
   #itens-list {
     width: 100%;
@@ -688,6 +779,21 @@ export default {
 
     width: 200px;
   }
+
+  #info-geral {
+    flex-flow: column;
+    align-items: flex-start;
+  }
+
+  #info-geral-2 {
+    align-items: flex-start;
+    margin-left: 30px;
+    width: 100%;
+  }
+
+  #equip-title {
+    width: 100%;
+  }
 }
 
 @media screen and (max-width: 530px) {
@@ -700,6 +806,10 @@ export default {
   #info-title {
     font-size: 15px;
     margin-left: 10px;
+  }
+
+  .status {
+    flex-flow: column;
   }
 }
 </style>

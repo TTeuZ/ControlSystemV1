@@ -54,6 +54,9 @@
                 }}</span
               >
               <span v-if="showForm" class="history-text">
+                Por: {{ equipamentos[selectedEquip][0].user_name_created }}
+              </span>
+              <span v-if="showForm" class="history-text">
                 finalizado:
                 {{
                   equipamentos[selectedEquip][0].updated_at
@@ -67,6 +70,9 @@
                     equipamentos[selectedEquip][0].updated_at.split(' ')[1]
                 }}
               </span>
+              <span v-if="showForm" class="history-text">
+                Por: {{ equipamentos[selectedEquip][0].user_name_updated }}
+              </span>
             </div>
           </div>
 
@@ -79,65 +85,71 @@
                 <div
                   v-for="status in statusFiltered"
                   :key="status"
-                  class="status"
+                  class="status-geral"
                 >
-                  <span class="status-text">
-                    {{ status.info }}
-                  </span>
-                  <div class="ajust-info">
-                    <span class="status-text-time">
-                      {{
-                        status.created_at
-                          .split(' ')[0]
-                          .split('-')
-                          .reverse()
-                          .join('/') +
-                          ' ' +
-                          'às' +
-                          ' ' +
-                          status.created_at.split(' ')[1]
-                      }}
+                  <div class="status">
+                    <span class="status-text">
+                      {{ status.info }}
                     </span>
+                    <div class="ajust-info">
+                      <span class="status-text-time">
+                        {{
+                          status.created_at
+                            .split(' ')[0]
+                            .split('-')
+                            .reverse()
+                            .join('/') +
+                            ' às ' +
+                            status.created_at.split(' ')[1]
+                        }}
+                      </span>
 
-                    <v-icon
-                      class="icons"
-                      @mouseover="created = true"
-                      @mouseleave="created = false"
-                    >
-                      mdi-comment-question-outline
-                    </v-icon>
+                      <v-icon
+                        class="icons"
+                        @mouseover="created = true"
+                        @mouseleave="created = false"
+                      >
+                        mdi-comment-question-outline
+                      </v-icon>
 
-                    <div v-if="created" class="hover-info">
-                      <span class="hover-text"> criado em </span>
+                      <div v-if="created" class="hover-info">
+                        <span class="hover-text"> criado em </span>
+                      </div>
+                    </div>
+
+                    <div class="ajust-info">
+                      <span class="status-text-time">
+                        {{
+                          status.updated_at
+                            .split(' ')[0]
+                            .split('-')
+                            .reverse()
+                            .join('/') +
+                            ' às ' +
+                            status.updated_at.split(' ')[1]
+                        }}
+                      </span>
+
+                      <v-icon
+                        class="icons"
+                        @mouseover="updated = true"
+                        @mouseleave="updated = false"
+                      >
+                        mdi-comment-question-outline
+                      </v-icon>
+
+                      <div v-if="updated" class="hover-info">
+                        <span class="hover-text"> finalizado em </span>
+                      </div>
                     </div>
                   </div>
-
-                  <div class="ajust-info">
-                    <span class="status-text-time">
-                      {{
-                        status.updated_at
-                          .split(' ')[0]
-                          .split('-')
-                          .reverse()
-                          .join('/') +
-                          ' ' +
-                          'às' +
-                          ' ' +
-                          status.updated_at.split(' ')[1]
-                      }}
+                  <div class="created_info">
+                    <span class="status-text">
+                      Criado por: {{ status.user_name_created }}
                     </span>
-
-                    <v-icon
-                      class="icons"
-                      @mouseover="updated = true"
-                      @mouseleave="updated = false"
-                    >
-                      mdi-comment-question-outline
-                    </v-icon>
-
-                    <div v-if="updated" class="hover-info">
-                      <span class="hover-text"> finalizado em </span>
-                    </div>
+                    <span class="status-text">
+                      Finalizado por: {{ status.user_name_updated }}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -360,15 +372,20 @@ export default {
 
 .history-text {
   font-family: 'Exo Regular';
-  font-size: 18px;
+  font-size: 16px;
+}
+
+.status-geral {
+  display: flex;
+  flex-flow: column;
+
+  border-bottom: 1px solid black;
 }
 
 .status {
   width: 100%;
   height: auto;
   min-height: 40px;
-
-  border-bottom: 1px solid black;
 
   display: flex;
   flex-flow: row;
@@ -379,7 +396,7 @@ export default {
 .status-text {
   padding: 0 10px;
 
-  font-size: 18px;
+  font-size: 16px;
   font-family: 'Exo Regular';
 }
 
@@ -388,6 +405,13 @@ export default {
   font-family: 'Exo Regular';
 
   padding-right: 10px !important;
+}
+
+.created_info {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  width: 100%;
 }
 
 #buttons {
@@ -451,6 +475,10 @@ export default {
     margin-top: 15px;
     margin-bottom: 15px;
   }
+
+  #part-info {
+    margin-top: 10px;
+  }
 }
 
 @media screen and (max-width: 730px) {
@@ -511,6 +539,10 @@ export default {
   .status-text-time {
     padding-bottom: 5px;
     padding-left: 10px;
+  }
+
+  .created_info {
+    flex-flow: column;
   }
 }
 

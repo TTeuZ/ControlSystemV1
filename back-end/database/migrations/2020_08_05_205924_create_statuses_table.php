@@ -19,6 +19,8 @@ class CreateStatusesTable extends Migration
             $table->boolean('flag')->default(false);
             $table->bigInteger('equipamento_id')->unsigned();
             $table->foreign('equipamento_id')->references('id')->on('equipamentos')->onDelete('cascade');
+            $table->string('user_name_created');
+            $table->string('user_name_updated')->default('');
             $table->timestamps();
         });
     }
