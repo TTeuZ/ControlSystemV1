@@ -337,7 +337,7 @@ export default {
     closeAfterOk() {
       this.modal = false
       this.statusModal = false
-      location.reload()
+      // location.reload()
     },
 
     reload() {

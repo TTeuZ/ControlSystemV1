@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <estoque :itens="Estoque" />
+    <estoque :itens="Estoque" :historico="Historico" />
   </v-container>
 </template>
 
@@ -12,10 +12,15 @@ export default {
     estoque
   },
 
-  asyncData(context) {
-    return context.app.$axios
-      .get('estoque')
-      .then((res) => ({ Estoque: res.data }))
+  async asyncData({ $axios }) {
+    const [estoqueRes, atthisRes] = await Promise.all([
+      $axios.get('estoque'),
+      $axios.get('atthis')
+    ])
+    return {
+      Estoque: estoqueRes.data,
+      Historico: atthisRes.data
+    }
   }
 }
 </script>

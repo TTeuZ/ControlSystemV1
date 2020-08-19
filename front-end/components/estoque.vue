@@ -120,11 +120,8 @@
                 >
                   <span class="log-title"> ATUALIZAÇÕES </span>
                   <div class="log-table">
-                    <div v-for="item in itens" :key="item">
-                      <div
-                        v-if="item.user_name_updated !== ''"
-                        class="log-item"
-                      >
+                    <div v-for="item in historico" :key="item">
+                      <div class="log-item">
                         <span class="log-text"> Nome: {{ item.name }} </span>
                         <span class="log-text">
                           {{
@@ -144,10 +141,7 @@
                           quant: {{ item.quantidade }}
                         </span>
                       </div>
-                      <v-divider
-                        v-if="item.user_name_updated !== ''"
-                        class="divider"
-                      />
+                      <v-divider class="divider" />
                     </div>
                   </div>
                 </v-col>
@@ -305,6 +299,10 @@ export default {
     itens: {
       type: Array,
       required: true
+    },
+    historico: {
+      type: Array,
+      required: true
     }
   },
 
@@ -426,7 +424,7 @@ export default {
         .post('estoque', newItem)
         .then(() => {
           this.close()
-          window.location.reload()
+          // window.location.reload()
         })
         .catch(({ response }) => {
           const { mensagem } = !!response && response.data

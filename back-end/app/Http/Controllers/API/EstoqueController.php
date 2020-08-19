@@ -16,7 +16,33 @@ class EstoqueController extends Controller
      */
     public function index()
     {
-        return response()->json(Estoque::all());
+        $estoque = Estoque::all();
+
+        $estoque = $estoque->map(function ($item) use ($estoque) {
+            $items = $estoque->where('name', $item->name);
+            if ($items->count() > 1) {
+                if ($item->user_name_updated) {
+                    return $item;
+                }
+                else {
+                    return null;
+                } 
+            }
+            else {
+                return $item;
+            }
+        })->reject(function ($item) {
+            return $item == null;
+        })->values();
+
+        return response()->json($estoque);
+    }
+
+    public function attHis()
+    {
+        return response()->json(Estoque::all()->reject(function ($item) {
+            return $item->user_name_updated || $item->created_at == $item->updated_at;
+        })->values());
     }
 
     /**
@@ -28,14 +54,14 @@ class EstoqueController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'name' => 'requerid|string|max:50',
-            'tipe' => 'requerid|string|max:50',
+            'name' => 'required|string|max:50',
+            'tipe' => 'required|string|max:50',
             'quantidade' => 'required|integer',
             'quantidade_min' => 'required|integer',
             'flag' => 'boolean'
         ]);
-        // if ($validator->fails())
-        //     return response()->json($validator->errors());
+        if ($validator->fails())
+            return response()->json($validator->errors());
 
         if ($request->user()->id <= 5) {
             $request->request->add(['user_name_created' => $request->user()->name]);
@@ -78,7 +104,22 @@ class EstoqueController extends Controller
             return response()->json($validator->erros());
         
         $request->request->add(['user_name_updated' => $request->user()->name]);
+
         $estoque->update($request->all());
+
+        if ($request->name) {
+            $historico = new Estoque;
+            $historico->name = $estoque->name;
+            $historico->tipe = $estoque->tipe;
+            $historico->quantidade = $estoque->quantidade;
+            $historico->quantidade_min = $estoque->quantidade_min;
+            $historico->flag = $estoque->flag;
+            $historico->user_name_created = $estoque->user_name_created;
+            $historico->created_at = $estoque->created_at;
+            
+            $historico->save();
+        }
+        
         return response()->json($estoque);
     }
 
