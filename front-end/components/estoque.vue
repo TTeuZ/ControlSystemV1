@@ -424,7 +424,7 @@ export default {
         .post('estoque', newItem)
         .then(() => {
           this.close()
-          // window.location.reload()
+          window.location.reload()
         })
         .catch(({ response }) => {
           const { mensagem } = !!response && response.data
