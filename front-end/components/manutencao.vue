@@ -811,5 +811,9 @@ export default {
   .status {
     flex-flow: column;
   }
+
+  .modal-title {
+    font-size: 20px;
+  }
 }
 </style>
