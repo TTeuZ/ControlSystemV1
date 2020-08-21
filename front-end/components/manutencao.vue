@@ -28,10 +28,10 @@
             :key="item"
             @click=";(showForm = true), (selectedEquip = i), filterStatus()"
           >
-            <span v-if="item[0].done === 0" id="item-title">
+            <span v-if="item[0].done === '0'" id="item-title">
               {{ item[0].name.toUpperCase() }}
             </span>
-            <v-divider v-if="item[0].done === 0" id="divider" />
+            <v-divider v-if="item[0].done === '0'" id="divider" />
           </div>
         </div>
 
@@ -120,7 +120,7 @@
               <span class="table-title">STATUS ATUAL</span>
               <div class="table">
                 <div v-for="status in statusFiltered" :key="status">
-                  <div v-if="status.flag === 0" class="status">
+                  <div v-if="status.flag === '0'" class="status">
                     <span class="status-text">
                       {{ status.info }}
                     </span>
@@ -177,7 +177,7 @@
               <span class="table-title">FEITO</span>
               <div class="table">
                 <div v-for="status in statusFiltered" :key="status">
-                  <div v-if="status.flag === 1" class="status">
+                  <div v-if="status.flag === '1'" class="status">
                     <div class="change-flag">
                       <v-icon
                         class="change-icon"
@@ -393,7 +393,8 @@ export default {
     filterStatus() {
       return (this.statusFiltered = this.stat.filter(
         (equip) =>
-          equip.equipamento_id === this.equipamentos[this.selectedEquip][0].id
+          equip.equipamento_id ===
+          this.equipamentos[this.selectedEquip][0].id.toString()
       ))
     },
 
@@ -439,7 +440,7 @@ export default {
       // let i = 1
 
       this.equipamentos.forEach(function(item) {
-        if (item[0].done === 1) {
+        if (item[0].done === '1') {
           self.ids.push(item[0].name)
           // + ' ' + i.toString())
           // i++

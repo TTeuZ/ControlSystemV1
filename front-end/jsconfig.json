@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "http://detec.plkdobrasil.com.br",
+    "baseUrl": ".",
     "paths": {
       "~/*": ["./*"],
       "@/*": ["./*"],

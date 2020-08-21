@@ -6,10 +6,10 @@
       <div id="equip-table">
         <nuxt-link to="/manutencao">
           <div v-for="item in equip" id="list-item" :key="item">
-            <span v-if="item[0].done === 0" id="item-title">
+            <span v-if="item[0].done === '0'" id="item-title">
               {{ item[0].name.toUpperCase() }}
             </span>
-            <v-divider v-if="item[0].done === 0" id="divider" />
+            <v-divider v-if="item[0].done === '0'" id="divider" />
           </div>
         </nuxt-link>
       </div>

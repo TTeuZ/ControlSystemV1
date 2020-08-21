@@ -5,11 +5,11 @@
 
       <div id="estoque-table">
         <div v-for="item in estoque" id="list-item" :key="item">
-          <div v-if="item.flag === 1" id="buy-list">
+          <div v-if="item.flag === '1'" id="buy-list">
             <span id="item-title"> {{ item.name.toUpperCase() }} </span>
             <span id="quantidade"> {{ item.quantidade }} </span>
           </div>
-          <v-divider v-if="item.flag === 1" id="divider" />
+          <v-divider v-if="item.flag === '1'" id="divider" />
         </div>
       </div>
     </div>

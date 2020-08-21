@@ -66,7 +66,7 @@ export default {
   },
 
   proxy: {
-    '/api/': { target: 'https://detecplkdobrasil1.websiteseguro.com' }
+    '/api/': { target: 'https://detecplkdobrasil1.websiteseguro.com/' }
   },
 
   auth: {

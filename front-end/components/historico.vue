@@ -18,10 +18,10 @@
             :key="item"
             @click=";(showForm = true), (selectedEquip = i), filterStatus()"
           >
-            <span v-if="item[0].done === 1" id="item-title">
+            <span v-if="item[0].done === '1'" id="item-title">
               {{ item[0].name.toUpperCase() }}
             </span>
-            <v-divider v-if="item[0].done === 1" id="divider" />
+            <v-divider v-if="item[0].done === '1'" id="divider" />
           </div>
         </div>
       </v-col>
@@ -214,7 +214,8 @@ export default {
     filterStatus() {
       return (this.statusFiltered = this.status.filter(
         (equip) =>
-          equip.equipamento_id === this.equipamentos[this.selectedEquip][0].id
+          equip.equipamento_id ===
+          this.equipamentos[this.selectedEquip][0].id.toString()
       ))
     },
 
