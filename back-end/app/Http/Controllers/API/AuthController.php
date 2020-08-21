@@ -71,6 +71,26 @@ class AuthController extends BaseController
         return $this->enviarRespostaErro('Vocẽ não pode criar usuarios');
     }
 
+    public function atualizar(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name'  => 'max:255',
+            'email' => 'email|max:255|unique:users',
+            'password' => 'min:6|confirmed',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+
+        $input = $request->all();
+        $input['password'] = bcrypt($input['password']);
+
+        $user = User::find($request->id);
+        $user->update($input);
+        return $this->enviarRespostaSucesso($user, 'Usuário atualizado com sucesso.', 201);
+    }
+
     /**
      * Register api
      *

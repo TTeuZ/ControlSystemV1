@@ -22,6 +22,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('registro', 'API\AuthController@registro')->name('registro');
     Route::post('deleta', 'API\AuthController@destroy');
     Route::get('usuarios', 'API\AuthController@show');
+    Route::post('atualiza', 'API\AuthController@atualizar');
 
     Route::apiResource('status', 'API\StatusController');
     Route::apiResource('equipamento', 'API\EquipamentosController');
