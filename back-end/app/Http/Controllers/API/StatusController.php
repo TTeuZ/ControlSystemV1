@@ -65,7 +65,7 @@ class StatusController extends Controller
     public function update(Request $request, Status $status)
     {
         $validator = Validator::make($request->all(),[
-            'info' => 'string|max:15',
+            'info' => 'string|max:100',
             'flag' => 'boolean',
         ]);
         if ($validator->fails())
