@@ -550,8 +550,11 @@ class ComposerStaticInit8f8ead165624cfd72c5b8fd2d76d0518
     );
 
     public static $classMap = array (
+        'App\\AutoEletrica' => __DIR__ . '/../..' . '/app/AutoEletrica.php',
+        'App\\Cabos' => __DIR__ . '/../..' . '/app/Cabos.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Equipamento' => __DIR__ . '/../..' . '/app/Equipamento.php',
+        'App\\EquipamentoAutoEletrica' => __DIR__ . '/../..' . '/app/EquipamentoAutoEletrica.php',
         'App\\Estoque' => __DIR__ . '/../..' . '/app/Estoque.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\API\\ArquivoController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/ArquivoController.php',
@@ -560,7 +563,11 @@ class ComposerStaticInit8f8ead165624cfd72c5b8fd2d76d0518
         'App\\Http\\Controllers\\API\\EquipamentosController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/EquipamentosController.php',
         'App\\Http\\Controllers\\API\\EstoqueController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/EstoqueController.php',
         'App\\Http\\Controllers\\API\\StatusController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/StatusController.php',
+        'App\\Http\\Controllers\\AutoEletricaController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/AutoEletricaController.php',
+        'App\\Http\\Controllers\\CabosController' => __DIR__ . '/../..' . '/app/Http/Controllers/CabosController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\EquipamentosAutoEletricaController' => __DIR__ . '/../..' . '/app/Http/Controllers/EquipamentosAutoEletricaController.php',
+        'App\\Http\\Controllers\\ResponsavelController' => __DIR__ . '/../..' . '/app/Http/Controllers/ResponsavelController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Api\\JsonMiddleware' => __DIR__ . '/../..' . '/app/Http/Middleware/Api/JsonMiddleware.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
@@ -575,6 +582,7 @@ class ComposerStaticInit8f8ead165624cfd72c5b8fd2d76d0518
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
+        'App\\Responsavel' => __DIR__ . '/../..' . '/app/Responsavel.php',
         'App\\Status' => __DIR__ . '/../..' . '/app/Status.php',
         'App\\User' => __DIR__ . '/../..' . '/app/User.php',
         'BeyondCode\\DumpServer\\DumpServerCommand' => __DIR__ . '/..' . '/beyondcode/laravel-dump-server/src/DumpServerCommand.php',

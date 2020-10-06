@@ -64,7 +64,7 @@ class EquipamentosController extends Controller
      * @param  \App\Equipamento  $equipamento
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Equipamento $equipamento)
+    public function update(Request $request, Equipamento $equipamento) // nao funciona
     {
         $validator = Validator::make($request->all(),[
             'name' => 'string|max:15',

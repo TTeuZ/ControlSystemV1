@@ -6,8 +6,11 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\AutoEletrica' => $baseDir . '/app/AutoEletrica.php',
+    'App\\Cabos' => $baseDir . '/app/Cabos.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Equipamento' => $baseDir . '/app/Equipamento.php',
+    'App\\EquipamentoAutoEletrica' => $baseDir . '/app/EquipamentoAutoEletrica.php',
     'App\\Estoque' => $baseDir . '/app/Estoque.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\API\\ArquivoController' => $baseDir . '/app/Http/Controllers/API/ArquivoController.php',
@@ -16,7 +19,11 @@ return array(
     'App\\Http\\Controllers\\API\\EquipamentosController' => $baseDir . '/app/Http/Controllers/API/EquipamentosController.php',
     'App\\Http\\Controllers\\API\\EstoqueController' => $baseDir . '/app/Http/Controllers/API/EstoqueController.php',
     'App\\Http\\Controllers\\API\\StatusController' => $baseDir . '/app/Http/Controllers/API/StatusController.php',
+    'App\\Http\\Controllers\\AutoEletricaController' => $baseDir . '/app/Http/Controllers/API/AutoEletricaController.php',
+    'App\\Http\\Controllers\\CabosController' => $baseDir . '/app/Http/Controllers/CabosController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
+    'App\\Http\\Controllers\\EquipamentosAutoEletricaController' => $baseDir . '/app/Http/Controllers/EquipamentosAutoEletricaController.php',
+    'App\\Http\\Controllers\\ResponsavelController' => $baseDir . '/app/Http/Controllers/ResponsavelController.php',
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',
     'App\\Http\\Middleware\\Api\\JsonMiddleware' => $baseDir . '/app/Http/Middleware/Api/JsonMiddleware.php',
     'App\\Http\\Middleware\\Authenticate' => $baseDir . '/app/Http/Middleware/Authenticate.php',
@@ -31,6 +38,7 @@ return array(
     'App\\Providers\\BroadcastServiceProvider' => $baseDir . '/app/Providers/BroadcastServiceProvider.php',
     'App\\Providers\\EventServiceProvider' => $baseDir . '/app/Providers/EventServiceProvider.php',
     'App\\Providers\\RouteServiceProvider' => $baseDir . '/app/Providers/RouteServiceProvider.php',
+    'App\\Responsavel' => $baseDir . '/app/Responsavel.php',
     'App\\Status' => $baseDir . '/app/Status.php',
     'App\\User' => $baseDir . '/app/User.php',
     'BeyondCode\\DumpServer\\DumpServerCommand' => $vendorDir . '/beyondcode/laravel-dump-server/src/DumpServerCommand.php',

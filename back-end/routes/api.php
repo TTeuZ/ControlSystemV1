@@ -27,6 +27,12 @@ Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('status', 'API\StatusController');
     Route::apiResource('equipamento', 'API\EquipamentosController');
     Route::apiResource('estoque', 'API\EstoqueController');
+    Route::apiResource('autoeletrica', 'API\AutoEletricaController');
+    Route::apiResource('cabos', 'API\CabosController');
+    Route::post('cabo_change/{id}', 'API\CabosController@changeSituation');
+    Route::apiResource('responsaveis', 'API\ResponsavelController');
+    Route::apiResource('equip_auto', 'API\EquipamentosAutoEletricaController');
+    Route::post('equip_change/{id}', 'API\EquipamentosAutoEletricaController@changeSituation');
     ROute::get('atthis', 'API\EstoqueController@attHis');
 
     Route::get('meu-perfil', 'AuthController@meuPerfil')->name('perfil');
