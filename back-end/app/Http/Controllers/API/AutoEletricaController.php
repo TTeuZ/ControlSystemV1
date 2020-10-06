@@ -16,7 +16,9 @@ class AutoEletricaController extends Controller
     {
         $data= [];
         foreach(AutoEletrica::all() as $autoEletrica){
-            array_push($data, [$autoEletrica, EquipamentoAutoEletrica::all()->where('auto_eletrica_id', $autoEletrica->id), Cabos::all()->where('auto_eletrica_id', $autoEletrica->id)]);
+            array_push($data, [$autoEletrica, EquipamentoAutoEletrica::all()->where('auto_eletrica_id', $autoEletrica->id), 
+            Cabos::all()->where('auto_eletrica_id', $autoEletrica->id), 
+            Responsavel::all()->where('auto_eletrica_id', $autoEletrica->id)]);
         }
         return response()->json($data);
     }

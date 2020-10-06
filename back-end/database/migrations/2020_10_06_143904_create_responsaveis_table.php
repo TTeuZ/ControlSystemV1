@@ -13,10 +13,12 @@ class CreateResponsaveisTable extends Migration
      */
     public function up()
     {
-        Schema::create('responsaveis', function (Blueprint $table) {
+        Schema::create('responsavels', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nome');
             $table->string('telefone');
+            $table->string('user_name_created');
+            $table->string('user_name_updated')->default('');
             $table->bigInteger('auto_eletrica_id')->unsigned();
             $table->foreign('auto_eletrica_id')->references('id')->on('auto_eletricas')->onDelete('cascade');
             $table->timestamps();
@@ -30,6 +32,6 @@ class CreateResponsaveisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('responsaveis');
+        Schema::dropIfExists('responsavels');
     }
 }
