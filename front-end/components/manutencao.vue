@@ -478,7 +478,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-
   flex-flow: column;
 }
 
@@ -487,16 +486,13 @@ export default {
   width: 400px;
   height: auto;
   max-height: 680px;
-
   overflow: auto;
-
   box-shadow: 0px 0px 14px -2px rgba(0, 0, 0, 0.49);
 }
 
 #list-item {
   width: 100%;
   height: auto;
-
   display: flex;
   flex-flow: column;
   justify-content: center;
@@ -511,7 +507,6 @@ export default {
 #item-title {
   font-family: 'Exo Regular';
   font-size: 16px;
-
   padding-bottom: 15px !important;
   padding-top: 15px !important;
 }
@@ -520,13 +515,9 @@ export default {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-
   border: 1px solid black;
-
   margin-top: 25px;
-
   background-color: black;
-
   box-shadow: 0px 0px 14px -2px rgba(0, 0, 0, 0.49);
 }
 
@@ -540,28 +531,22 @@ export default {
 
 #info-side {
   border: 1px solid black;
-
   height: 690px;
-
   display: flex;
-
   box-shadow: 0px 0px 14px -2px rgba(0, 0, 0, 0.49);
 }
 
 #title-section {
   display: flex;
   flex-flow: column;
-
   width: 100%;
   height: 55px;
-
   justify-self: start;
 }
 
 #info-title {
   font-family: 'Exo Regular';
   font-size: 36px;
-
   margin-left: 20px;
 }
 
@@ -570,7 +555,6 @@ export default {
   flex-flow: row;
   justify-content: space-between;
   align-items: center;
-
   width: 100%;
 }
 
@@ -579,9 +563,7 @@ export default {
   flex-flow: column;
   justify-content: start;
   align-items: flex-end;
-
   margin-right: 50px;
-
   width: 50%;
 }
 
@@ -597,10 +579,8 @@ export default {
 #equip-title {
   font-family: 'Exo Regular';
   font-size: 30px;
-
   width: 50%;
   height: 40px;
-
   margin-left: 30px;
 }
 
@@ -615,7 +595,6 @@ export default {
   flex-flow: column;
   justify-content: center;
   align-items: center;
-
   width: 100%;
 }
 
@@ -626,10 +605,8 @@ export default {
 
 .table {
   border: 1px solid black;
-
   width: 95%;
   height: 380px;
-
   overflow: auto;
 }
 
@@ -647,9 +624,7 @@ export default {
   width: 100%;
   height: auto;
   min-height: 40px;
-
   border-bottom: 1px solid black;
-
   display: flex;
   flex-flow: row;
   justify-content: space-between;
@@ -658,7 +633,6 @@ export default {
 
 .status-text {
   padding: 0 10px;
-
   font-size: 18px;
   font-family: 'Exo Regular';
 }
@@ -687,13 +661,11 @@ export default {
 .modal-title {
   font-family: 'Exo Regular';
   font-size: 30px;
-
   margin-top: 15px;
 }
 
 .form {
   width: 80%;
-
   padding-top: 20px;
   padding-bottom: 30px;
 }
@@ -713,15 +685,12 @@ export default {
 
 .hover-info {
   position: absolute;
-
   height: 20px;
   width: auto;
   background-color: white;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   margin-left: 70px;
 }
 
@@ -769,7 +738,6 @@ export default {
 @media screen and (max-width: 564px) {
   #buttons {
     flex-flow: column;
-
     justify-content: center;
     align-items: center;
   }
@@ -777,7 +745,6 @@ export default {
   .form-btns {
     margin-right: 0;
     margin-top: 20px;
-
     width: 200px;
   }
 

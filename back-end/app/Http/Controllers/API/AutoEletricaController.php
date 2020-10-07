@@ -16,9 +16,9 @@ class AutoEletricaController extends Controller
     {
         $data= [];
         foreach(AutoEletrica::all() as $autoEletrica){
-            array_push($data, [$autoEletrica, EquipamentoAutoEletrica::all()->where('auto_eletrica_id', $autoEletrica->id), 
-            Cabos::all()->where('auto_eletrica_id', $autoEletrica->id), 
-            Responsavel::all()->where('auto_eletrica_id', $autoEletrica->id)]);
+            array_push($data, [$autoEletrica, EquipamentoAutoEletrica::all()->where('auto_eletrica_id', $autoEletrica->id)->values(), 
+            Cabos::all()->where('auto_eletrica_id', $autoEletrica->id)->values(), 
+            Responsavel::all()->where('auto_eletrica_id', $autoEletrica->id)->values()]);
         }
         return response()->json($data);
     }
@@ -26,8 +26,8 @@ class AutoEletricaController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'nome' => 'required|string|max:15',
-            'endereco' => 'required|string|max:50',
+            'nome' => 'required|string|max:150',
+            'endereco' => 'required|string|max:150',
         ]);
         if ($validator->fails())
             return response()->json($validator->errors());
@@ -40,8 +40,8 @@ class AutoEletricaController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'nome' => 'string|max:15',
-            'endereco' => 'string|max:50'
+            'nome' => 'string|max:150',
+            'endereco' => 'string|max:150'
         ]);
         if ($validator->fails())
             return response()->json($validator->errors());

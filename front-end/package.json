@@ -18,6 +18,7 @@
     "@nuxtjs/pwa": "^3.0.0-0",
     "@nuxtjs/toast": "^3.3.1",
     "fibers": "^4.0.2",
+    "maska": "^1.2.0",
     "nuxt": "^2.0.0",
     "pug": "^2.0.4",
     "pug-loader": "^2.4.0",

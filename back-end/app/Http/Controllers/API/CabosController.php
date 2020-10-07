@@ -18,8 +18,8 @@ class CabosController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'nome' => 'required|string|max:15',
-            'tipo' =>  'required|string|max:50',
+            'nome' => 'required|string|max:150',
+            'tipo' =>  'required|string|max:150',
             'situacao' => 'boolean',
             'quantidade' => 'required|integer',
             'auto_eletrica_id' => 'required|integer'
@@ -38,8 +38,8 @@ class CabosController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'nome' => 'string|max:15',
-            'tipo' =>  'string|max:50',
+            'nome' => 'string|max:150',
+            'tipo' =>  'string|max:150',
             'quantidade' => 'integer'
         ]);
         if ($validator->fails())

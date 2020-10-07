@@ -91,11 +91,15 @@ export default {
           label: 'Home',
           link: '/'
         },
-        { label: 'Manutenção', link: '/manutencao' },
         {
           label: 'Estoque',
           link: '/estoque'
         },
+        {
+          label: 'Auto Eletricas',
+          link: '/autoEletricas'
+        },
+        { label: 'Manutenção', link: '/manutencao' },
         {
           label: 'Histórico',
           link: '/historico'
@@ -107,11 +111,15 @@ export default {
           drawerLabel: 'Home',
           drawerLink: '/'
         },
-        { drawerLabel: 'Manutenção', drawerLink: '/manutencao' },
         {
           drawerLabel: 'Estoque',
           drawerLink: '/estoque'
         },
+        {
+          drawerLabel: 'Auto Eletricas',
+          drawerLink: '/autoEletrias'
+        },
+        { drawerLabel: 'Manutenção', drawerLink: '/manutencao' },
         {
           drawerLabel: 'Histórico',
           drawerLink: '/historico'

@@ -18,7 +18,7 @@ class ResponsavelController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'nome' => 'required|string|max:15',
+            'nome' => 'required|string|max:150',
             'telefone' =>  'required|string|max:20',
             'auto_eletrica_id' => 'required|integer'
         ]);
@@ -36,7 +36,7 @@ class ResponsavelController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'nome' => 'string|max:15',
+            'nome' => 'string|max:150',
             'telefone' =>  'string|max:20',
         ]);
         if ($validator->fails())
