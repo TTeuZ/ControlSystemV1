@@ -49,6 +49,13 @@
             {{ type }}
           </v-btn>
         </div>
+        <div id="all-infos-section">
+          <span class="all-infos-text-title"> LACRES </span>
+          <span class="all-infos-text"> Em Estoque: {{this.totalDeLacresOk}} </span> <!-- eslint-disable-line -->
+          <span class="all-infos-text"> Com Defeito: {{this.totalDeLacresNOk}}</span> <!-- eslint-disable-line -->
+          <span class="all-infos-text">TOTAL: {{ autos[selectedAutoEletrica][1].length }} </span> <!-- eslint-disable-line -->
+          <span class="all-infos-text-title"> CABOS </span>
+        </div>
         <div class="att-auto-btn">
           <v-btn
             class="type-btn"
@@ -455,6 +462,9 @@ export default {
     return {
       selectedAutoEletrica: 0,
 
+      totalDeLacresOk: 0,
+      totalDeLacresNOk: 0,
+
       modalDeCriacao: false,
       modalDeAtualizacao: false,
       getAuto: [],
@@ -517,7 +527,28 @@ export default {
     }
   },
 
+  mounted() {
+    this.totalLacres()
+  },
+
   methods: {
+    totalLacres() {
+      console.log('entrou')
+      const self = this
+      if (self.autos[self.selectedAutoEletrica][1].length === 0) {
+        self.totalDeLacresOk = 0
+        self.totalDeLacresNOk = 0
+      } else {
+        self.autos[self.selectedAutoEletrica][1].forEach((item) => {
+          if (item.situacao === 0) {
+            self.totalDeLacresOk++
+          } else {
+            self.totalDeLacresNOk++
+          }
+        })
+      }
+    },
+
     // função para criar uma auto eletrica juntamente com seu responsavel
     newAuto() {
       const autoEletrica = {
@@ -734,6 +765,28 @@ export default {
 .att-auto-btn {
   position: absolute;
   bottom: 80px;
+}
+
+#all-infos-section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-flow: column;
+  margin-left: 30px;
+}
+
+.all-infos-text-title {
+  margin-top: 25px;
+  width: 90%;
+  font-family: 'Exo Regular';
+  font-size: 18px;
+  border-top: 1px solid black;
+}
+
+.all-infos-text {
+  font-family: 'Exo Regular';
+  font-size: 16px;
 }
 
 .selectedColorClass {
