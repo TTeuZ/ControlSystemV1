@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import estoque from '~/components/estoque'
+import estoque from '~/components/estoque/estoque'
 
 export default {
   components: {

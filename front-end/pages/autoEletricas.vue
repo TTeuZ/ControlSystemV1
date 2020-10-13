@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import autos from '~/components/AutoEletrica.vue'
+import autos from '~/components/autoeletrica/AutoEletrica.vue'
 
 export default {
   components: {

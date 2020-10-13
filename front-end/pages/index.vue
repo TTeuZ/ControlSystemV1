@@ -18,9 +18,9 @@
 </template>
 
 <script>
-import users from '~/components/users'
-import equipNoEsc from '~/components/equipNoEsc'
-import buyList from '~/components/buyList'
+import users from '~/components/home/users'
+import equipNoEsc from '~/components/home/equipNoEsc'
+import buyList from '~/components/home/buyList'
 
 export default {
   components: {

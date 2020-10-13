@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import historico from '~/components/historico'
+import historico from '~/components/historico/historico'
 
 export default {
   components: {
