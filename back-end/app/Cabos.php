@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cabos extends Model
 {
-    protected $fillable = ['nome', 'tipo', 'quantidade', 'situacao', 'auto_eletrica_id', 'user_name_created', 'user_name_updated'];
+    protected $fillable = ['nome', 'tipo', 'situacao', 'auto_eletrica_id', 'user_name_created', 'user_name_updated'];
     protected $with = ['auto_eletrica'];
 
     public function auto_eletrica() {

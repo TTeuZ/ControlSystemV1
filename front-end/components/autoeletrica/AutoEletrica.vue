@@ -46,16 +46,16 @@
             color="orange"
             class="type-btn"
             :class="{ selectedColorClass: selectedType == t ? true : false }"
-            @click="selectedType = t"
+            @click=";(modalDeInfosResp = false), (selectedType = t)"
           >
             {{ type }}
           </v-btn>
         </div>
         <div id="all-infos-section">
           <span class="all-infos-text-title"> LACRES </span>
-          <span class="all-infos-text"> Em Estoque: {{this.totalDeLacresOk}} </span> <!-- eslint-disable-line -->
-          <span class="all-infos-text"> Com Defeito: {{this.totalDeLacresNOk}}</span> <!-- eslint-disable-line -->
-          <span class="all-infos-text">TOTAL: {{ autos[selectedAutoEletrica][1].length }} </span> <!-- eslint-disable-line -->
+          <span class="all-infos-text good-color"> Em Estoque: {{this.totalDeLacresOk}} </span> <!-- eslint-disable-line -->
+          <span class="all-infos-text bad-color"> Com Defeito: {{this.totalDeLacresNOk}} </span> <!-- eslint-disable-line -->
+          <span class="all-infos-text"> TOTAL: {{ autos[selectedAutoEletrica][1].length }} </span> <!-- eslint-disable-line -->
           <span class="all-infos-text-title"> CABOS </span>
         </div>
         <div class="att-auto-btn">
@@ -97,8 +97,14 @@
         <span class="type-title">
           {{ typeBtns[selectedType].toUpperCase() }}
         </span>
-
         <Lacres
+          v-if="selectedType === 0"
+          :autos="autos"
+          :selected-auto-eletrica="selectedAutoEletrica"
+          :selected-type="selectedType"
+        />
+        <CaboAzul
+          v-if="selectedType === 1"
           :autos="autos"
           :selected-auto-eletrica="selectedAutoEletrica"
           :selected-type="selectedType"
@@ -192,10 +198,12 @@
 <script>
 import Lacres from '~/components/autoeletrica/Lacres.vue'
 import Responsavel from '~/components/autoeletrica/Responsavel.vue'
+import CaboAzul from '~/components/autoeletrica/CaboAzul.vue'
 export default {
   components: {
     Lacres,
-    Responsavel
+    Responsavel,
+    CaboAzul
   },
   props: {
     autos: {
@@ -216,7 +224,7 @@ export default {
       // variaveis para responsavel
       getAuto: [],
       selectId: 0,
-      typeBtns: ['LACRES', 'CABOS'],
+      typeBtns: ['LACRES', 'CABO AZUL', 'CABO SENSORES', 'CABO ALIMENTAÇÃO'],
       selectedType: 0,
       autoForm: {
         nome: {
@@ -389,6 +397,14 @@ export default {
 .all-infos-text {
   font-family: 'Exo Regular';
   font-size: 16px;
+}
+
+.bad-color {
+  color: red;
+}
+
+.good-color {
+  color: green;
 }
 
 .selectedColorClass {

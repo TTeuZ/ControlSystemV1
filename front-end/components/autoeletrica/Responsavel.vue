@@ -159,7 +159,10 @@ export default {
   },
   methods: {
     firstResp() {
-      if (this.autos[this.selectedAutoEletrica][3].length === 0) {
+      if (
+        this.autos[this.selectedAutoEletrica] &&
+        this.autos[this.selectedAutoEletrica][3].length === 0
+      ) {
         this.modalDeCriacaoResp = true
       }
     },

@@ -17,7 +17,6 @@ class CreateCabosTable extends Migration
             $table->bigIncrements('id');
             $table->string('nome');
             $table->string('tipo');
-            $table->bigInteger('quantidade');
             $table->boolean('situacao')->default(false);
             $table->string('user_name_created');
             $table->string('user_name_updated')->default('');

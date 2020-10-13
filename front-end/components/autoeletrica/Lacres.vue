@@ -2,7 +2,6 @@
   <v-container>
     <v-row class="ma-0 pa-0 esp-infos" justify="space-around" align="center">
       <v-col
-        v-if="selectedType == 0"
         class="equip-state-box border"
         xl="5"
         lg="5"
@@ -31,7 +30,6 @@
         </div>
       </v-col>
       <v-col
-        v-if="selectedType == 0"
         class="equip-state-box border"
         xl="5"
         lg="5"

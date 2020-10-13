@@ -21,7 +21,6 @@ class CabosController extends Controller
             'nome' => 'required|string|max:150',
             'tipo' =>  'required|string|max:150',
             'situacao' => 'boolean',
-            'quantidade' => 'required|integer',
             'auto_eletrica_id' => 'required|integer'
         ]);
         if ($validator->fails())
