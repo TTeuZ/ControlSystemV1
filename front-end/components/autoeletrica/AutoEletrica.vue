@@ -32,9 +32,9 @@
         xl="2"
         lg="3"
         md="3"
-        sm="11"
-        xs="11"
-        cols="11"
+        sm="12"
+        xs="12"
+        cols="12"
       >
         <span class="auto-title">
           {{ autos[selectedAutoEletrica][0].nome.toUpperCase() }}
@@ -75,9 +75,9 @@
         xl="10"
         lg="9"
         md="9"
-        sm="11"
-        xs="11"
-        cols="11"
+        sm="12"
+        xs="12"
+        cols="12"
       >
         <span class="type-title">
           INFORMAÇÕES DA AUTO ELÉTRICA
@@ -87,7 +87,10 @@
             Endereço:
             {{ autos[selectedAutoEletrica][0].endereco.toUpperCase() }}
           </span>
-          <v-btn color="orange" @click="modalDeInfosResp = !modalDeInfosResp">
+          <v-btn
+            color="orange"
+            @click="veriResp(autos[selectedAutoEletrica][3])"
+          >
             Responsaveis
           </v-btn>
         </div>
@@ -176,103 +179,23 @@
     </v-dialog>
     <!-- Dialog de atualização de auto-eletrica -->
     <!-- Dialog de infos de responsavel -->
-    <v-dialog
-      v-if="autos.length != 0 && autos[selectedAutoEletrica][3].length != 0"
-      v-model="modalDeInfosResp"
-      max-width="800px"
-      no-click-animation
-      persistent
-    >
-      <v-card class="modal-card">
-        <div class="modal-title-section">
-          <div>
-            <v-btn v-for="resps in autos[selectedAutoEletrica][3]" :key="resps">
-              {{ resps.nome }}
-            </v-btn>
-          </div>
-        </div>
-        <div class="btn-section">
-          <v-btn color="#43A047" text @click="modalDeInfosResp = !modalDeInfosResp"> <!-- eslint-disable-line -->
-            Cancelar
-          </v-btn>
-        </div>
-      </v-card>
-    </v-dialog>
+    <Responsavel
+      :autos="autos"
+      :selected-auto-eletrica="selectedAutoEletrica"
+      :modal-de-infos-resp="modalDeInfosResp"
+      :modal-de-criacao-resp="modalDeCriacaoResp"
+    />
     <!-- Dialog de infos de responsavel -->
-    <!-- Dialog de criação de responsavel -->
-    <v-dialog
-      v-model="modalDeCriacaoResp"
-      max-width="800px"
-      no-click-animation
-      persistent
-    >
-      <v-card class="modal-card">
-        <div class="modal-title-section">
-          <span class="modal-title">
-            RESPONSÁVEL
-          </span>
-          <div v-for="resp in respForm" :key="resp" class="form">
-            <v-text-field
-              v-model="resp.data"
-              v-maska="resp.mask"
-              :rules="resp.rules"
-              color="cyan darken-2"
-              :label="resp.label"
-            />
-          </div>
-        </div>
-        <div class="btn-section">
-          <v-btn color="#43A047" text @click="modalDeCriacaoResp = !modalDeCriacaoResp"> <!-- eslint-disable-line -->
-            Cancelar
-          </v-btn>
-          <v-btn color="#43A047" text @click="newResp()">
-            Criar
-          </v-btn>
-        </div>
-      </v-card>
-    </v-dialog>
-    <!-- Dialog de criação de responsavel -->
-    <!-- Dialog de atualizacao de responsavel -->
-    <v-dialog
-      v-model="modalDeAttResp"
-      max-width="800px"
-      no-click-animation
-      persistent
-    >
-      <v-card class="modal-card">
-        <div class="modal-title-section">
-          <span class="modal-title">
-            RESPONSÁVEL
-          </span>
-          <div v-for="resp in respForm" :key="resp" class="form">
-            <v-text-field
-              v-model="resp.data"
-              v-maska="resp.mask"
-              :rules="resp.rules"
-              color="cyan darken-2"
-              :label="resp.label"
-            />
-          </div>
-        </div>
-        <div class="btn-section">
-          <v-btn color="#43A047" text @click="modalDeAttResp = !modalDeAttResp"> <!-- eslint-disable-line -->
-            Cancelar
-          </v-btn>
-          <v-btn color="#43A047" text @click="newResp()">
-            Criar
-          </v-btn>
-        </div>
-      </v-card>
-    </v-dialog>
-    <!-- Dialog de atualizacao de responsavel -->
   </v-container>
 </template>
 
 <script>
 import Lacres from '~/components/autoeletrica/Lacres.vue'
+import Responsavel from '~/components/autoeletrica/Responsavel.vue'
 export default {
   components: {
-    Lacres
+    Lacres,
+    Responsavel
   },
   props: {
     autos: {
@@ -286,10 +209,11 @@ export default {
       totalDeLacresOk: 0,
       totalDeLacresNOk: 0,
       modalDeCriacao: false,
-      modalDeCriacaoResp: false,
       modalDeAtualizacao: false,
-      modalDeAtualizacaoResp: false,
+      // variaveis para responsavel, verificar se a auto eletrica ja tem responsavel ou nao e manda elas com true o false dependendo
       modalDeInfosResp: false,
+      modalDeCriacaoResp: false,
+      // variaveis para responsavel
       getAuto: [],
       selectId: 0,
       typeBtns: ['LACRES', 'CABOS'],
@@ -307,21 +231,6 @@ export default {
           data: '',
           rules: [(v) => !!v || 'Endereço é necessário']
         }
-      },
-      respForm: {
-        nome: {
-          name: 'nome',
-          label: 'Nome do responsável',
-          data: '',
-          rules: [(v) => !!v || 'Nome é necessário']
-        },
-        telefone: {
-          name: 'telefone',
-          label: 'Telefone',
-          data: '',
-          rules: [(v) => !!v || 'Telefone é necessário'],
-          mask: '(##) #####-####'
-        }
       }
     }
   },
@@ -331,7 +240,17 @@ export default {
   },
 
   methods: {
+    veriResp(responsaveis) {
+      if (responsaveis.length === 0) {
+        this.modalDeCriacaoResp = !this.modalDeCriacaoResp
+      } else {
+        this.modalDeInfosResp = !this.modalDeInfosResp
+      }
+    },
+
     totalLacres() {
+      this.modalDeInfosResp = false
+      this.modalDeCriacaoResp = false
       this.totalDeLacresOk = 0
       this.totalDeLacresNOk = 0
       const self = this
@@ -403,29 +322,6 @@ export default {
             this.$toast.error(mensagem, { duration: 5000 })
           })
       }
-    },
-
-    attResp(id) {
-      if (this.modalDeAtualizacaoResp === false) {
-        this.modalDeAtualizacaoResp = true
-        const respSelecionado = this.autos[this.selectedAutoEletrica][3][0] /*eslint-disable-line*/
-        this.respForm.nome.data = respSelecionado.nome
-        this.respForm.telefone.data = respSelecionado.telefone
-      } else {
-        const respAtualizada = {
-          nome: this.respForm.nome.data,
-          telefone: this.respForm.telefone.data
-        }
-        this.$axios
-          .put('responsaveis/' + id, respAtualizada)
-          .then(() => {
-            window.location.reload()
-          })
-          .catch(({ response }) => {
-            const { mensagem } = !!response && response.data
-            this.$toast.error(mensagem, { duration: 5000 })
-          })
-      }
     }
   }
 }
@@ -468,10 +364,10 @@ export default {
   width: 250px !important;
 }
 
-.att-auto-btn {
+/* .att-auto-btn {
   position: absolute;
   bottom: 80px;
-}
+} */
 
 #all-infos-section {
   width: 100%;
@@ -574,5 +470,43 @@ export default {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+}
+
+@media screen and (max-width: 840px) {
+  #select-auto {
+    flex-flow: column;
+  }
+  #add-auto {
+    top: 120px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .auto-title {
+    font-size: 30px;
+  }
+  .type-title {
+    font-size: 30px;
+    margin-left: 0px;
+  }
+  .auto-infos-box {
+    flex-flow: column;
+    margin-left: 0px;
+  }
+  .infos-text {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .modal-title {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 365px) {
+  .modal-title {
+    font-size: 16px;
+  }
 }
 </style>

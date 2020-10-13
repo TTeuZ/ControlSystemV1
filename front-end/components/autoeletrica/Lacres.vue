@@ -7,9 +7,9 @@
         xl="5"
         lg="5"
         md="5"
-        sm="11"
-        xs="11"
-        cols="11"
+        sm="12"
+        xs="12"
+        cols="12"
       >
         <span class="lacres-card-title">
           EM ESTOQUE
@@ -36,9 +36,9 @@
         xl="5"
         lg="5"
         md="5"
-        sm="11"
-        xs="11"
-        cols="11"
+        sm="12"
+        xs="12"
+        cols="12"
       >
         <span class="lacres-card-title">
           COM DEFEITOS
@@ -445,5 +445,43 @@ export default {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+}
+
+@media screen and (max-width: 961px) {
+  .equip-state-box {
+    margin-top: 30px;
+  }
+  #add-item {
+    bottom: 5px;
+    right: 5px;
+  }
+  .esp-infos {
+    margin-left: 0px !important;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .equip {
+    flex-flow: column;
+    align-items: center;
+  }
+  .equip-text {
+    margin-bottom: 8px;
+  }
+  .modal-title {
+    font-size: 24px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .lacres-card-title {
+    font-size: 18px;
+  }
+  .equip-text {
+    font-size: 16px;
+  }
+  .modal-title {
+    font-size: 20px;
+  }
 }
 </style>
