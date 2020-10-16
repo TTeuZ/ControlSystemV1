@@ -21,6 +21,12 @@ export default {
       Estoque: estoqueRes.data,
       Historico: atthisRes.data
     }
+  },
+
+  head() {
+    return {
+      title: 'Estoque'
+    }
   }
 }
 </script>

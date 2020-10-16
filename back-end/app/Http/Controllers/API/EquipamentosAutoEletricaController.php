@@ -43,17 +43,17 @@ class EquipamentosAutoEletricaController extends Controller
         if ($validator->fails())
             return response()->json($validator->errors());
 
-        $equipamento = EquipamentoAutoEletrica::find($id);
         $request->request->add(['user_name_updated' => $request->user()->name]);
+        $equipamento = EquipamentoAutoEletrica::find($id);
         $equipamento->update($request->all());
         return response()->json($equipamento);
     }
 
-    public function changeSituation($id) {
+    public function changeSituation(Request $request, $id) {
         $equipamento = EquipamentoAutoEletrica::find($id);
 
         $equipamento->situacao = !$equipamento->situacao;
-
+        $equipamento->user_name_updated = $request->user()->name;
         $equipamento->update();
         return response()->json($equipamento);
     }

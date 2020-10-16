@@ -13,16 +13,8 @@
       >
         <span class="cabos-card-title"> EM ESTOQUE </span>
         <div class="cabos">
-          <span class="cabo-text"> Completo </span>
-          <span class="cabo-text"> {{ completoOK }} </span>
-        </div>
-        <div class="cabos">
-          <span class="cabo-text"> Grande </span>
-          <span class="cabo-text"> {{ grandeOK }} </span>
-        </div>
-        <div class="cabos">
-          <span class="cabo-text"> Pequeno </span>
-          <span class="cabo-text"> {{ pequenoOK }} </span>
+          <span class="cabo-text"> Geral </span>
+          <span class="cabo-text"> {{ geralOK }} </span>
         </div>
       </v-col>
       <v-col
@@ -37,16 +29,8 @@
       >
         <span class="cabos-card-title"> COM DEFEITOS </span>
         <div class="cabos">
-          <span class="cabo-text"> Completo </span>
-          <span class="cabo-text"> {{ completoNOK }} </span>
-        </div>
-        <div class="cabos">
-          <span class="cabo-text"> Grande </span>
-          <span class="cabo-text"> {{ grandeNOK }} </span>
-        </div>
-        <div class="cabos">
-          <span class="cabo-text"> Pequeno </span>
-          <span class="cabo-text"> {{ pequenoNOK }} </span>
+          <span class="cabo-text"> Geral </span>
+          <span class="cabo-text"> {{ geralNOK }} </span>
         </div>
       </v-col>
       <v-col
@@ -61,7 +45,7 @@
         <span class="cabos-card-title"> LOG </span>
         <div id="log">
         <div v-for="log in autos[selectedAutoEletrica][2]" :key="log" style="width: 100%"> <!-- eslint-disable-line -->
-          <div v-if="log.situacao === 1 && log.nome === 'CABO AZUL'" class="cabos"> <!-- eslint-disable-line -->
+          <div v-if="log.situacao === 1 && log.nome === 'CABO ALIMENTACAO'" class="cabos"> <!-- eslint-disable-line -->
             <span class="cabo-text"> Enviado p/ defeito por: {{ log.user_name_updated }} </span> <!-- eslint-disable-line -->
             <span class="cabo-text"> {{ log.tipo }} </span> <!-- eslint-disable-line -->
               <span class="cabo-text">
@@ -86,7 +70,7 @@
       </button>
     </v-row>
 
-    <!-- Dialog de criação de cabos azuis -->
+    <!-- Dialog de criação de cabos de alimentacao -->
     <v-dialog
       v-if="autos.length != 0"
       v-model="modalAdd"
@@ -98,7 +82,7 @@
         <div class="if-div">
           <div class="modal-title-section">
             <span class="modal-title">
-              ADICIONE UM CABO AZUL
+              ADICIONE UM CABO DE ALIMENTAÇÃO
             </span>
           </div>
           <div class="form">
@@ -120,7 +104,7 @@
         </div>
       </v-card>
     </v-dialog>
-    <!-- Dialog de criação de cabos azuis -->
+    <!-- Dialog de criação de cabos de alimentacao -->
     <!-- Dialog de modificaçoes -->
     <v-dialog
       v-if="autos.length != 0"
@@ -133,7 +117,7 @@
         <div class="if-div">
           <div class="modal-title-section">
             <span class="modal-title">
-              CABOS AZUIS
+              CABOS DE ALIMENTAÇÃO
             </span>
           </div>
           <div v-for="sel in selects" :key="sel" class="form">
@@ -155,16 +139,16 @@
           </div>
         </div>
         <div class="btn-section">
-          <v-btn v-if="this.estado === 0" color="#43A047" text @click="delCabos(selects.tipo.data, selects.quant.data, caboAzulOK)"> <!-- eslint-disable-line -->
+          <v-btn v-if="this.estado === 0" color="#43A047" text @click="delCabos(selects.tipo.data, selects.quant.data, caboAlimentacaoOK)"> <!-- eslint-disable-line -->
             Excluir
           </v-btn>
-          <v-btn v-if="this.estado === 1" color="#43A047" text @click="delCabos(selects.tipo.data, selects.quant.data, caboAzulNOK)"> <!-- eslint-disable-line -->
+          <v-btn v-if="this.estado === 1" color="#43A047" text @click="delCabos(selects.tipo.data, selects.quant.data, caboAlimentacaoNOK)"> <!-- eslint-disable-line -->
             Excluir
           </v-btn>
-          <v-btn v-if="this.estado === 0" color="#43A047" text @click="sendTo(selects.tipo.data, selects.quant.data, caboAzulOK)"> <!-- eslint-disable-line -->
+          <v-btn v-if="this.estado === 0" color="#43A047" text @click="sendTo(selects.tipo.data, selects.quant.data, caboAlimentacaoOK)"> <!-- eslint-disable-line -->
             Para Defeito
           </v-btn>
-          <v-btn v-if="this.estado === 1" color="#43A047" text @click="sendTo(selects.tipo.data, selects.quant.data, caboAzulNOK)"> <!-- eslint-disable-line -->
+          <v-btn v-if="this.estado === 1" color="#43A047" text @click="sendTo(selects.tipo.data, selects.quant.data, caboAlimentacaoNOK)"> <!-- eslint-disable-line -->
             Para Estoque
           </v-btn>
           <v-btn color="#43A047" text @click="modalDeModificacos = !modalDeModificacos"> <!-- eslint-disable-line -->
@@ -188,23 +172,20 @@ export default {
   data() {
     return {
       selectedAutoEletrica: 0,
+
       modalAdd: false,
       modalDeModificacos: false,
       estado: 0,
       selectId: 0,
 
-      caboAzulOK: [],
-      caboAzulNOK: [],
+      caboAlimentacaoOK: [],
+      caboAlimentacaoNOK: [],
 
-      grandeOK: 0,
-      pequenoOK: 0,
-      completoOK: 0,
+      geralOK: 0,
 
-      grandeNOK: 0,
-      pequenoNOK: 0,
-      completoNOK: 0,
+      geralNOK: 0,
 
-      caboTipos: ['grande', 'pequeno', 'completo'],
+      caboTipos: ['geral'],
       caboData: '',
 
       selects: {
@@ -237,71 +218,31 @@ export default {
     getQuantidade(auto) {
       this.selectedAutoEletrica = auto
       const cabos = this.autos[this.selectedAutoEletrica][2]
-      this.caboAzulOK = []
-      this.caboAzulNOK = []
+      this.caboAlimentacaoOK = []
+      this.caboAlimentacaoNOK = []
+      this.geralOK = 0
+      this.geralNOK = 0
       if (this.autos !== [] && cabos !== []) { /*eslint-disable-line*/
         cabos.forEach((item) => {
           const cabo = {
             tipo: item.tipo,
             id: item.id
           }
-          if (item.nome === 'CABO AZUL' && item.situacao === 0) {
-            this.caboAzulOK.push(cabo)
-          } else if (item.nome === 'CABO AZUL' && item.situacao === 1) {
-            this.caboAzulNOK.push(cabo)
+          if (item.nome === 'CABO ALIMENTACAO' && item.situacao === 0) {
+            this.caboAlimentacaoOK.push(cabo)
+            this.geralOK++
+          } else if (item.nome === 'CABO ALIMENTACAO' && item.situacao === 1) {
+            this.caboAlimentacaoNOK.push(cabo)
+            console.log('adicionou')
+            this.geralNOK++
           }
         })
-        this.getOks(this.caboAzulOK)
-        this.getNOks(this.caboAzulNOK)
       }
     },
 
-    getOks(array) {
-      this.grandeOK = 0
-      this.pequenoOK = 0
-      this.completoOK = 0
-      array.forEach((item) => {
-        switch (item.tipo.toLowerCase()) {
-          case 'grande': {
-            this.grandeOK++
-            break
-          }
-          case 'pequeno': {
-            this.pequenoOK++
-            break
-          }
-          case 'completo': {
-            this.completoOK++
-            break
-          }
-        }
-      })
-    },
-
-    getNOks(array) {
-      this.grandeNOK = 0
-      this.pequenoNOK = 0
-      this.completoNOK = 0
-      array.forEach((item) => {
-        switch (item.tipo.toLowerCase()) {
-          case 'grande': {
-            this.grandeNOK++
-            break
-          }
-          case 'pequeno': {
-            this.pequenoNOK++
-            break
-          }
-          case 'completo': {
-            this.completoNOK++
-            break
-          }
-        }
-      })
-    },
     newCabo() {
       const newCabo = {
-        nome: 'CABO AZUL',
+        nome: 'CABO ALIMENTACAO',
         tipo: this.caboData,
         auto_eletrica_id: this.selectId
       }
@@ -462,7 +403,7 @@ export default {
 
 #log {
   width: 100%;
-  max-height: 220px;
+  max-height: 310px;
   overflow: auto;
 }
 

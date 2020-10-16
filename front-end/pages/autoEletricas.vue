@@ -16,6 +16,12 @@ export default {
     return context.app.$axios
       .get('autoeletrica')
       .then((res) => ({ autoEletrica: res.data }))
+  },
+
+  head() {
+    return {
+      title: 'Auto Elétricas'
+    }
   }
 }
 </script>

@@ -44,6 +44,12 @@ export default {
     }
   },
 
+  head() {
+    return {
+      title: 'Home'
+    }
+  },
+
   middleware: 'auth'
 }
 </script>

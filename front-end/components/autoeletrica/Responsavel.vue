@@ -38,6 +38,9 @@
           <v-btn color="#43A047" text @click="attResp(autos[selectedAutoEletrica][3][respSelect].id)"> <!-- eslint-disable-line -->
             Atualizar
           </v-btn>
+          <v-btn color="#43A047" text @click="delResp(autos[selectedAutoEletrica][3][respSelect].id)"> <!-- eslint-disable-line -->
+            Excluir
+          </v-btn>
           <v-btn color="#43A047" text @click="modalDeInfosResp = !modalDeInfosResp"> <!-- eslint-disable-line -->
             Sair
           </v-btn>
@@ -199,6 +202,23 @@ export default {
         }
         this.$axios
           .put('responsaveis/' + id, respAtualizada)
+          .then(() => {
+            window.location.reload()
+          })
+          .catch(({ response }) => {
+            const { mensagem } = !!response && response.data
+            this.$toast.error(mensagem, { duration: 5000 })
+          })
+      }
+    },
+
+    delResp(id) {
+      const ok = window.confirm(
+        'Tem certeza que deseja excluir esse responsável?'
+      )
+      if (ok) {
+        this.$axios
+          .delete('responsaveis/' + id)
           .then(() => {
             window.location.reload()
           })

@@ -50,11 +50,11 @@ class CabosController extends Controller
         return response()->json($cabo);
     }
 
-    public function changeSituation($id) {
+    public function changeSituation(Request $request, $id) {
         $cabo = Cabos::find($id);
 
         $cabo->situacao = !$cabo->situacao;
-
+        $cabo->user_name_updated = $request->user()->name;
         $cabo->update();
         return response()->json($cabo);
     }

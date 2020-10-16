@@ -28,9 +28,9 @@ class UsersSeeder extends Seeder
             'password' => bcrypt('jeffersonadmin'),
         ]);
         User::create([
-            'name' => 'Rafael',
-            'email' => 'rafael@plk.com.br',
-            'password' => bcrypt('rafaeladmin'),
+            'name' => 'Suelen',
+            'email' => 'suelen@plk.com.br',
+            'password' => bcrypt('suelenadmin'),
         ]);
         User::create([
             'name' => 'Jorge Peres',
@@ -38,9 +38,9 @@ class UsersSeeder extends Seeder
             'password' => bcrypt('jorgeadmin'),
         ]);
         User::create([
-            'name' => 'Suelen',
-            'email' => 'suelen@plk.com.br',
-            'password' => bcrypt('suelenadmin'),
+            'name' => 'Rafael',
+            'email' => 'rafael@plk.com.br',
+            'password' => bcrypt('rafaeladmin'),
         ]);
     }
 }

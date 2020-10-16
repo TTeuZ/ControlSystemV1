@@ -11,7 +11,7 @@
           :class="{
             selectedColorClass: selectedAutoEletrica == i ? true : false
           }"
-          @click=";(selectedAutoEletrica = i), totalLacres()"
+          @click=";(selectedAutoEletrica = i), totalInfos()"
           >{{ item[0].nome }}</v-btn
         >
       </div>
@@ -53,10 +53,44 @@
         </div>
         <div id="all-infos-section">
           <span class="all-infos-text-title"> LACRES </span>
-          <span class="all-infos-text good-color"> Em Estoque: {{this.totalDeLacresOk}} </span> <!-- eslint-disable-line -->
-          <span class="all-infos-text bad-color"> Com Defeito: {{this.totalDeLacresNOk}} </span> <!-- eslint-disable-line -->
+          <span class="all-infos-text good-color"> Em Estoque: {{totalDeLacresOk}} </span> <!-- eslint-disable-line -->
+          <span class="all-infos-text bad-color"> Com Defeito: {{totalDeLacresNOk}} </span> <!-- eslint-disable-line -->
           <span class="all-infos-text"> TOTAL: {{ autos[selectedAutoEletrica][1].length }} </span> <!-- eslint-disable-line -->
-          <span class="all-infos-text-title"> CABOS </span>
+          <span class="all-infos-text-title"> CABOS AZUIS </span>
+          <div class="all-infos-ajust">
+            <span class="all-infos-text good-color"> Em Estoque: </span> <!-- eslint-disable-line -->
+            <span class="all-infos-text good-color ml-2"> - Completo: {{ completoOK }} </span> <!-- eslint-disable-line -->
+            <span class="all-infos-text good-color ml-2"> - Grande: {{ grandeOK }} </span> <!-- eslint-disable-line -->
+            <span class="all-infos-text good-color ml-2"> - Pequeno: {{ pequenoOK }} </span> <!-- eslint-disable-line -->
+          </div>
+          <div class="all-infos-ajust">
+            <span class="all-infos-text bad-color"> Com Defeito: </span> <!-- eslint-disable-line -->
+            <span class="all-infos-text bad-color ml-2"> - Completo: {{ completoNOK }} </span> <!-- eslint-disable-line -->
+            <span class="all-infos-text bad-color ml-2"> - Grande: {{ grandeNOK }} </span> <!-- eslint-disable-line -->
+            <span class="all-infos-text bad-color ml-2"> - Pequeno: {{ pequenoNOK }} </span> <!-- eslint-disable-line -->
+          </div>
+          <span class="all-infos-text-title"> CABOS DE SENSORES </span>
+          <div class="all-infos-ajust">
+            <span class="all-infos-text good-color"> Em Estoque: </span> <!-- eslint-disable-line -->
+            <span class="all-infos-text good-color ml-2"> - Novo: {{ novoOK }} </span> <!-- eslint-disable-line -->
+            <span class="all-infos-text good-color ml-2"> - Antigo - A: {{ antAOK }} </span> <!-- eslint-disable-line -->
+            <span class="all-infos-text good-color ml-2"> - Antigo - P: {{ antPOK }} </span> <!-- eslint-disable-line -->
+          </div>
+          <div class="all-infos-ajust">
+            <span class="all-infos-text bad-color"> Com Defeito: </span> <!-- eslint-disable-line -->
+            <span class="all-infos-text bad-color ml-2"> - Novo: {{ novoNOK }} </span> <!-- eslint-disable-line -->
+            <span class="all-infos-text bad-color ml-2"> - Antigo - A: {{ antANOK }} </span> <!-- eslint-disable-line -->
+            <span class="all-infos-text bad-color ml-2"> - Antigo - P: {{ antPNOK }} </span> <!-- eslint-disable-line -->
+          </div>
+          <span class="all-infos-text-title"> CABOS ALIMENTAÇÃO </span>
+          <div class="all-infos-ajust">
+            <span class="all-infos-text good-color"> Em Estoque: </span> <!-- eslint-disable-line -->
+            <span class="all-infos-text good-color ml-2"> - Geral: {{ geralOK }} </span> <!-- eslint-disable-line -->
+          </div>
+          <div class="all-infos-ajust">
+            <span class="all-infos-text bad-color"> Com Defeito: </span> <!-- eslint-disable-line -->
+            <span class="all-infos-text bad-color ml-2"> - Geral: {{ geralNOK }} </span> <!-- eslint-disable-line -->
+          </div>
         </div>
         <div class="att-auto-btn">
           <v-btn
@@ -98,13 +132,28 @@
           {{ typeBtns[selectedType].toUpperCase() }}
         </span>
         <Lacres
-          v-if="selectedType === 0"
+          :class="{ hidden: selectedType !== 0 ? true : false }"
           :autos="autos"
           :selected-auto-eletrica="selectedAutoEletrica"
           :selected-type="selectedType"
         />
         <CaboAzul
-          v-if="selectedType === 1"
+          ref="caboAzul"
+          :class="{ hidden: selectedType !== 1 ? true : false }"
+          :autos="autos"
+          :selected-auto-eletrica="selectedAutoEletrica"
+          :selected-type="selectedType"
+        />
+        <CaboSensores
+          ref="caboSensores"
+          :class="{ hidden: selectedType !== 2 ? true : false }"
+          :autos="autos"
+          :selected-auto-eletrica="selectedAutoEletrica"
+          :selected-type="selectedType"
+        />
+        <CaboAlimentacao
+          ref="caboAlimentacao"
+          :class="{ hidden: selectedType !== 3 ? true : false }"
           :autos="autos"
           :selected-auto-eletrica="selectedAutoEletrica"
           :selected-type="selectedType"
@@ -176,6 +225,13 @@
           <v-btn
             color="#43A047"
             text
+            @click="delAuto(autos[selectedAutoEletrica][0].id)"
+          >
+            Excluir
+          </v-btn>
+          <v-btn
+            color="#43A047"
+            text
             @click="attAuto(autos[selectedAutoEletrica][0].id)"
           >
             Atualizar
@@ -199,11 +255,15 @@
 import Lacres from '~/components/autoeletrica/Lacres.vue'
 import Responsavel from '~/components/autoeletrica/Responsavel.vue'
 import CaboAzul from '~/components/autoeletrica/CaboAzul.vue'
+import CaboSensores from '~/components/autoeletrica/CaboSensores.vue'
+import CaboAlimentacao from '~/components/autoeletrica/CaboAlimentacao.vue'
 export default {
   components: {
     Lacres,
     Responsavel,
-    CaboAzul
+    CaboAzul,
+    CaboSensores,
+    CaboAlimentacao
   },
   props: {
     autos: {
@@ -222,6 +282,22 @@ export default {
       modalDeInfosResp: false,
       modalDeCriacaoResp: false,
       // variaveis para responsavel
+      // variaveis para cabos
+      completoOK: 0,
+      grandeOK: 0,
+      pequenoOK: 0,
+      completoNOK: 0,
+      grandeNOK: 0,
+      pequenoNOK: 0,
+      novoOK: 0,
+      antAOK: 0,
+      antPOK: 0,
+      novoNOK: 0,
+      antANOK: 0,
+      antPNOK: 0,
+      geralOK: 0,
+      geralNOK: 0,
+      // variaveis para cabos
       getAuto: [],
       selectId: 0,
       typeBtns: ['LACRES', 'CABO AZUL', 'CABO SENSORES', 'CABO ALIMENTAÇÃO'],
@@ -244,7 +320,7 @@ export default {
   },
 
   mounted() {
-    this.totalLacres()
+    this.totalInfos()
   },
 
   methods: {
@@ -256,7 +332,7 @@ export default {
       }
     },
 
-    totalLacres() {
+    totalInfos() {
       this.modalDeInfosResp = false
       this.modalDeCriacaoResp = false
       this.totalDeLacresOk = 0
@@ -275,6 +351,23 @@ export default {
             }
           })
         }
+        this.$refs.caboAzul.getQuantidade(this.selectedAutoEletrica)
+        this.$refs.caboSensores.getQuantidade(this.selectedAutoEletrica)
+        this.$refs.caboAlimentacao.getQuantidade(this.selectedAutoEletrica)
+        this.completoOK = this.$refs.caboAzul.completoOK
+        this.grandeOK = this.$refs.caboAzul.grandeOK
+        this.pequenoOK = this.$refs.caboAzul.pequenoOK
+        this.completoNOK = this.$refs.caboAzul.completoNOK
+        this.grandeNOK = this.$refs.caboAzul.grandeNOK
+        this.pequenoNOK = this.$refs.caboAzul.pequenoNOK
+        this.novoOK = this.$refs.caboSensores.novoOK
+        this.antAOK = this.$refs.caboSensores.antAOK
+        this.antPOK = this.$refs.caboSensores.antPOK
+        this.novoNOK = this.$refs.caboSensores.novoNOK
+        this.antANOK = this.$refs.caboSensores.antANOK
+        this.antPNOK = this.$refs.caboSensores.antPNOK
+        this.geralOK = this.$refs.caboAlimentacao.geralOK
+        this.geralNOK = this.$refs.caboAlimentacao.geralNOK
       }
     },
 
@@ -298,17 +391,6 @@ export default {
       }
     },
 
-    // getId(item) {
-    //   for (let i = 0; i <= item.length; i++) {
-    //     if (item.length === 0) {
-    //       this.selectId = 0
-    //     }else if (i == item.length) { /*eslint-disable-line*/
-    //       const select = item[i - 1]
-    //       this.selectId = select[0].id
-    //     }
-    //   }
-    // },
-
     attAuto(id) {
       if (this.modalDeAtualizacao === false) {
         this.modalDeAtualizacao = true
@@ -330,12 +412,32 @@ export default {
             this.$toast.error(mensagem, { duration: 5000 })
           })
       }
+    },
+
+    delAuto(id) {
+      const ok = window.confirm(
+        'Tem certeza que deseja excluir essa auto eletrica'
+      )
+      if (ok) {
+        this.$axios
+          .delete('autoeletrica/' + id)
+          .then(() => {
+            window.location.reload()
+          })
+          .catch(({ response }) => {
+            const { mensagem } = !!response && response.data
+            this.$toast.error(mensagem, { duration: 5000 })
+          })
+      }
     }
   }
 }
 </script>
 
 <style scoped>
+.hidden {
+  display: none;
+}
 #add-auto {
   width: 50px;
   height: 50px;
@@ -372,18 +474,14 @@ export default {
   width: 250px !important;
 }
 
-/* .att-auto-btn {
-  position: absolute;
-  bottom: 80px;
-} */
-
 #all-infos-section {
-  width: 100%;
+  width: 80%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
   flex-flow: column;
   margin-left: 30px;
+  overflow: auto;
 }
 
 .all-infos-text-title {
@@ -397,6 +495,11 @@ export default {
 .all-infos-text {
   font-family: 'Exo Regular';
   font-size: 16px;
+}
+
+.all-infos-ajust {
+  display: flex;
+  flex-flow: column;
 }
 
 .bad-color {

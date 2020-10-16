@@ -13,16 +13,16 @@
       >
         <span class="cabos-card-title"> EM ESTOQUE </span>
         <div class="cabos">
-          <span class="cabo-text"> Completo </span>
-          <span class="cabo-text"> {{ completoOK }} </span>
+          <span class="cabo-text"> Novo </span>
+          <span class="cabo-text"> {{ novoOK }} </span>
         </div>
         <div class="cabos">
-          <span class="cabo-text"> Grande </span>
-          <span class="cabo-text"> {{ grandeOK }} </span>
+          <span class="cabo-text"> Antigo - Conector A </span>
+          <span class="cabo-text"> {{ antAOK }} </span>
         </div>
         <div class="cabos">
-          <span class="cabo-text"> Pequeno </span>
-          <span class="cabo-text"> {{ pequenoOK }} </span>
+          <span class="cabo-text"> Antigo - Conector P </span>
+          <span class="cabo-text"> {{ antPOK }} </span>
         </div>
       </v-col>
       <v-col
@@ -37,16 +37,16 @@
       >
         <span class="cabos-card-title"> COM DEFEITOS </span>
         <div class="cabos">
-          <span class="cabo-text"> Completo </span>
-          <span class="cabo-text"> {{ completoNOK }} </span>
+          <span class="cabo-text"> Novo </span>
+          <span class="cabo-text"> {{ novoNOK }} </span>
         </div>
         <div class="cabos">
-          <span class="cabo-text"> Grande </span>
-          <span class="cabo-text"> {{ grandeNOK }} </span>
+          <span class="cabo-text"> Antigo - Conector A </span>
+          <span class="cabo-text"> {{ antANOK }} </span>
         </div>
         <div class="cabos">
-          <span class="cabo-text"> Pequeno </span>
-          <span class="cabo-text"> {{ pequenoNOK }} </span>
+          <span class="cabo-text"> Antigo - Conector P </span>
+          <span class="cabo-text"> {{ antPNOK }} </span>
         </div>
       </v-col>
       <v-col
@@ -60,10 +60,10 @@
       >
         <span class="cabos-card-title"> LOG </span>
         <div id="log">
-        <div v-for="log in autos[selectedAutoEletrica][2]" :key="log" style="width: 100%"> <!-- eslint-disable-line -->
-          <div v-if="log.situacao === 1 && log.nome === 'CABO AZUL'" class="cabos"> <!-- eslint-disable-line -->
-            <span class="cabo-text"> Enviado p/ defeito por: {{ log.user_name_updated }} </span> <!-- eslint-disable-line -->
-            <span class="cabo-text"> {{ log.tipo }} </span> <!-- eslint-disable-line -->
+          <div v-for="log in autos[selectedAutoEletrica][2]" :key="log" style="width: 100%"> <!-- eslint-disable-line -->
+            <div v-if="log.situacao === 1 && log.nome === 'CABO SENSORES'" class="cabos"> <!-- eslint-disable-line -->
+              <span class="cabo-text"> Enviado p/ defeito por: {{ log.user_name_updated }} </span> <!-- eslint-disable-line -->
+              <span class="cabo-text"> {{ log.tipo }} </span> <!-- eslint-disable-line -->
               <span class="cabo-text">
                 {{
                   log.updated_at
@@ -86,7 +86,7 @@
       </button>
     </v-row>
 
-    <!-- Dialog de criação de cabos azuis -->
+    <!-- Dialog de criação de cabos de sensores -->
     <v-dialog
       v-if="autos.length != 0"
       v-model="modalAdd"
@@ -98,7 +98,7 @@
         <div class="if-div">
           <div class="modal-title-section">
             <span class="modal-title">
-              ADICIONE UM CABO AZUL
+              ADICIONE UM CABO DE SENSOR
             </span>
           </div>
           <div class="form">
@@ -120,7 +120,7 @@
         </div>
       </v-card>
     </v-dialog>
-    <!-- Dialog de criação de cabos azuis -->
+    <!-- Dialog de criação de cabos de sensores -->
     <!-- Dialog de modificaçoes -->
     <v-dialog
       v-if="autos.length != 0"
@@ -133,7 +133,7 @@
         <div class="if-div">
           <div class="modal-title-section">
             <span class="modal-title">
-              CABOS AZUIS
+              CABOS DE SENSORES
             </span>
           </div>
           <div v-for="sel in selects" :key="sel" class="form">
@@ -155,16 +155,16 @@
           </div>
         </div>
         <div class="btn-section">
-          <v-btn v-if="this.estado === 0" color="#43A047" text @click="delCabos(selects.tipo.data, selects.quant.data, caboAzulOK)"> <!-- eslint-disable-line -->
+          <v-btn v-if="this.estado === 0" color="#43A047" text @click="delCabos(selects.tipo.data, selects.quant.data, caboSensoresOK)"> <!-- eslint-disable-line -->
             Excluir
           </v-btn>
-          <v-btn v-if="this.estado === 1" color="#43A047" text @click="delCabos(selects.tipo.data, selects.quant.data, caboAzulNOK)"> <!-- eslint-disable-line -->
+          <v-btn v-if="this.estado === 1" color="#43A047" text @click="delCabos(selects.tipo.data, selects.quant.data, caboSensoresNOK)"> <!-- eslint-disable-line -->
             Excluir
           </v-btn>
-          <v-btn v-if="this.estado === 0" color="#43A047" text @click="sendTo(selects.tipo.data, selects.quant.data, caboAzulOK)"> <!-- eslint-disable-line -->
+          <v-btn v-if="this.estado === 0" color="#43A047" text @click="sendTo(selects.tipo.data, selects.quant.data, caboSensoresOK)"> <!-- eslint-disable-line -->
             Para Defeito
           </v-btn>
-          <v-btn v-if="this.estado === 1" color="#43A047" text @click="sendTo(selects.tipo.data, selects.quant.data, caboAzulNOK)"> <!-- eslint-disable-line -->
+          <v-btn v-if="this.estado === 1" color="#43A047" text @click="sendTo(selects.tipo.data, selects.quant.data, caboSensoresNOK)"> <!-- eslint-disable-line -->
             Para Estoque
           </v-btn>
           <v-btn color="#43A047" text @click="modalDeModificacos = !modalDeModificacos"> <!-- eslint-disable-line -->
@@ -193,18 +193,18 @@ export default {
       estado: 0,
       selectId: 0,
 
-      caboAzulOK: [],
-      caboAzulNOK: [],
+      caboSensoresOK: [],
+      caboSensoresNOK: [],
 
-      grandeOK: 0,
-      pequenoOK: 0,
-      completoOK: 0,
+      novoOK: 0,
+      antAOK: 0,
+      antPOK: 0,
 
-      grandeNOK: 0,
-      pequenoNOK: 0,
-      completoNOK: 0,
+      novoNOK: 0,
+      antANOK: 0,
+      antPNOK: 0,
 
-      caboTipos: ['grande', 'pequeno', 'completo'],
+      caboTipos: ['novo', 'antigo P', 'antigo A'],
       caboData: '',
 
       selects: {
@@ -237,41 +237,41 @@ export default {
     getQuantidade(auto) {
       this.selectedAutoEletrica = auto
       const cabos = this.autos[this.selectedAutoEletrica][2]
-      this.caboAzulOK = []
-      this.caboAzulNOK = []
+      this.caboSensoresOK = []
+      this.caboSensoresNOK = []
       if (this.autos !== [] && cabos !== []) { /*eslint-disable-line*/
         cabos.forEach((item) => {
           const cabo = {
             tipo: item.tipo,
             id: item.id
           }
-          if (item.nome === 'CABO AZUL' && item.situacao === 0) {
-            this.caboAzulOK.push(cabo)
-          } else if (item.nome === 'CABO AZUL' && item.situacao === 1) {
-            this.caboAzulNOK.push(cabo)
+          if (item.nome === 'CABO SENSORES' && item.situacao === 0) {
+            this.caboSensoresOK.push(cabo)
+          } else if (item.nome === 'CABO SENSORES' && item.situacao === 1) {
+            this.caboSensoresNOK.push(cabo)
           }
         })
-        this.getOks(this.caboAzulOK)
-        this.getNOks(this.caboAzulNOK)
+        this.getOks(this.caboSensoresOK)
+        this.getNOks(this.caboSensoresNOK)
       }
     },
 
     getOks(array) {
-      this.grandeOK = 0
-      this.pequenoOK = 0
-      this.completoOK = 0
+      this.novoOK = 0
+      this.antAOK = 0
+      this.antPOK = 0
       array.forEach((item) => {
         switch (item.tipo.toLowerCase()) {
-          case 'grande': {
-            this.grandeOK++
+          case 'novo': {
+            this.novoOK++
             break
           }
-          case 'pequeno': {
-            this.pequenoOK++
+          case 'antigo p': {
+            this.antPOK++
             break
           }
-          case 'completo': {
-            this.completoOK++
+          case 'antigo a': {
+            this.antAOK++
             break
           }
         }
@@ -279,21 +279,21 @@ export default {
     },
 
     getNOks(array) {
-      this.grandeNOK = 0
-      this.pequenoNOK = 0
-      this.completoNOK = 0
+      this.novoNOK = 0
+      this.antNAOK = 0
+      this.antNPOK = 0
       array.forEach((item) => {
         switch (item.tipo.toLowerCase()) {
-          case 'grande': {
-            this.grandeNOK++
+          case 'novo': {
+            this.novoNOK++
             break
           }
-          case 'pequeno': {
-            this.pequenoNOK++
+          case 'antigo p': {
+            this.antPNOK++
             break
           }
-          case 'completo': {
-            this.completoNOK++
+          case 'antigo a': {
+            this.antANOK++
             break
           }
         }
@@ -301,7 +301,7 @@ export default {
     },
     newCabo() {
       const newCabo = {
-        nome: 'CABO AZUL',
+        nome: 'CABO SENSORES',
         tipo: this.caboData,
         auto_eletrica_id: this.selectId
       }

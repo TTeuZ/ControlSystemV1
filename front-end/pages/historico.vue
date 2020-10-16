@@ -21,6 +21,12 @@ export default {
       equipamento: equipamentoRes.data,
       status: statusRes.data
     }
+  },
+
+  head() {
+    return {
+      title: 'Historico'
+    }
   }
 }
 </script>

@@ -80,11 +80,8 @@
               Tipo: {{ autos[selectedAutoEletrica][1][selectedEquip].tipo.toUpperCase() }}<!-- eslint-disable-line -->
             </span>
           </div>
-          <div class="first">
-            <span class="modal-text">
-              Criado por:
-              {{ autos[selectedAutoEletrica][1][selectedEquip].user_name_created.toUpperCase() }} <!-- eslint-disable-line -->
-            </span>
+          <div class="first" v-if="autos[selectedAutoEletrica][1][selectedEquip].situacao == 0"> <!-- eslint-disable-line -->
+            <span class="modal-text"> Criado por: {{ autos[selectedAutoEletrica][1][selectedEquip].user_name_created.toUpperCase() }} </span> <!-- eslint-disable-line -->
             <span class="modal-text">
               Data:
               {{
@@ -102,13 +99,32 @@
               }}
             </span>
           </div>
+          <div class="first" v-if="autos[selectedAutoEletrica][1][selectedEquip].situacao == 1"> <!-- eslint-disable-line -->
+            <span class="modal-text"> Enviado p/ defeito por: {{ autos[selectedAutoEletrica][1][selectedEquip].user_name_updated.toUpperCase() }} </span> <!-- eslint-disable-line -->
+            <span class="modal-text">
+              Data:
+              {{
+                autos[selectedAutoEletrica][1][selectedEquip].updated_at
+                  .split(' ')[0]
+                  .split('-')
+                  .reverse()
+                  .join('/') +
+                  ' ' +
+                  'às' +
+                  ' ' +
+                  autos[selectedAutoEletrica][1][
+                    selectedEquip
+                  ].updated_at.split(' ')[1]
+              }}
+            </span>
+          </div>
         </div>
         <div class="btn-section">
           <v-btn
             v-if="autos[selectedAutoEletrica][1][selectedEquip].situacao == 0"
             color="#43A047"
             text
-            @click="sendToBad(autos[selectedAutoEletrica][1][selectedEquip].id)"
+            @click="sendTo(autos[selectedAutoEletrica][1][selectedEquip].id)"
           >
             para defeito
           </v-btn>
@@ -116,12 +132,15 @@
             v-if="autos[selectedAutoEletrica][1][selectedEquip].situacao == 1"
             color="#43A047"
             text
-            @click="sendToBad(autos[selectedAutoEletrica][1][selectedEquip].id)"
+            @click="sendTo(autos[selectedAutoEletrica][1][selectedEquip].id)"
           >
             para estoque
           </v-btn>
           <v-btn color="#43A047" text @click="attEquip(autos[selectedAutoEletrica][1][selectedEquip].id)"> <!-- eslint-disable-line -->
             atualizar
+          </v-btn>
+          <v-btn color="#43A047" text @click="delEquip(autos[selectedAutoEletrica][1][selectedEquip].id)"> <!-- eslint-disable-line -->
+            excluir
           </v-btn>
           <v-btn color="#43A047" text @click="modalInfoEquip = !modalInfoEquip">
             sair
@@ -139,7 +158,7 @@
       persistent
     >
       <v-card class="modal-card">
-        <div v-if="selectedType == 0" class="if-div">
+        <div class="if-div">
           <div class="modal-title-section">
             <span class="modal-title">
               ADICIONE UM EQUIPAMENTO
@@ -294,7 +313,7 @@ export default {
       this.selectedEquip = item
     },
 
-    sendToBad(id) {
+    sendTo(id) {
       if (this.selectedType === 0) {
         this.$axios
           .post('equip_change/' + id)
@@ -321,6 +340,23 @@ export default {
         }
         this.$axios
           .put('equip_auto/' + id, equipAtualizado)
+          .then(() => {
+            window.location.reload()
+          })
+          .catch(({ response }) => {
+            const { mensagem } = !!response && response.data
+            this.$toast.error(mensagem, { duration: 5000 })
+          })
+      }
+    },
+
+    delEquip(id) {
+      const ok = window.confirm(
+        'Tem certeza que deseja excluir esse equipamento?'
+      )
+      if (ok) {
+        this.$axios
+          .delete('equip_auto/' + id)
           .then(() => {
             window.location.reload()
           })
