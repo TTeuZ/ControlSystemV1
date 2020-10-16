@@ -44,29 +44,22 @@ export default {
 
 #equip-table {
   border: 1px solid black;
-
   display: flex;
   flex-flow: column;
   justify-content: center;
   align-content: center;
-
   margin-top: 30px;
-
   width: 100%;
   max-width: 550px;
   height: auto;
   max-height: 600px;
-
   align-self: center;
-
   overflow: auto;
-
   box-shadow: 0px 0px 14px -2px rgba(0, 0, 0, 0.49);
 }
 
 #list-item {
   width: 100%;
-
   display: flex;
   flex-flow: column;
   justify-content: center;
@@ -76,7 +69,6 @@ export default {
 #item-title {
   font-family: 'Exo Regular';
   font-size: 16px;
-
   padding-top: 15px !important;
   padding-bottom: 15px !important;
 }

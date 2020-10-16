@@ -172,24 +172,15 @@ export default {
   max-width: 550px;
   max-height: 600px;
   height: auto;
-
-  border: 1px solid black;
-
   margin-top: 30px;
-
   align-self: center;
-
   overflow: auto;
-
-  box-shadow: 0px 0px 14px -2px rgba(0, 0, 0, 0.49);
 }
 
 #user {
   width: 100%;
   height: 60px;
-
   border-bottom: 1px solid black;
-
   display: flex;
   flex-flow: row;
   align-items: center;
@@ -201,7 +192,6 @@ export default {
   flex-flow: column;
   justify-content: center;
   align-items: start;
-
   margin-left: 10px;
 }
 
@@ -213,7 +203,6 @@ export default {
 #delete-icon {
   color: red;
   font-size: 2em;
-
   margin-right: 8px;
 }
 
@@ -221,11 +210,8 @@ export default {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-
   border: 1px solid black;
-
   margin-top: 25px;
-
   background-color: black;
 }
 
@@ -247,13 +233,11 @@ export default {
 .modal-title {
   font-family: 'Exo Regular';
   font-size: 30px;
-
   margin-top: 15px;
 }
 
 .form {
   width: 80%;
-
   padding-top: 20px;
   padding-bottom: 30px;
 }
