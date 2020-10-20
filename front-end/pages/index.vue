@@ -98,4 +98,12 @@ export default {
   justify-content: flex-end;
   align-items: center;
 }
+
+@media screen and (max-width: 880px) {
+  .user-btn {
+    position: relative;
+    margin-top: 200px;
+    margin-left: 50px;
+  }
+}
 </style>

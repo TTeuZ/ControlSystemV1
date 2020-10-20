@@ -19,11 +19,7 @@
     "@nuxtjs/toast": "^3.3.1",
     "fibers": "^4.0.2",
     "maska": "^1.2.0",
-    "nuxt": "^2.0.0",
-    "pug": "^2.0.4",
-    "pug-loader": "^2.4.0",
-    "stylus": "^0.54.7",
-    "stylus-loader": "^3.0.2"
+    "nuxt": "^2.0.0"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.0.0",

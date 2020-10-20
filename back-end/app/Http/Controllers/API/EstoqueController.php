@@ -61,15 +61,19 @@ class EstoqueController extends Controller
             'flag' => 'boolean'
         ]);
         if ($validator->fails())
-            return response()->json($validator->errors());
+            return response()->json([
+                'mensagem' => 'Preencha todos os campos',
+                $validator->errors()
+            ], 400);
 
         if ($request->user()->id <= 5) {
             $request->request->add(['user_name_created' => $request->user()->name]);
             $estoque = Estoque::create($request->all());
             return response()->json($estoque);
-        }
-        else {
-            return $this->enviarRespostaErro('Vocẽ não pode criar itens');
+        } else {
+            return response()->json([
+                'mensagem' => 'você não tem permissão para adicionar itens'
+            ], 401);
         }
     }
 
@@ -101,7 +105,10 @@ class EstoqueController extends Controller
             'flag' => 'boolean'
         ]);
         if ($validator->fails())
-            return response()->json($validator->erros());
+            return response()->json([
+                'mensagem' => 'Preencha todos os campos',
+                $validator->errors()
+            ], 400);
         
         $request->request->add(['user_name_updated' => $request->user()->name]);
 
@@ -129,13 +136,15 @@ class EstoqueController extends Controller
      * @param  \App\Estoque  $estoque
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Estoque $estoque)
+    public function destroy($id, Request $request)
     {
         if ($request->user()->id <= 5) {
+            $estoque = Estoque::find($id);
             $estoque->delete();
-        }
-        else {
-            return $this->enviarRespostaErro('Vocẽ não pode deletar itens');
+        } else {
+            return response()->json([
+                'mensagem' => 'você não tem permissão para deletar itens'
+            ]);
         }
     }
 }

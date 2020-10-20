@@ -117,7 +117,7 @@ export default {
         },
         {
           drawerLabel: 'Auto Eletricas',
-          drawerLink: '/autoEletrias'
+          drawerLink: '/autoEletricas'
         },
         { drawerLabel: 'Manutenção', drawerLink: '/manutencao' },
         {

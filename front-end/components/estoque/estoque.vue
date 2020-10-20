@@ -154,7 +154,7 @@
             </v-card>
           </v-dialog>
           <!-- Dialog de log -->
-
+          <!-- dialog para criar -->
           <v-dialog
             v-model="newItemModal"
             max-width="800px"
@@ -175,12 +175,14 @@
                   />
                   <v-text-field
                     v-model="newItem.quantidade"
+                    v-maska="'#*'"
                     :rules="[(v) => !!v || 'Campo Obrigatório']"
                     color="cyan darken-2"
                     label=" Quantidade"
                   />
                   <v-text-field
                     v-model="newItem.quantidade_min"
+                    v-maska="'#*'"
                     :rules="[(v) => !!v || 'Campo Obrigatório']"
                     color="cyan darken-2"
                     label=" Minimo"
@@ -204,6 +206,7 @@
               </div>
             </v-card>
           </v-dialog>
+          <!-- dialog para criar -->
         </div>
       </v-col>
       <v-col
@@ -238,7 +241,7 @@
             </template>
           </v-data-table>
         </div>
-
+        <!-- dialog para atualizar -->
         <v-dialog
           v-model="attModel"
           max-width="800px"
@@ -259,12 +262,14 @@
                 />
                 <v-text-field
                   v-model="editedItem.quantidade"
+                  v-maska="'#*'"
                   :rules="[(v) => !!v || 'Campo Obrigatório']"
                   color="cyan darken-2"
                   label=" Quantidade"
                 />
                 <v-text-field
                   v-model="editedItem.quantidade_min"
+                  v-maska="'#*'"
                   :rules="[(v) => !!v || 'Campo Obrigatório']"
                   color="cyan darken-2"
                   label=" Minimo"
@@ -288,6 +293,7 @@
             </div>
           </v-card>
         </v-dialog>
+        <!-- dialog para atualizar -->
       </v-col>
     </v-row>
   </v-container>
@@ -382,8 +388,7 @@ export default {
             this.itens = this.itens.filter((e) => e.id !== item.id)
           })
           .catch(({ response }) => {
-            const { mensagem } = !!response && response.data
-            this.$toast.error(mensagem, { duration: 5000 })
+            this.$toast.error(response.data.mensagem, { duration: 5000 })
           })
       }
     },
@@ -405,12 +410,11 @@ export default {
             return e
           })
           this.verificaFlag()
+          this.close()
         })
         .catch(({ response }) => {
-          const { mensagem } = !!response && response.data
-          this.$toast.error(mensagem, { duration: 5000 })
+          this.$toast.error(response.data.mensagem, { duration: 5000 })
         })
-      this.close()
     },
 
     criaItem() {
@@ -427,8 +431,7 @@ export default {
           window.location.reload()
         })
         .catch(({ response }) => {
-          const { mensagem } = !!response && response.data
-          this.$toast.error(mensagem, { duration: 5000 })
+          this.$toast.error(response.data.mensagem, { duration: 5000 })
         })
     },
 
@@ -453,23 +456,18 @@ export default {
 #list-side {
   border: 1px solid black;
   box-shadow: 0px 0px 14px -2px rgba(0, 0, 0, 0.49);
-
   height: auto;
   max-height: 700px;
   width: 100%;
-
   margin-top: 10px !important;
 }
 
 #options-side {
   border: 1px solid black;
   box-shadow: 0px 0px 14px -2px rgba(0, 0, 0, 0.49);
-
   height: 700px;
   width: 100%;
-
   margin-top: 10px !important;
-
   display: flex;
   flex-flow: column;
   align-items: center;
@@ -484,7 +482,6 @@ export default {
 .table-title {
   font-size: 40px;
   font-family: 'Exo Regular';
-
   margin-top: 30px;
 }
 
@@ -498,13 +495,11 @@ export default {
 .modal-title {
   font-family: 'Exo Regular';
   font-size: 30px;
-
   margin-top: 15px;
 }
 
 .form {
   width: 80%;
-
   padding-top: 20px;
   padding-bottom: 30px;
 }
@@ -519,7 +514,6 @@ export default {
 
 #search {
   width: 88%;
-
   margin-top: 15px;
 }
 
@@ -537,10 +531,8 @@ export default {
 
 #new-item {
   align-self: flex-end;
-
   position: relative;
   top: 580px;
-
   margin-right: 20px;
 }
 
@@ -556,7 +548,6 @@ export default {
   width: 97%;
   height: auto;
   max-height: 600px;
-
   overflow: auto;
 }
 
@@ -567,7 +558,6 @@ export default {
 
 .log-item {
   width: 100%;
-
   display: flex;
   flex-flow: row;
   justify-content: space-around;
@@ -577,7 +567,6 @@ export default {
 .log-text {
   font-family: 'Exo Regular';
   font-size: 14px;
-
   padding-top: 5px;
   padding-bottom: 5px;
 }
@@ -605,6 +594,13 @@ export default {
 
   .log-text {
     margin-left: 5px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #data-table {
+    overflow: auto;
+    max-height: 550px;
   }
 }
 </style>

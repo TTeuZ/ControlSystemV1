@@ -208,6 +208,9 @@ export default {
           .then(() => {
             this.reload()
           })
+          .catch(({ response }) => {
+            this.$toast.error(response.data.mensagem, { duration: 5000 })
+          })
       }
     },
 

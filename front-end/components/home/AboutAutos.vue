@@ -3,7 +3,7 @@
     <div id="auto-total">
       <span id="auto-title"> AUTO ELÉTRICAS </span>
       <div id="auto-table">
-        <nuxt-link to="/autoeletricas">
+        <nuxt-link to="/autoEletricas">
           <div v-for="(auto, a) in autos" id="list-item" :key="auto">
             <span id="item-title"> {{ auto[0].nome }} </span>
             <span class="auto-desc mt-3">Lacres</span>
@@ -18,40 +18,38 @@
             <span class="auto-desc">Cabos</span>
             <div class="text-box">
               <span class="auto-desc">Cabos Azuis: </span>
-              <span
-                v-if="infoCabo('azul', a) <= 2"
-                class="font-error auto-desc"
-              >
-                Estoque de cabos azuis abaixo de 2
-              </span>
-              <span v-if="infoCabo('azul', a) > 2" class="font-OK auto-desc">
+              <div>
+                <span v-if="!infoCabo('azul', a).ok" class="font-error auto-desc"> <!-- eslint-disable-line -->
+                  Estoque de cabos azuis abaixo de 2
+                </span>
+                <span v-if="infoCabo('azul', a).caboType1 <= 2" class="font-error auto-desc"> (Grande) </span> <!-- eslint-disable-line -->
+                <span v-if="infoCabo('azul', a).caboType2 <= 2" class="font-error auto-desc"> (Pequeno) </span> <!-- eslint-disable-line -->
+                <span v-if="infoCabo('azul', a).caboType3 <= 2" class="font-error auto-desc"> (Completo) </span> <!-- eslint-disable-line -->
+              </div>
+              <span v-if="infoCabo('azul', a).ok" class="font-OK auto-desc"> <!-- eslint-disable-line -->
                 Estoque de cabos azuis OK
               </span>
             </div>
             <div class="text-box">
               <span class="auto-desc">Cabos de Sensores: </span>
-              <span
-                v-if="infoCabo('sensor', a) <= 2"
-                class="font-error auto-desc"
-              >
-                Estoque de cabos de sensores abaixo de 2
-              </span>
-              <span v-if="infoCabo('sensor', a) > 2" class="font-OK auto-desc">
+              <div>
+                <span v-if="!infoCabo('sensor', a).ok" class="font-error auto-desc"> <!-- eslint-disable-line -->
+                  Estoque de cabos de sensores abaixo de 2
+                </span>
+                <span v-if="infoCabo('sensor', a).caboType1 <= 2" class="font-error auto-desc"> (Novo) </span> <!-- eslint-disable-line -->
+                <span v-if="infoCabo('sensor', a).caboType2 <= 2" class="font-error auto-desc"> (Antigo A) </span> <!-- eslint-disable-line -->
+                <span v-if="infoCabo('sensor', a).caboType3 <= 2" class="font-error auto-desc"> (Antigo P) </span> <!-- eslint-disable-line -->
+              </div>
+              <span v-if="infoCabo('sensor', a).ok" class="font-OK auto-desc"> <!-- eslint-disable-line -->
                 Estoque de cabos de sensores OK
               </span>
             </div>
             <div class="text-box">
               <span class="auto-desc">Cabos de Alimentação: </span>
-              <span
-                v-if="infoCabo('alimentacao', a) <= 2"
-                class="font-error auto-desc"
-              >
+              <span v-if="infoCabo('alimentacao', a).quantidade <= 2" class="font-error auto-desc"> <!-- eslint-disable-line -->
                 Estoque de cabos de alimentacao abaixo de 2
               </span>
-              <span
-                v-if="infoCabo('alimentacao', a) > 2"
-                class="font-OK auto-desc"
-              >
+              <span v-if="infoCabo('alimentacao', a).quantidade > 2" class="font-OK auto-desc"> <!-- eslint-disable-line -->
                 Estoque de cabos de alimentacao OK
               </span>
             </div>
@@ -76,36 +74,75 @@ export default {
       const equip = this.autos[autoeletrica][1]
       let quantidade = 0
       equip.forEach((item) => {
-        if (item.situacao === 0) quantidade++
+        if (item.situacao === '0') quantidade++
       })
       return quantidade
     },
     infoCabo(tipo, autoeletrica) {
       const cabos = this.autos[autoeletrica][2]
-      let quantidade = 0
+      const situation = {
+        quantidade: 0,
+        caboType1: 0,
+        caboType2: 0,
+        caboType3: 0,
+        ok: false
+      }
       switch (tipo) {
         case 'azul': {
           cabos.forEach((cabo) => {
-            if (cabo.nome === 'CABO AZUL' && cabo.situacao === 0) quantidade++
+            if (cabo.nome === 'CABO AZUL' && cabo.situacao === '0') {
+              switch (cabo.tipo) {
+                case 'grande': {
+                  situation.caboType1++
+                  break
+                }
+                case 'pequeno': {
+                  situation.caboType2++
+                  break
+                }
+                case 'completo': {
+                  situation.caboType3++
+                  break
+                }
+              }
+              situation.quantidade++
+            }
           })
+          if (situation.quantidade > 3 && situation.caboType1 > 2 && situation.caboType2 > 2 && situation.caboType3 > 2) ok = true /* eslint-disable-line */
           break
         }
         case 'sensor': {
           cabos.forEach((cabo) => {
-            if (cabo.nome === 'CABO SENSORES' && cabo.situacao === 0)
-              quantidade++
+            if (cabo.nome === 'CABO SENSORES' && cabo.situacao === '0') {
+              switch (cabo.tipo) {
+                case 'novo': {
+                  situation.caboType1++
+                  break
+                }
+                case 'antigo A': {
+                  situation.caboType2++
+                  break
+                }
+                case 'antigo P': {
+                  situation.caboType3++
+                  break
+                }
+              }
+              situation.quantidade++
+            }
           })
+          if (situation.quantidade > 3 && situation.caboType1 > 2 && situation.caboType2 > 2 && situation.caboType3 > 2) ok = true /* eslint-disable-line */
           break
         }
         case 'alimentacao': {
           cabos.forEach((cabo) => {
-            if (cabo.nome === 'CABO ALIMENTACAO' && cabo.situacao === 0)
-              quantidade++
+            if (cabo.nome === 'CABO ALIMENTACAO' && cabo.situacao === '0')
+              situation.quantidade++
           })
           break
         }
       }
-      return quantidade
+      return situation
     }
   }
 }

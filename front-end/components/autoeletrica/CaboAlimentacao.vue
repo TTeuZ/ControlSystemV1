@@ -45,7 +45,7 @@
         <span class="cabos-card-title"> LOG </span>
         <div id="log">
         <div v-for="log in autos[selectedAutoEletrica][2]" :key="log" style="width: 100%"> <!-- eslint-disable-line -->
-          <div v-if="log.situacao === 1 && log.nome === 'CABO ALIMENTACAO'" class="cabos"> <!-- eslint-disable-line -->
+          <div v-if="log.situacao === '1' && log.nome === 'CABO ALIMENTACAO'" class="cabos"> <!-- eslint-disable-line -->
             <span class="cabo-text"> Enviado p/ defeito por: {{ log.user_name_updated }} </span> <!-- eslint-disable-line -->
             <span class="cabo-text"> {{ log.tipo }} </span> <!-- eslint-disable-line -->
               <span class="cabo-text">
@@ -72,7 +72,7 @@
 
     <!-- Dialog de criação de cabos de alimentacao -->
     <v-dialog
-      v-if="autos.length != 0"
+      v-if="autos.length != '0'"
       v-model="modalAdd"
       max-width="800px"
       no-click-animation
@@ -107,7 +107,7 @@
     <!-- Dialog de criação de cabos de alimentacao -->
     <!-- Dialog de modificaçoes -->
     <v-dialog
-      v-if="autos.length != 0"
+      v-if="autos.length != '0'"
       v-model="modalDeModificacos"
       max-width="800px"
       no-click-animation
@@ -228,10 +228,10 @@ export default {
             tipo: item.tipo,
             id: item.id
           }
-          if (item.nome === 'CABO ALIMENTACAO' && item.situacao === 0) {
+          if (item.nome === 'CABO ALIMENTACAO' && item.situacao === '0') {
             this.caboAlimentacaoOK.push(cabo)
             this.geralOK++
-          } else if (item.nome === 'CABO ALIMENTACAO' && item.situacao === 1) {
+          } else if (item.nome === 'CABO ALIMENTACAO' && item.situacao === '1') { /*eslint-disable-line*/
             this.caboAlimentacaoNOK.push(cabo)
             console.log('adicionou')
             this.geralNOK++
@@ -252,8 +252,7 @@ export default {
           window.location.reload()
         })
         .catch(({ response }) => {
-          const { mensagem } = !!response && response.data
-          this.$toast.error(mensagem, { duration: 5000 })
+          this.$toast.error(response.data.mensagem, { duration: 5000 })
         })
     },
 
@@ -270,9 +269,14 @@ export default {
         window.alert('numero de cabos selecionados maior que os existentes!')
       } else {
         for (let i = 0; i < quant; i++) {
-          this.$axios.post('cabo_change/' + ids[i]).then(() => {
-            window.location.reload()
-          })
+          this.$axios
+            .post('cabo_change/' + ids[i])
+            .then(() => {
+              window.location.reload()
+            })
+            .catch(({ response }) => {
+              this.$toast.error(response.data.mensagem, { duration: 5000 })
+            })
         }
       }
     },
@@ -290,9 +294,14 @@ export default {
         window.alert('numero de cabos selecionados maior que os existentes!')
       } else {
         for (let i = 0; i < quant; i++) {
-          this.$axios.delete('cabos/' + ids[i]).then(() => {
-            window.location.reload()
-          })
+          this.$axios
+            .delete('cabos/' + ids[i])
+            .then(() => {
+              window.location.reload()
+            })
+            .catch(({ response }) => {
+              this.$toast.error(response.data.mensagem, { duration: 5000 })
+            })
         }
       }
     }

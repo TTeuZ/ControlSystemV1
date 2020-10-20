@@ -38,7 +38,10 @@ class EquipamentosController extends Controller
             'done' => 'boolean'
         ]);
         if ($validator->fails())
-            return response()->json($validator->errors());
+            return response()->json([
+                'mensagem' => 'Preencha todos os campos',
+                $validator->errors()
+            ], 400);
 
         $request->request->add(['user_name_created' => $request->user()->name]);
         $equipamento = Equipamento::create($request->all());
@@ -71,7 +74,10 @@ class EquipamentosController extends Controller
             'done' => 'boolean'
         ]);
         if ($validator->fails())
-            return response()->json($validator->errors());
+            return response()->json([
+                'mensagem' => 'Preencha todos os campos',
+                $validator->errors()
+            ], 400);
 
         $request->request->add(['user_name_updated' => $request->user()->name]);
         $equipamento->update($request->all());

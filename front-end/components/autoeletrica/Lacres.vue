@@ -19,7 +19,7 @@
           style="width: 100%"
           @click="infoEquip(e)"
         >
-          <div v-if="equip.situacao == 0" class="equip">
+          <div v-if="equip.situacao == '0'" class="equip">
             <span class="equip-text">
               {{ equip.nome.toUpperCase() }}
             </span>
@@ -47,7 +47,7 @@
           style="width: 100%"
           @click="infoEquip(e)"
         >
-          <div v-if="equip.situacao == 1" class="equip">
+          <div v-if="equip.situacao == '1'" class="equip">
             <span class="equip-text">
               {{ equip.nome.toUpperCase() }}
             </span>
@@ -64,7 +64,7 @@
 
     <!-- Dialog com todas as infos e funços para o lacre -->
     <v-dialog
-      v-if="autos.length != 0 && autos[selectedAutoEletrica][1].length != 0"
+      v-if="autos.length != '0' && autos[selectedAutoEletrica][1].length != '0'"
       v-model="modalInfoEquip"
       max-width="800px"
       no-click-animation
@@ -99,7 +99,7 @@
               }}
             </span>
           </div>
-          <div class="first" v-if="autos[selectedAutoEletrica][1][selectedEquip].situacao == 1"> <!-- eslint-disable-line -->
+          <div class="first" v-if="autos[selectedAutoEletrica][1][selectedEquip].situacao == '1'"> <!-- eslint-disable-line -->
             <span class="modal-text"> Enviado p/ defeito por: {{ autos[selectedAutoEletrica][1][selectedEquip].user_name_updated.toUpperCase() }} </span> <!-- eslint-disable-line -->
             <span class="modal-text">
               Data:
@@ -121,7 +121,7 @@
         </div>
         <div class="btn-section">
           <v-btn
-            v-if="autos[selectedAutoEletrica][1][selectedEquip].situacao == 0"
+            v-if="autos[selectedAutoEletrica][1][selectedEquip].situacao == '0'"
             color="#43A047"
             text
             @click="sendTo(autos[selectedAutoEletrica][1][selectedEquip].id)"
@@ -129,7 +129,7 @@
             para defeito
           </v-btn>
           <v-btn
-            v-if="autos[selectedAutoEletrica][1][selectedEquip].situacao == 1"
+            v-if="autos[selectedAutoEletrica][1][selectedEquip].situacao == '1'"
             color="#43A047"
             text
             @click="sendTo(autos[selectedAutoEletrica][1][selectedEquip].id)"
@@ -151,7 +151,7 @@
     <!-- Dialog com todas as infos e funços para o lacre -->
     <!-- Dialog para criação de lacres -->
     <v-dialog
-      v-if="autos.length != 0"
+      v-if="autos.length != '0'"
       v-model="modalAdd"
       max-width="800px"
       no-click-animation
@@ -194,14 +194,14 @@
     <!-- Dialog para criação de lacres -->
     <!-- Dialog para atualizacao de lacres -->
     <v-dialog
-      v-if="autos.length != 0 && autos[selectedAutoEletrica][1].length != 0"
+      v-if="autos.length != '0' && autos[selectedAutoEletrica][1].length != '0'"
       v-model="modalAttEquip"
       max-width="800px"
       no-click-animation
       persistent
     >
       <v-card class="modal-card">
-        <div v-if="selectedType == 0" class="if-div">
+        <div v-if="selectedType == '0'" class="if-div">
           <div class="modal-title-section">
             <span class="modal-title">
               EDITE
@@ -302,8 +302,7 @@ export default {
             window.location.reload()
           })
           .catch(({ response }) => {
-            const { mensagem } = !!response && response.data
-            this.$toast.error(mensagem, { duration: 5000 })
+            this.$toast.error(response.data.mensagem, { duration: 5000 })
           })
       }
     },
@@ -321,8 +320,7 @@ export default {
             window.location.reload()
           })
           .catch(({ response }) => {
-            const { mensagem } = !!response && response.data
-            this.$toast.error(mensagem, { duration: 5000 })
+            this.$toast.error(response.data.mensagem, { duration: 5000 })
           })
       }
     },
@@ -344,8 +342,7 @@ export default {
             window.location.reload()
           })
           .catch(({ response }) => {
-            const { mensagem } = !!response && response.data
-            this.$toast.error(mensagem, { duration: 5000 })
+            this.$toast.error(response.data.mensagem, { duration: 5000 })
           })
       }
     },
@@ -361,8 +358,7 @@ export default {
             window.location.reload()
           })
           .catch(({ response }) => {
-            const { mensagem } = !!response && response.data
-            this.$toast.error(mensagem, { duration: 5000 })
+            this.$toast.error(response.data.mensagem, { duration: 5000 })
           })
       }
     }

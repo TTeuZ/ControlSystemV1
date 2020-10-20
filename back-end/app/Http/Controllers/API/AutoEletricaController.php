@@ -30,11 +30,20 @@ class AutoEletricaController extends Controller
             'endereco' => 'required|string|max:150',
         ]);
         if ($validator->fails())
-            return response()->json($validator->errors());
+            return response()->json([
+                'mensagem' => 'Preencha todos os campos',
+                $validator->errors()
+            ], 400);
 
-        $request->request->add(['user_name_created' => $request->user()->name]);
-        $autoEletrica = AutoEletrica::create($request->all());
-        return response()->json($autoEletrica);
+        if ($request->user()->id <= 5) {
+            $request->request->add(['user_name_created' => $request->user()->name]);
+            $autoEletrica = AutoEletrica::create($request->all());
+            return response()->json($autoEletrica);
+        } else {
+            return response()->json([
+                'mensagem' => 'você não tem permissão para criar auto elétricas'
+            ]);
+        }
     }
 
     public function update(Request $request, $id)
@@ -44,17 +53,32 @@ class AutoEletricaController extends Controller
             'endereco' => 'string|max:150'
         ]);
         if ($validator->fails())
-            return response()->json($validator->errors());
+            return response()->json([
+                'mensagem' => 'Preencha todos os campos',
+                $validator->errors()
+            ], 400);
 
-        $autoEletrica = AutoEletrica::find($id);
-        $autoEletrica->update($request->all());
-        $autoEletrica->save();
-        return response()->json($autoEletrica);
+        if ($request->user()->id <= 5) {
+            $autoEletrica = AutoEletrica::find($id);
+            $autoEletrica->update($request->all());
+            $autoEletrica->save();
+            return response()->json($autoEletrica);
+        } else {
+            return response()->json([
+                'mensagem' => 'você não tem permissão para atualizar auto elétricas'
+            ]);
+        }
     }
 
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        $autoEletrica = AutoEletrica::find($id);
-        $autoEletrica->delete();
+        if ($request->user()->id <= 5) {
+            $autoEletrica = AutoEletrica::find($id);
+            $autoEletrica->delete();
+        } else {
+            return response()->json([
+                'mensagem' => 'você não tem permissão para deletar auto elétricas'
+            ]);
+        }
     }
 }

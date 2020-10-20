@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-dialog
-      v-if="autos.length != 0 && autos[selectedAutoEletrica][3].length != 0"
+      v-if="autos.length != '0' && autos[selectedAutoEletrica][3].length != '0'"
       v-model="modalDeInfosResp"
       max-width="800px"
       no-click-animation
@@ -164,7 +164,7 @@ export default {
     firstResp() {
       if (
         this.autos[this.selectedAutoEletrica] &&
-        this.autos[this.selectedAutoEletrica][3].length === 0
+        this.autos[this.selectedAutoEletrica][3].length === '0'
       ) {
         this.modalDeCriacaoResp = true
       }
@@ -184,8 +184,7 @@ export default {
             window.location.reload()
           })
           .catch(({ response }) => {
-            const { mensagem } = !!response && response.data
-            this.$toast.error(mensagem, { duration: 5000 })
+            this.$toast.error(response.data.mensagem, { duration: 5000 })
           })
       }
     },
@@ -206,8 +205,7 @@ export default {
             window.location.reload()
           })
           .catch(({ response }) => {
-            const { mensagem } = !!response && response.data
-            this.$toast.error(mensagem, { duration: 5000 })
+            this.$toast.error(response.data.mensagem, { duration: 5000 })
           })
       }
     },
@@ -223,8 +221,7 @@ export default {
             window.location.reload()
           })
           .catch(({ response }) => {
-            const { mensagem } = !!response && response.data
-            this.$toast.error(mensagem, { duration: 5000 })
+            this.$toast.error(response.data.mensagem, { duration: 5000 })
           })
       }
     }

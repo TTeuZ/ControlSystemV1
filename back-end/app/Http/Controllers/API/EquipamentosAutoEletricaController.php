@@ -24,14 +24,23 @@ class EquipamentosAutoEletricaController extends Controller
             'auto_eletrica_id' => 'required|integer'
         ]);
         if ($validator->fails())
-            return response()->json($validator->errors());
+            return response()->json([
+                'mensagem' => 'Preencha todos os campos',
+                $validator->errors()
+            ], 400);
 
         if (!AutoEletrica::find($request->auto_eletrica_id))
             return response()->json('Auto Eletrica nao existe');
 
-        $request->request->add(['user_name_created' => $request->user()->name]);
-        $equip_auto = EquipamentoAutoEletrica::create($request->all());
-        return response()->json($equip_auto);
+        if ($request->user()->id <= 5) {
+            $request->request->add(['user_name_created' => $request->user()->name]);
+            $equip_auto = EquipamentoAutoEletrica::create($request->all());
+            return response()->json($equip_auto);
+        } else {
+            return response()->json([
+                'mensagem' => 'você não tem permissão para adicionar equipamentos'
+            ]);
+        }
     }
 
     public function update(Request $request, $id)
@@ -41,26 +50,47 @@ class EquipamentosAutoEletricaController extends Controller
             'tipo' =>  'string|max:150',
         ]);
         if ($validator->fails())
-            return response()->json($validator->errors());
+            return response()->json([
+                'mensagem' => 'Preencha todos os campos',
+                $validator->errors()
+            ], 400);
 
-        $request->request->add(['user_name_updated' => $request->user()->name]);
-        $equipamento = EquipamentoAutoEletrica::find($id);
-        $equipamento->update($request->all());
-        return response()->json($equipamento);
+        if ($request->user()->id <= 5) {
+            $request->request->add(['user_name_updated' => $request->user()->name]);
+            $equipamento = EquipamentoAutoEletrica::find($id);
+            $equipamento->update($request->all());
+            return response()->json($equipamento);
+        } else {
+            return response()->json([
+                'mensagem' => 'você não tem permissão para atualizar equipamentos'
+            ]);
+        }
     }
 
     public function changeSituation(Request $request, $id) {
         $equipamento = EquipamentoAutoEletrica::find($id);
 
-        $equipamento->situacao = !$equipamento->situacao;
-        $equipamento->user_name_updated = $request->user()->name;
-        $equipamento->update();
-        return response()->json($equipamento);
+        if ($request->user()->id <= 5) {
+            $equipamento->situacao = !$equipamento->situacao;
+            $equipamento->user_name_updated = $request->user()->name;
+            $equipamento->update();
+            return response()->json($equipamento);
+        } else {
+            return response()->json([
+                'mensagem' => 'você não tem permissão'
+            ]);
+        }
     }
 
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        $equipamento = EquipamentoAutoEletrica::find($id);
-        $equipamento->delete();
+        if ($request->user()->id <= 5) {
+            $equipamento = EquipamentoAutoEletrica::find($id);
+            $equipamento->delete();
+        } else {
+            return response()->json([
+                'mensagem' => 'você não tem permissão para deletar equipamentos'
+            ]);
+        }
     }
 }

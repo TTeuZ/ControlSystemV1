@@ -355,8 +355,7 @@ export default {
           this.closeAfterOk()
         })
         .catch(({ response }) => {
-          const { mensagem } = !!response && response.data
-          this.$toast.error(mensagem, { duration: 5000 })
+          this.$toast.error(response.data.mensagem, { duration: 5000 })
         })
     },
 

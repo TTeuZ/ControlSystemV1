@@ -21,7 +21,7 @@
     </div>
     <!-- Barra superior com as auto eletricas -->
     <v-row
-      v-if="autos.length != 0"
+      v-if="autos.length != '0'"
       class="ma-0 pa-0 all-infos"
       justify="center"
       align="flex-start"
@@ -194,7 +194,7 @@
     <!-- Dialog de criação de auto-eletrica -->
     <!-- Dialog de atualizaçao de auto-eletrica -->
     <v-dialog
-      v-if="autos.length != 0"
+      v-if="autos.length != '0'"
       v-model="modalDeAtualizacao"
       max-width="800px"
       no-click-animation
@@ -325,7 +325,7 @@ export default {
 
   methods: {
     veriResp(responsaveis) {
-      if (responsaveis.length === 0) {
+      if (responsaveis.length === '0') {
         this.modalDeCriacaoResp = !this.modalDeCriacaoResp
       } else {
         this.modalDeInfosResp = !this.modalDeInfosResp
@@ -338,8 +338,8 @@ export default {
       this.totalDeLacresOk = 0
       this.totalDeLacresNOk = 0
       const self = this
-      if (this.autos.length !== 0) {
-        if (self.autos[self.selectedAutoEletrica][1].length === 0) {
+      if (this.autos.length !== '0') {
+        if (self.autos[self.selectedAutoEletrica][1].length === '0') {
           self.totalDeLacresOk = 0
           self.totalDeLacresNOk = 0
         } else {
@@ -385,8 +385,7 @@ export default {
             window.location.reload()
           })
           .catch(({ response }) => {
-            const { mensagem } = !!response && response.data
-            this.$toast.error(mensagem, { duration: 5000 })
+            this.$toast.error(response.data.mensagem, { duration: 5000 })
           })
       }
     },
@@ -408,8 +407,7 @@ export default {
             window.location.reload()
           })
           .catch(({ response }) => {
-            const { mensagem } = !!response && response.data
-            this.$toast.error(mensagem, { duration: 5000 })
+            this.$toast.error(response.data.mensagem, { duration: 5000 })
           })
       }
     },
@@ -425,8 +423,7 @@ export default {
             window.location.reload()
           })
           .catch(({ response }) => {
-            const { mensagem } = !!response && response.data
-            this.$toast.error(mensagem, { duration: 5000 })
+            this.$toast.error(response.data.mensagem, { duration: 5000 })
           })
       }
     }
@@ -594,6 +591,7 @@ export default {
 @media screen and (max-width: 840px) {
   #select-auto {
     flex-flow: column;
+    min-height: 85px;
   }
   #add-auto {
     top: 120px;

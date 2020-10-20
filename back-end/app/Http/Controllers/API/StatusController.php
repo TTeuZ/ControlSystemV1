@@ -34,7 +34,10 @@ class StatusController extends Controller
             'equipamento_id' => 'required|integer'
         ]);
         if ($validator->fails())
-            return response()->json($validator->errors());
+            return response()->json([
+                'mensagem' => 'Preencha todos os campos',
+                $validator->errors()
+            ], 400);
 
         if (!Equipamento::find($request->equipamento_id))
             return response()->json('Equipamento nao existe');
@@ -69,7 +72,10 @@ class StatusController extends Controller
             'flag' => 'boolean',
         ]);
         if ($validator->fails())
-            return response()->json($validator->errors());
+            return response()->json([
+                'mensagem' => 'Preencha todos os campos',
+                $validator->errors()
+            ], 400);
 
         $request->request->add(['user_name_updated' => $request->user()->name]);
         $status->update($request->all());
