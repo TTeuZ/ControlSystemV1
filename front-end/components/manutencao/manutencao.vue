@@ -1,15 +1,17 @@
 <template>
   <v-container id="total" fluid>
-    <!-- <div id="search">
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Pesquisar"
-        single-line
-        hide-details
-      ></v-text-field>
-    </div> -->
-
+    <v-row class="ma-0 pa-0 search-section">
+      <v-col id="search" lg="7" cols="11">
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Pesquisar"
+          single-line
+          hide-details
+          @keyup="sortEquips()"
+        ></v-text-field>
+      </v-col>
+    </v-row>
     <v-row id="ajust-itens" class="ma-0 pa-0" justify="center" aling="center">
       <v-col
         id="selector-side"
@@ -23,15 +25,19 @@
       >
         <div id="itens-list">
           <div
-            v-for="(item, i) in equipamentos"
+            v-for="item in sortEquipamentos"
             id="list-item"
             :key="item"
-            @click=";(showForm = true), (selectedEquip = i), filterStatus()"
+            @click="
+              ;(showForm = true),
+                (selectedEquip = item.split(' ')[1]),
+                filterStatus()
+            "
           >
-            <span v-if="item[0].done === '0'" id="item-title">
-              {{ item[0].name.toUpperCase() }}
+            <span v-if="filteredEquip[item.split(' ')[1]][0].done === 0" id="item-title"> <!-- eslint-disable-line -->
+              {{ filteredEquip[item.split(' ')[1]][0].name }}
             </span>
-            <v-divider v-if="item[0].done === '0'" id="divider" />
+            <v-divider v-if="filteredEquip[item.split(' ')[1]][0].done === 0" id="divider" /> <!-- eslint-disable-line -->
           </div>
         </div>
 
@@ -295,6 +301,9 @@ export default {
 
   data() {
     return {
+      filteredEquip: this.equipamentos,
+      search: '',
+      sortEquipamentos: [],
       modal: false,
       statusModal: false,
       nome: '',
@@ -315,17 +324,19 @@ export default {
     }
   },
 
-  // computed: {
-  //   filtereditens() {
-  //     const listItens = this
-  //     return this.itens.filter(function(p) {
-  //       return p.label.toLowerCase().includes(listItens.search.toLowerCase())
-  //     })
-  //   }
-  // },
+  computed: {
+    filteredEquips() {
+      const self = this
+      self.filteredEquip = self.equipamentos.filter((f) =>
+        f[0].name.toLowerCase().includes(self.search.toLowerCase())
+      )
+      return self.filteredEquip
+    }
+  },
 
   mounted() {
     this.IDS()
+    this.sortEquips()
   },
 
   methods: {
@@ -333,22 +344,37 @@ export default {
       this.modal = false
       this.statusModal = false
     },
-
     closeAfterOk() {
       this.modal = false
       this.statusModal = false
       location.reload()
     },
-
     reload() {
       location.reload()
+    },
+
+    sortEquips() {
+      if (this.equipamentos.length !== 0) {
+        this.filteredEquip = this.equipamentos
+        this.sortEquipamentos = []
+        const self = this
+        let i = 0
+        this.filteredEquips.forEach((item) => {
+          self.sortEquipamentos.push(item[0].name + ' ' + i.toString())
+          i++
+        })
+        this.sortEquipamentos.sort(function(a, b) {
+          return a.split(' ')[0].localeCompare(b.split(' ')[0])
+        })
+      } else {
+        this.filteredEquip = []
+      }
     },
 
     criaEquipamento() {
       const equipamento = {
         name: this.nome
       }
-
       this.$axios
         .$post('equipamento', equipamento)
         .then(() => {
@@ -363,7 +389,6 @@ export default {
       const retEquip = {
         done: 0
       }
-
       this.$axios.put('equipamento/' + this.id, retEquip).then(() => {
         this.reload()
       })
@@ -373,7 +398,6 @@ export default {
       const ok = window.confirm(
         'Você tem certeza que deseja finalizar esse equipamento?'
       )
-
       if (ok) {
         const sendToHis = {
           done: 1
@@ -393,7 +417,7 @@ export default {
       return (this.statusFiltered = this.stat.filter(
         (equip) =>
           equip.equipamento_id ===
-          this.equipamentos[this.selectedEquip][0].id.toString()
+          this.filteredEquip[this.selectedEquip][0].id.toString()
       ))
     },
 
@@ -401,7 +425,6 @@ export default {
       const attFlag = {
         flag: 1
       }
-
       this.$axios.put('status/' + this.flagId, attFlag).then(() => {
         this.reload()
       })
@@ -411,7 +434,6 @@ export default {
       const attFlag = {
         flag: 0
       }
-
       this.$axios.put('status/' + this.flagId, attFlag).then(() => {
         this.reload()
       })
@@ -422,7 +444,6 @@ export default {
         info: this.infoStatus,
         equipamento_id: this.equipamentos[this.selectedEquip][0].id
       }
-
       this.$axios
         .$post('status', infoStatus)
         .then(() => {
@@ -436,37 +457,30 @@ export default {
 
     IDS() {
       const self = this
-      // let i = 1
-
       this.equipamentos.forEach(function(item) {
         if (item[0].done === '1') {
           self.ids.push(item[0].name)
-          // + ' ' + i.toString())
-          // i++
         }
       })
-
-      console.log(this.ids)
     },
 
     catchId() {
       const self = this
-
       this.equipamentos.forEach(function(item) {
         if (self.returned === item[0].name) {
           self.id = item[0].id
         }
       })
-
-      console.log(this.id)
     }
   }
 }
 </script>
 
 <style scoped>
-#search {
-  margin-bottom: 30px;
+.search-section {
+  width: 96%;
+  display: flex;
+  justify-content: flex-end;
 }
 
 #ajust-itens {
@@ -703,22 +717,22 @@ export default {
     width: 100%;
     max-height: 240px;
   }
-
   #add-item {
     margin-bottom: 25px;
   }
-
   #info-side {
     height: auto;
   }
-
   #buttons {
     margin: 20px 0;
   }
-
   #equip-title {
     margin-top: 15px;
     margin-bottom: 15px;
+  }
+  .search-section {
+    width: 100%;
+    justify-content: center;
   }
 }
 
@@ -740,24 +754,20 @@ export default {
     justify-content: center;
     align-items: center;
   }
-
   .form-btns {
     margin-right: 0;
     margin-top: 20px;
     width: 200px;
   }
-
   #info-geral {
     flex-flow: column;
     align-items: flex-start;
   }
-
   #info-geral-2 {
     align-items: flex-start;
     margin-left: 30px;
     width: 100%;
   }
-
   #equip-title {
     width: 100%;
   }
@@ -774,11 +784,9 @@ export default {
     font-size: 15px;
     margin-left: 10px;
   }
-
   .status {
     flex-flow: column;
   }
-
   .modal-title {
     font-size: 20px;
   }
