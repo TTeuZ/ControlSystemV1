@@ -8,7 +8,7 @@
           label="Pesquisar"
           single-line
           hide-details
-          @keyup="sortEquips()"
+          @keyup="sortEquips(), (selectedEquip = 100)"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -34,10 +34,10 @@
                 filterStatus()
             "
           >
-            <span v-if="filteredEquip[item.split(' ')[1]][0].done === 0" id="item-title"> <!-- eslint-disable-line -->
+            <span v-if="filteredEquip[item.split(' ')[1]][0].done === '0'" id="item-title"> <!-- eslint-disable-line -->
               {{ filteredEquip[item.split(' ')[1]][0].name }}
             </span>
-            <v-divider v-if="filteredEquip[item.split(' ')[1]][0].done === 0" id="divider" /> <!-- eslint-disable-line -->
+            <v-divider v-if="filteredEquip[item.split(' ')[1]][0].done === '0'" id="divider" /> <!-- eslint-disable-line -->
           </div>
         </div>
 
@@ -46,49 +46,6 @@
         </button>
       </v-col>
 
-      <!-- Dialog de criação de equipamento -->
-      <v-dialog v-model="modal" max-width="800px" no-click-animation persistent>
-        <v-card class="modal-card">
-          <div class="modal-title-section">
-            <span class="modal-title">
-              ADICIONE O EQUIPAMENTO
-            </span>
-            <div class="form">
-              <v-text-field
-                v-model="nome"
-                :rules="[(v) => !!v || 'Campo Obrigatório']"
-                color="cyan darken-2"
-                label="Equipamento"
-              />
-            </div>
-          </div>
-          <div class="btn-section">
-            <v-btn color="#43A047" text @click="criaEquipamento()">
-              Salvar
-            </v-btn>
-          </div>
-          <div class="modal-title-section">
-            <div class="form">
-              <v-select
-                v-model="returned"
-                :items="ids"
-                color="cyan darken-2"
-                label="Equipamento"
-              />
-            </div>
-          </div>
-          <div class="btn-section">
-            <v-btn color="#43A047" text @click="close">
-              Cancelar
-            </v-btn>
-            <v-btn color="#43A047" text @click="catchId(), returnEquip()">
-              Retornar
-            </v-btn>
-          </div>
-        </v-card>
-      </v-dialog>
-      <!-- Dialog de criação de equipamento -->
-
       <v-col class="ma-0 pa-0" xl="7" lg="7" md="11" sm="11" xs="11" cols="11">
         <v-row id="info-side" class="ma-0 pa-0">
           <div id="title-section">
@@ -96,24 +53,24 @@
             <v-divider id="divider" />
           </div>
 
-          <div id="info-geral">
+          <div v-if="selectedEquip !== 100" id="info-geral">
             <span v-if="showForm" id="equip-title">
-              {{ equipamentos[selectedEquip][0].name.toUpperCase() }}
+              {{ filteredEquip[selectedEquip][0].name.toUpperCase() }}
             </span>
             <div id="info-geral-2">
               <span v-if="showForm" class="info-text">
                 Criado por:
-                {{ equipamentos[selectedEquip][0].user_name_created }}
+                {{ filteredEquip[selectedEquip][0].user_name_created }}
               </span>
               <span v-if="showForm" class="info-text">
                 Retornado por:
-                {{ equipamentos[selectedEquip][0].user_name_updated }}
+                {{ filteredEquip[selectedEquip][0].user_name_updated }}
               </span>
             </div>
           </div>
 
           <v-col
-            v-if="showForm"
+            v-if="showForm && selectedEquip !== 100"
             class="ma-0 pa-0 table-section"
             xl="6"
             lg="6"
@@ -170,7 +127,7 @@
             </div>
           </v-col>
           <v-col
-            v-if="showForm"
+            v-if="showForm && selectedEquip !== 100"
             class="ma-0 pa-0 table-section"
             xl="6"
             lg="6"
@@ -227,7 +184,7 @@
               </div>
             </div>
           </v-col>
-          <v-col v-if="showForm" id="buttons" class="ma-o pa-0" cols="12">
+          <v-col v-if="showForm && selectedEquip !== 100" id="buttons" class="ma-o pa-0" cols="12"> <!-- eslint-disable-line -->
             <v-btn
               class="form-btns"
               rounded
@@ -247,6 +204,54 @@
               FINALIZAR
             </v-btn>
           </v-col>
+
+          <!-- Dialog de criação de equipamento -->
+          <v-dialog
+            v-model="modal"
+            max-width="800px"
+            no-click-animation
+            persistent
+          >
+            <v-card class="modal-card">
+              <div class="modal-title-section">
+                <span class="modal-title">
+                  ADICIONE O EQUIPAMENTO
+                </span>
+                <div class="form">
+                  <v-text-field
+                    v-model="nome"
+                    :rules="[(v) => !!v || 'Campo Obrigatório']"
+                    color="cyan darken-2"
+                    label="Equipamento"
+                  />
+                </div>
+              </div>
+              <div class="btn-section">
+                <v-btn color="#43A047" text @click="criaEquipamento()">
+                  Salvar
+                </v-btn>
+              </div>
+              <div class="modal-title-section">
+                <div class="form">
+                  <v-select
+                    v-model="returned"
+                    :items="ids"
+                    color="cyan darken-2"
+                    label="Equipamento"
+                  />
+                </div>
+              </div>
+              <div class="btn-section">
+                <v-btn color="#43A047" text @click="close">
+                  Cancelar
+                </v-btn>
+                <v-btn color="#43A047" text @click="catchId(), returnEquip()">
+                  Retornar
+                </v-btn>
+              </div>
+            </v-card>
+          </v-dialog>
+          <!-- Dialog de criação de equipamento -->
 
           <!-- Dialog de criação de status -->
           <v-dialog
