@@ -184,6 +184,12 @@ export default {
   margin-left: 16px;
 }
 
+@media screen and (max-width: 1400px) {
+  #title {
+    font-size: 35px;
+  }
+}
+
 @media screen and (max-width: 740px) {
   #title {
     font-size: 40px;
