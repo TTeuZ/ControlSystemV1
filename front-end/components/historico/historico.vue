@@ -1,5 +1,17 @@
 <template>
   <v-container fluid>
+    <v-row class="ma-0 pa-0 search-section">
+      <v-col id="search" lg="7" cols="11">
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Pesquisar"
+          single-line
+          hide-details
+          @keyup="sortEquips(), (selectedEquip = 100)"
+        ></v-text-field>
+      </v-col>
+    </v-row>
     <v-row id="ajust-itens" class="ma-0 pa-0" justify="center" aling="center">
       <v-col
         id="selector-side"
@@ -13,15 +25,19 @@
       >
         <div id="itens-list">
           <div
-            v-for="(item, i) in equipamentos"
+            v-for="item in sortEquipamentos"
             id="list-item"
             :key="item"
-            @click=";(showForm = true), (selectedEquip = i), filterStatus()"
+            @click="
+              ;(showForm = true),
+                (selectedEquip = item.split(' ')[1]),
+                filterStatus()
+            "
           >
-            <span v-if="item[0].done === '1'" id="item-title">
-              {{ item[0].name.toUpperCase() }}
+            <span v-if="filteredEquip[item.split(' ')[1]][0].done === '1'" id="item-title"> <!-- eslint-disable-line -->
+              {{ filteredEquip[item.split(' ')[1]][0].name.toUpperCase() }}
             </span>
-            <v-divider v-if="item[0].done === '1'" id="divider" />
+            <v-divider v-if="filteredEquip[item.split(' ')[1]][0].done === '1'" id="divider" /> <!-- eslint-disable-line -->
           </div>
         </div>
       </v-col>
@@ -33,16 +49,16 @@
             <v-divider id="divider" />
           </div>
 
-          <div id="history-info">
+          <div v-if="selectedEquip !== 100" id="history-info">
             <span v-if="showForm" id="equip-title">
-              {{ equipamentos[selectedEquip][0].name.toUpperCase() }}
+              {{ filteredEquip[selectedEquip][0].name.toUpperCase() }}
             </span>
 
             <div id="part-info">
               <span v-if="showForm" class="history-text"
                 >criado:
                 {{
-                  equipamentos[selectedEquip][0].created_at
+                  filteredEquip[selectedEquip][0].created_at
                     .split(' ')[0]
                     .split('-')
                     .reverse()
@@ -50,16 +66,16 @@
                     ' ' +
                     'às' +
                     ' ' +
-                    equipamentos[selectedEquip][0].created_at.split(' ')[1]
+                    filteredEquip[selectedEquip][0].created_at.split(' ')[1]
                 }}</span
               >
               <span v-if="showForm" class="history-text">
-                Por: {{ equipamentos[selectedEquip][0].user_name_created }}
+                Por: {{ filteredEquip[selectedEquip][0].user_name_created }}
               </span>
               <span v-if="showForm" class="history-text">
                 finalizado:
                 {{
-                  equipamentos[selectedEquip][0].updated_at
+                  filteredEquip[selectedEquip][0].updated_at
                     .split(' ')[0]
                     .split('-')
                     .reverse()
@@ -67,16 +83,16 @@
                     ' ' +
                     'às' +
                     ' ' +
-                    equipamentos[selectedEquip][0].updated_at.split(' ')[1]
+                    filteredEquip[selectedEquip][0].updated_at.split(' ')[1]
                 }}
               </span>
               <span v-if="showForm" class="history-text">
-                Por: {{ equipamentos[selectedEquip][0].user_name_updated }}
+                Por: {{ filteredEquip[selectedEquip][0].user_name_updated }}
               </span>
             </div>
           </div>
 
-          <div id="all-info">
+          <div v-if="selectedEquip !== 100" id="all-info">
             <div id="part-info-two">
               <span v-if="showForm" id="status-title">
                 Status
@@ -156,7 +172,12 @@
             </div>
           </div>
 
-          <v-col v-if="showForm" id="buttons" class="ma-o pa-0" cols="12">
+          <v-col
+            v-if="showForm && selectedEquip !== 100"
+            id="buttons"
+            class="ma-o pa-0"
+            cols="12"
+          >
             <v-btn
               class="form-btns"
               rounded
@@ -187,6 +208,10 @@ export default {
   },
   data() {
     return {
+      filteredEquip: this.equipamentos,
+      sortEquipamentos: [],
+      search: '',
+
       showForm: false,
       selectedEquip: '',
       statusFiltered: [],
@@ -194,6 +219,21 @@ export default {
       created: false,
       updated: false
     }
+  },
+
+  computed: {
+    filteredEquips() {
+      const self = this
+      self.filteredEquip = self.equipamentos.filter((f) =>
+        f[0].name.toLowerCase().includes(self.search.toLowerCase())
+      )
+      return self.filteredEquip
+    }
+  },
+
+  mounted() {
+    console.log(this.filteredEquip)
+    this.sortEquips()
   },
 
   methods: {
@@ -204,7 +244,7 @@ export default {
 
       if (ok) {
         this.$axios
-          .delete('equipamento/' + this.equipamentos[this.selectedEquip][0].id)
+          .delete('equipamento/' + this.filteredEquip[this.selectedEquip][0].id)
           .then(() => {
             this.reload()
           })
@@ -218,8 +258,26 @@ export default {
       return (this.statusFiltered = this.status.filter(
         (equip) =>
           equip.equipamento_id ===
-          this.equipamentos[this.selectedEquip][0].id.toString()
+          this.filteredEquip[this.selectedEquip][0].id.toString()
       ))
+    },
+
+    sortEquips() {
+      if (this.equipamentos.length !== 0) {
+        this.filteredEquip = this.equipamentos
+        this.sortEquipamentos = []
+        const self = this
+        let i = 0
+        this.filteredEquips.forEach((item) => {
+          self.sortEquipamentos.push(item[0].name + ' ' + i.toString())
+          i++
+        })
+        this.sortEquipamentos.sort(function(a, b) {
+          return a.split(' ')[0].localeCompare(b.split(' ')[0])
+        })
+      } else {
+        this.filteredEquip = []
+      }
     },
 
     reload() {
@@ -230,6 +288,12 @@ export default {
 </script>
 
 <style scoped>
+.search-section {
+  width: 96%;
+  display: flex;
+  justify-content: flex-end;
+}
+
 #ajust-itens {
   margin-top: 40px !important;
 }
@@ -238,7 +302,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-
   flex-flow: column;
 }
 
@@ -247,16 +310,13 @@ export default {
   width: 400px;
   height: auto;
   max-height: 680px;
-
   overflow: auto;
-
   box-shadow: 0px 0px 14px -2px rgba(0, 0, 0, 0.49);
 }
 
 #list-item {
   width: 100%;
   height: auto;
-
   display: flex;
   flex-flow: column;
   justify-content: center;
@@ -271,35 +331,28 @@ export default {
 #item-title {
   font-family: 'Exo Regular';
   font-size: 16px;
-
   padding-bottom: 15px !important;
   padding-top: 15px !important;
 }
 
 #info-side {
   border: 1px solid black;
-
   height: 690px;
-
   display: flex;
-
   box-shadow: 0px 0px 14px -2px rgba(0, 0, 0, 0.49);
 }
 
 #title-section {
   display: flex;
   flex-flow: column;
-
   width: 100%;
   height: 55px;
-
   justify-self: start;
 }
 
 #info-title {
   font-family: 'Exo Regular';
   font-size: 36px;
-
   margin-left: 20px;
 }
 
@@ -310,10 +363,8 @@ export default {
 #equip-title {
   font-family: 'Exo Regular';
   font-size: 30px;
-
   width: 30%;
   height: 40px;
-
   margin-left: 30px;
 }
 
@@ -322,7 +373,6 @@ export default {
   align-items: center;
   justify-content: space-between;
   flex-flow: row;
-
   width: 100%;
 }
 
@@ -331,10 +381,8 @@ export default {
   flex-flow: row;
   justify-content: center;
   align-items: center;
-
   margin-left: 30px;
   margin-right: 30px;
-
   width: 100%;
   height: 400px;
 }
@@ -344,9 +392,7 @@ export default {
   flex-flow: column;
   justify-content: center;
   align-items: flex-end;
-
   width: 70%;
-
   margin-right: 30px;
 }
 
@@ -355,17 +401,14 @@ export default {
   flex-flow: column;
   justify-content: center;
   align-items: center;
-
   width: 100%;
   height: 100%;
 }
 
 #table {
   border: 1px solid black;
-
   width: 100%;
   height: 100%;
-
   overflow: auto;
 }
 
@@ -382,7 +425,6 @@ export default {
 .status-geral {
   display: flex;
   flex-flow: column;
-
   border-bottom: 1px solid black;
 }
 
@@ -390,7 +432,6 @@ export default {
   width: 100%;
   height: auto;
   min-height: 40px;
-
   display: flex;
   flex-flow: row;
   justify-content: space-between;
@@ -399,7 +440,6 @@ export default {
 
 .status-text {
   padding: 0 10px;
-
   font-size: 16px;
   font-family: 'Exo Regular';
 }
@@ -407,7 +447,6 @@ export default {
 .status-text-time {
   font-size: 14px;
   font-family: 'Exo Regular';
-
   padding-right: 10px !important;
 }
 
@@ -435,15 +474,12 @@ export default {
 
 .hover-info {
   position: absolute;
-
   height: 20px;
   width: 90px;
   background-color: white;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   margin-left: 70px;
 }
 
@@ -455,7 +491,6 @@ export default {
 .icons {
   color: black;
   font-size: 1em;
-
   margin-right: 5px;
 }
 
@@ -464,24 +499,23 @@ export default {
     width: 100%;
     max-height: 240px;
   }
-
   #info-side {
     height: auto;
-
     margin-top: 40px !important;
   }
-
   #buttons {
     margin: 20px 0;
   }
-
   #equip-title {
     margin-top: 15px;
     margin-bottom: 15px;
   }
-
   #part-info {
     margin-top: 10px;
+  }
+  .search-section {
+    width: 100%;
+    justify-content: center;
   }
 }
 
@@ -489,18 +523,14 @@ export default {
   #info-title {
     font-size: 26px;
   }
-
   #all-info {
     flex-flow: column;
   }
-
   #part-info {
     width: 100%;
   }
-
   #part-info-two {
     margin-top: 20px !important;
-
     width: 100%;
   }
 }
@@ -508,43 +538,33 @@ export default {
 @media screen and (max-width: 564px) {
   #buttons {
     flex-flow: column;
-
     justify-content: center;
     align-items: center;
   }
-
   .form-btns {
     margin-right: 0;
     margin-top: 20px;
-
     width: 200px;
   }
-
   #history-info {
     flex-flow: column;
     justify-content: flex-start;
   }
-
   #equip-title {
     width: 100%;
   }
-
   #part-info {
     align-items: flex-start;
-
     margin-left: 65px;
   }
-
   .status {
     flex-flow: column;
     align-items: flex-start;
   }
-
   .status-text-time {
     padding-bottom: 5px;
     padding-left: 10px;
   }
-
   .created_info {
     flex-flow: column;
   }
@@ -561,7 +581,6 @@ export default {
     font-size: 15px;
     margin-left: 10px;
   }
-
   .history-text {
     font-size: 15px;
   }
@@ -571,11 +590,9 @@ export default {
   .history-text {
     font-size: 13px;
   }
-
   .status-text {
     font-size: 13px;
   }
-
   .status-text-time {
     font-size: 13px;
   }

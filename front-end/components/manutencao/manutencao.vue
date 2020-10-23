@@ -35,7 +35,7 @@
             "
           >
             <span v-if="filteredEquip[item.split(' ')[1]][0].done === '0'" id="item-title"> <!-- eslint-disable-line -->
-              {{ filteredEquip[item.split(' ')[1]][0].name }}
+              {{ filteredEquip[item.split(' ')[1]][0].name.toUpperCase() }}
             </span>
             <v-divider v-if="filteredEquip[item.split(' ')[1]][0].done === '0'" id="divider" /> <!-- eslint-disable-line -->
           </div>
