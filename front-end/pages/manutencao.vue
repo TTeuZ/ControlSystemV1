@@ -1,15 +1,15 @@
 <template>
   <v-container fluid>
-    <manutencao :equipamentos="equipamento" :stat="status" />
+    <Manutencao :equipamentos="equipamento" :stat="status" />
   </v-container>
 </template>
 
 <script>
-import manutencao from '~/components/manutencao/manutencao.vue'
+import manutencao from '~/components/manutencao/Manutencao.vue'
 
 export default {
   components: {
-    manutencao
+    Manutencao
   },
 
   async asyncData({ $axios }) {

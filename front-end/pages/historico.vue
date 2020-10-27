@@ -1,15 +1,15 @@
 <template>
   <v-conteinaer fluid>
-    <historico :equipamentos="equipamento" :status="status" />
+    <Historico :equipamentos="equipamento" :status="status" />
   </v-conteinaer>
 </template>
 
 <script>
-import historico from '~/components/historico/historico'
+import historico from '~/components/historico/Historico'
 
 export default {
   components: {
-    historico
+    Historico
   },
 
   async asyncData({ $axios }) {

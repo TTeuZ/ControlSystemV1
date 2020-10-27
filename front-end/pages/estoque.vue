@@ -1,15 +1,15 @@
 <template>
   <v-container fluid>
-    <estoque :itens="Estoque" :historico="Historico" />
+    <Estoque :itens="Estoque" :historico="Historico" />
   </v-container>
 </template>
 
 <script>
-import estoque from '~/components/estoque/estoque'
+import estoque from '~/components/estoque/Estoque'
 
 export default {
   components: {
-    estoque
+    Estoque
   },
 
   async asyncData({ $axios }) {

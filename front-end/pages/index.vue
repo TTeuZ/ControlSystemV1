@@ -5,10 +5,10 @@
         <AboutAutos :autos="autos" />
       </v-col>
       <v-col xl="4" lg="4" md="11" sm="11" xs="11" cols="11">
-        <equipNoEsc :equip="equipamento" />
+        <EquipNoEsc :equip="equipamento" />
       </v-col>
       <v-col xl="4" lg="4" md="11" sm="11" xs="11" cols="11">
-        <buyList :estoque="estoque" />
+        <BuyList :estoque="estoque" />
       </v-col>
     </v-row>
     <v-btn class="user-btn" color="orange" @click="usersModal = !usersModal"
@@ -21,7 +21,7 @@
       persistent
     >
       <v-card>
-        <users :usuarios="Users" />
+        <Users :usuarios="Users" />
         <div class="btn-section">
           <v-btn color="#43A047" text @click="usersModal = !usersModal">
             Sair
@@ -33,16 +33,16 @@
 </template>
 
 <script>
-import users from '~/components/home/users'
-import equipNoEsc from '~/components/home/equipNoEsc'
-import buyList from '~/components/home/buyList'
+import users from '~/components/home/Users'
+import equipNoEsc from '~/components/home/EquipNoEsc'
+import buyList from '~/components/home/BuyList'
 import AboutAutos from '~/components/home/AboutAutos'
 
 export default {
   components: {
-    users,
-    equipNoEsc,
-    buyList,
+    Users,
+    EquipNoEsc,
+    BuyList,
     AboutAutos
   },
 
