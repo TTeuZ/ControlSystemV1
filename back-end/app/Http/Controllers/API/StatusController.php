@@ -6,6 +6,7 @@ use App\Status;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Equipamento;
+use App\StatusEnum;
 use Validator;
 
 class StatusController extends Controller
@@ -31,7 +32,8 @@ class StatusController extends Controller
         $validator = Validator::make($request->all(),[
             'info' => 'required|string|max:15',
             'flag' => 'boolean',
-            'equipamento_id' => 'required|integer'
+            'equipamento_id' => 'required|integer',
+            'status_enum_id' => 'required|integer'
         ]);
         if ($validator->fails())
             return response()->json([
@@ -41,8 +43,11 @@ class StatusController extends Controller
 
         if (!Equipamento::find($request->equipamento_id))
             return response()->json('Equipamento nao existe');
+        if (!StatusEnum::find($request->status_enum_id))
+            return response()->json('Status base nao existe');
 
         $request->request->add(['user_name_created' => $request->user()->name]);
+        // dd($request->status_enum_id);
         $status = Status::create($request->all());
         return response()->json($status);
     }

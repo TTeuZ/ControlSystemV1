@@ -25,6 +25,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('atualiza', 'API\AuthController@atualizar');
 
     Route::apiResource('status', 'API\StatusController');
+    Route::apiResource('statusEnum', 'API\StatusEnumController');
     Route::apiResource('equipamento', 'API\EquipamentosController');
     Route::apiResource('estoque', 'API\EstoqueController');
     Route::apiResource('autoeletrica', 'API\AutoEletricaController');
