@@ -1,15 +1,15 @@
 <template>
   <v-container fluid>
-    <autos :autos="autoEletrica" />
+    <Autos :autos="autoEletrica" />
   </v-container>
 </template>
 
 <script>
-import autos from '~/components/autoeletrica/AutoEletrica.vue'
+import Autos from '~/components/autoeletrica/AutoEletrica.vue'
 
 export default {
   components: {
-    autos
+    Autos
   },
 
   asyncData(context) {

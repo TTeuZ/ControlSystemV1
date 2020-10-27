@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import manutencao from '~/components/manutencao/Manutencao.vue'
+import Manutencao from '~/components/manutencao/Manutencao.vue'
 
 export default {
   components: {

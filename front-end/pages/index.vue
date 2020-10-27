@@ -33,9 +33,9 @@
 </template>
 
 <script>
-import users from '~/components/home/Users'
-import equipNoEsc from '~/components/home/EquipNoEsc'
-import buyList from '~/components/home/BuyList'
+import Users from '~/components/home/Users'
+import EquipNoEsc from '~/components/home/EquipNoEsc'
+import BuyList from '~/components/home/BuyList'
 import AboutAutos from '~/components/home/AboutAutos'
 
 export default {
