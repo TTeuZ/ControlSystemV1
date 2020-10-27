@@ -79,7 +79,7 @@
             :filtered-equip="filteredEquip"
             :status-modal="statusModal"
           />
-          <!-- ultima volta -->
+
           <v-col v-if="showForm && selectedEquip !== 100" id="buttons" class="ma-o pa-0" cols="12"> <!-- eslint-disable-line -->
             <v-btn
               class="form-btns"

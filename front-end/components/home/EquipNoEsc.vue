@@ -5,11 +5,11 @@
 
       <div id="equip-table">
         <nuxt-link to="/manutencao">
-          <div v-for="item in equip" id="list-item" :key="item">
-            <span v-if="item[0].done === '0'" id="item-title">
-              {{ item[0].name.toUpperCase() }}
+          <div v-for="item in sortEquipamentos" id="list-item" :key="item">
+            <span v-if="item.split(' ')[1] === '0'" id="item-title">
+              {{ item.split(' ')[0].toUpperCase() }}
             </span>
-            <v-divider v-if="item[0].done === '0'" id="divider" />
+            <v-divider v-if="item.split(' ')[1] === '0'" id="divider" />
           </div>
         </nuxt-link>
       </div>
@@ -23,6 +23,34 @@ export default {
     equip: {
       type: Array,
       required: true
+    }
+  },
+
+  data() {
+    return {
+      sortEquipamentos: []
+    }
+  },
+
+  mounted() {
+    this.sortEquips()
+  },
+
+  methods: {
+    sortEquips() {
+      if (this.equip.length !== 0) {
+        this.sortEquipamentos = []
+        const self = this
+        this.equip.forEach((item) => {
+          self.sortEquipamentos.push(item[0].name + ' ' + item[0].done)
+        })
+        this.sortEquipamentos.sort(function(a, b) {
+          return a.split(' ')[0].localeCompare(b.split(' ')[0])
+        })
+        console.log(this.sortEquipamentos)
+      } else {
+        this.equip = []
+      }
     }
   }
 }
