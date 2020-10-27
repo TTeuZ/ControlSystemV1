@@ -409,7 +409,7 @@ export default {
         }
         this.$axios
           .put(
-            'equipamento/' + this.equipamentos[this.selectedEquip][0].id,
+            'equipamento/' + this.filteredEquip[this.selectedEquip][0].id,
             sendToHis
           )
           .then(() => {
@@ -447,7 +447,7 @@ export default {
     criaStatus() {
       const infoStatus = {
         info: this.infoStatus,
-        equipamento_id: this.equipamentos[this.selectedEquip][0].id
+        equipamento_id: this.filteredEquip[this.selectedEquip][0].id
       }
       this.$axios
         .$post('status', infoStatus)
@@ -455,8 +455,7 @@ export default {
           this.closeAfterOk()
         })
         .catch(({ response }) => {
-          const { mensagem } = !!response && response.data
-          this.$toast.error(mensagem, { duration: 5000 })
+          this.$toast.error(response.data.mensagem, { duration: 5000 })
         })
     },
 
