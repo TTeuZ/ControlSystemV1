@@ -232,7 +232,6 @@ export default {
   },
 
   mounted() {
-    console.log(this.filteredEquip)
     this.sortEquips()
   },
 
@@ -241,12 +240,11 @@ export default {
       const ok = window.confirm(
         'Você tem certeza que deseja excluir esse equipamento?'
       )
-
       if (ok) {
         this.$axios
           .delete('equipamento/' + this.filteredEquip[this.selectedEquip][0].id)
           .then(() => {
-            this.reload()
+            location.reload()
           })
           .catch(({ response }) => {
             this.$toast.error(response.data.mensagem, { duration: 5000 })
@@ -278,10 +276,6 @@ export default {
       } else {
         this.filteredEquip = []
       }
-    },
-
-    reload() {
-      location.reload()
     }
   }
 }

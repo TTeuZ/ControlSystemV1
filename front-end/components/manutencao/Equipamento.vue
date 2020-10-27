@@ -31,9 +31,11 @@
             @click="
               ;(showForm = true),
                 (selectedEquip = item.split(' ')[1]),
-                filterStatus()
+                (statusModal = false),
+                $refs.status.filterStatus(item.split(' ')[1])
             "
           >
+            <span
             <span v-if="filteredEquip[item.split(' ')[1]][0].done === '0'" id="item-title"> <!-- eslint-disable-line -->
               {{ filteredEquip[item.split(' ')[1]][0].name.toUpperCase() }}
             </span>
@@ -69,121 +71,15 @@
             </div>
           </div>
 
-          <v-col
-            v-if="showForm && selectedEquip !== 100"
-            class="ma-0 pa-0 table-section"
-            xl="6"
-            lg="6"
-            md="6"
-            sm="12"
-            xs="12"
-            cols="12"
-          >
-            <div class="table-total">
-              <span class="table-title">STATUS ATUAL</span>
-              <div class="table">
-                <div v-for="status in statusFiltered" :key="status">
-                  <div v-if="status.flag === '0'" class="status">
-                    <span class="status-text">
-                      {{ status.info }}
-                    </span>
-                    <div>
-                      <span class="status-text-time">
-                        {{
-                          status.created_at
-                            .split(' ')[0]
-                            .split('-')
-                            .reverse()
-                            .join('/') +
-                            ' às ' +
-                            status.created_at.split(' ')[1]
-                        }}
-                      </span>
-                      <v-icon
-                        class="icons"
-                        @mouseover="user_created = true"
-                        @mouseleave="user_created = false"
-                      >
-                        mdi-comment-question-outline
-                      </v-icon>
-
-                      <div v-if="user_created" class="hover-info">
-                        <span class="hover-text">
-                          Criado por: {{ status.user_name_created }}
-                        </span>
-                      </div>
-                    </div>
-                    <div class="change-flag">
-                      <v-icon
-                        class="change-icon"
-                        @click=";(flagId = status.id), feito()"
-                      >
-                        mdi-arrow-right-bold
-                      </v-icon>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </v-col>
-          <v-col
-            v-if="showForm && selectedEquip !== 100"
-            class="ma-0 pa-0 table-section"
-            xl="6"
-            lg="6"
-            md="6"
-            sm="12"
-            xs="12"
-            cols="12"
-          >
-            <div class="table-total">
-              <span class="table-title">FEITO</span>
-              <div class="table">
-                <div v-for="status in statusFiltered" :key="status">
-                  <div v-if="status.flag === '1'" class="status">
-                    <div class="change-flag">
-                      <v-icon
-                        class="change-icon"
-                        @click=";(flagId = status.id), voltarStatus()"
-                      >
-                        mdi-arrow-left-bold
-                      </v-icon>
-                    </div>
-                    <div>
-                      <span class="status-text-time">
-                        {{
-                          status.updated_at
-                            .split(' ')[0]
-                            .split('-')
-                            .reverse()
-                            .join('/') +
-                            ' às ' +
-                            status.updated_at.split(' ')[1]
-                        }}
-                      </span>
-
-                      <v-icon
-                        class="icons"
-                        @mouseover="user_updated = true"
-                        @mouseleave="user_updated = false"
-                      >
-                        mdi-comment-question-outline
-                      </v-icon>
-
-                      <div v-if="user_updated" class="hover-info">
-                        <span class="hover-text">
-                          Finalizado por: {{ status.user_name_updated }}
-                        </span>
-                      </div>
-                    </div>
-                    <span class="status-text">
-                      {{ status.info }}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </v-col>
+          <Status
+            ref="status"
+            :show-form="showForm"
+            :selected-equip="selectedEquip"
+            :status="stat"
+            :filtered-equip="filteredEquip"
+            :status-modal="statusModal"
+          />
+          <!-- ultima volta -->
           <v-col v-if="showForm && selectedEquip !== 100" id="buttons" class="ma-o pa-0" cols="12"> <!-- eslint-disable-line -->
             <v-btn
               class="form-btns"
@@ -252,39 +148,6 @@
             </v-card>
           </v-dialog>
           <!-- Dialog de criação de equipamento -->
-
-          <!-- Dialog de criação de status -->
-          <v-dialog
-            v-model="statusModal"
-            max-width="800px"
-            no-click-animation
-            persistent
-          >
-            <v-card class="modal-card">
-              <div class="modal-title-section">
-                <span class="modal-title">
-                  ADICIONE O STATUS
-                </span>
-                <div class="form">
-                  <v-text-field
-                    v-model="infoStatus"
-                    :rules="[(v) => !!v || 'Campo Obrigatório']"
-                    color="cyan darken-2"
-                    label="Status"
-                  />
-                </div>
-              </div>
-              <div class="btn-section">
-                <v-btn color="#43A047" text @click="close">
-                  Cancelar
-                </v-btn>
-                <v-btn color="#43A047" text @click="criaStatus()">
-                  Salvar
-                </v-btn>
-              </div>
-            </v-card>
-          </v-dialog>
-          <!-- Dialog de criação de status -->
         </v-row>
       </v-col>
     </v-row>
@@ -292,7 +155,9 @@
 </template>
 
 <script>
+import Status from '~/components/manutencao/Status.vue'
 export default {
+  components: { Status },
   props: {
     equipamentos: {
       type: Array,
@@ -312,20 +177,15 @@ export default {
       modal: false,
       statusModal: false,
       nome: '',
-      infoStatus: '',
 
       showForm: false,
       selectedEquip: '',
 
       statusFiltered: [],
-      flagId: '',
 
       ids: [],
       returned: '',
-      id: '',
-
-      user_created: false,
-      user_updated: false
+      id: ''
     }
   },
 
@@ -416,47 +276,6 @@ export default {
             this.reload()
           })
       }
-    },
-
-    filterStatus() {
-      return (this.statusFiltered = this.stat.filter(
-        (equip) =>
-          equip.equipamento_id ===
-          this.filteredEquip[this.selectedEquip][0].id.toString()
-      ))
-    },
-
-    feito() {
-      const attFlag = {
-        flag: 1
-      }
-      this.$axios.put('status/' + this.flagId, attFlag).then(() => {
-        this.reload()
-      })
-    },
-
-    voltarStatus() {
-      const attFlag = {
-        flag: 0
-      }
-      this.$axios.put('status/' + this.flagId, attFlag).then(() => {
-        this.reload()
-      })
-    },
-
-    criaStatus() {
-      const infoStatus = {
-        info: this.infoStatus,
-        equipamento_id: this.filteredEquip[this.selectedEquip][0].id
-      }
-      this.$axios
-        .$post('status', infoStatus)
-        .then(() => {
-          this.closeAfterOk()
-        })
-        .catch(({ response }) => {
-          this.$toast.error(response.data.mensagem, { duration: 5000 })
-        })
     },
 
     IDS() {
@@ -601,32 +420,6 @@ export default {
   margin-left: 30px;
 }
 
-.table-section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.table-total {
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-.table-title {
-  font-family: 'Exo Regular';
-  font-size: 23px;
-}
-
-.table {
-  border: 1px solid black;
-  width: 95%;
-  height: 380px;
-  overflow: auto;
-}
-
 #buttons {
   display: flex;
   flex-flow: row;
@@ -635,37 +428,6 @@ export default {
 
 .form-btns {
   margin-right: 25px;
-}
-
-.status {
-  width: 100%;
-  height: auto;
-  min-height: 40px;
-  border-bottom: 1px solid black;
-  display: flex;
-  flex-flow: row;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.status-text {
-  padding: 0 10px;
-  font-size: 18px;
-  font-family: 'Exo Regular';
-}
-
-.status-text-time {
-  font-size: 14px;
-  font-family: 'Exo Regular';
-}
-
-.change-flag {
-  height: 100%;
-  width: 25px;
-}
-
-.change-icon {
-  color: green;
 }
 
 .modal-title-section {
@@ -700,22 +462,6 @@ export default {
   font-size: 1em;
 }
 
-.hover-info {
-  position: absolute;
-  height: 20px;
-  width: auto;
-  background-color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-left: 70px;
-}
-
-.hover-text {
-  font-family: 'Exo Regular';
-  font-size: 12px;
-}
-
 @media screen and (max-width: 1262px) {
   #itens-list {
     width: 100%;
@@ -737,12 +483,6 @@ export default {
   .search-section {
     width: 100%;
     justify-content: center;
-  }
-}
-
-@media screen and (max-width: 962px) {
-  .table-title {
-    margin-top: 15px;
   }
 }
 
@@ -787,9 +527,6 @@ export default {
   #info-title {
     font-size: 15px;
     margin-left: 10px;
-  }
-  .status {
-    flex-flow: column;
   }
   .modal-title {
     font-size: 20px;
