@@ -1,6 +1,10 @@
 <template>
   <v-container fluid>
-    <Manutencao :equipamentos="equipamento" :stat="status" />
+    <Manutencao
+      :equipamentos="equipamento"
+      :stat="status"
+      :status-enum="statusEnum"
+    />
   </v-container>
 </template>
 
@@ -13,13 +17,15 @@ export default {
   },
 
   async asyncData({ $axios }) {
-    const [equipamentoRes, statusRes] = await Promise.all([
+    const [equipamentoRes, statusRes, statusEnumRes] = await Promise.all([
       $axios.get('equipamento'),
-      $axios.get('status')
+      $axios.get('status'),
+      $axios.get('statusEnum')
     ])
     return {
       equipamento: equipamentoRes.data,
-      status: statusRes.data
+      status: statusRes.data,
+      statusEnum: statusEnumRes.data
     }
   },
 

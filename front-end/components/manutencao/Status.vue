@@ -14,10 +14,10 @@
         <div class="table-total">
           <span class="table-title">STATUS ATUAL</span>
           <div class="table">
-            <div v-for="status in statusFiltered" :key="status">
+            <div v-for="status in statusFiltered" :key="status" @click="openInfo(status.id)"> <!-- eslint-disable-line -->
               <div v-if="status.flag === '0'" class="status">
                 <span class="status-text">
-                  {{ status.info }}
+                  {{ status.status_enum.title }}
                 </span>
                 <div>
                   <span class="status-text-time">
@@ -31,19 +31,6 @@
                         status.created_at.split(' ')[1]
                     }}
                   </span>
-                  <v-icon
-                    class="icons"
-                    @mouseover="user_created = true"
-                    @mouseleave="user_created = false"
-                  >
-                    mdi-comment-question-outline
-                  </v-icon>
-
-                  <div v-if="user_created" class="hover-info">
-                    <span class="hover-text">
-                      Criado por: {{ status.user_name_created }}
-                    </span>
-                  </div>
                 </div>
                 <div class="change-flag">
                   <v-icon
@@ -71,7 +58,7 @@
         <div class="table-total">
           <span class="table-title">FEITO</span>
           <div class="table">
-            <div v-for="status in statusFiltered" :key="status">
+            <div v-for="status in statusFiltered" :key="status" @click="openInfo(status.id)"> <!-- eslint-disable-line -->
               <div v-if="status.flag === '1'" class="status">
                 <div class="change-flag">
                   <v-icon
@@ -93,23 +80,9 @@
                         status.updated_at.split(' ')[1]
                     }}
                   </span>
-
-                  <v-icon
-                    class="icons"
-                    @mouseover="user_updated = true"
-                    @mouseleave="user_updated = false"
-                  >
-                    mdi-comment-question-outline
-                  </v-icon>
-
-                  <div v-if="user_updated" class="hover-info">
-                    <span class="hover-text">
-                      Finalizado por: {{ status.user_name_updated }}
-                    </span>
-                  </div>
                 </div>
                 <span class="status-text">
-                  {{ status.info }}
+                  {{ status.status_enum.title }}
                 </span>
               </div>
             </div>
@@ -117,6 +90,37 @@
         </div>
       </v-col>
     </v-row>
+    <!-- Dialog de info do status -->
+    <v-dialog
+      v-if="showForm && selectedEquip !== 100"
+      v-model="statusInfoModal"
+      max-width="800px"
+      no-click-animation
+      persistent
+    >
+      <v-card class="modal-card">
+        <div class="modal-title-section">
+          <span class="modal-title">
+            STATUS
+          </span>
+          <div class="form">
+            <div>
+              <span class="status-text">descrição: {{ statusAtt[statusId].info }} </span> <!-- eslint-disable-line -->
+            </div>
+            <div class="created-infos">
+              <span class="status-text"> Criado por: {{ statusAtt[statusId].user_name_created }} </span> <!-- eslint-disable-line -->
+              <span class="status-text"> Finalizado por: {{ statusAtt[statusId].user_name_updated }} </span> <!-- eslint-disable-line -->
+            </div>
+          </div>
+        </div>
+        <div class="btn-section">
+          <v-btn color="#43A047" text @click="statusInfoModal = false">
+            sair
+          </v-btn>
+        </div>
+      </v-card>
+    </v-dialog>
+    <!-- Dialog de info do status -->
     <!-- Dialog de criação de status -->
     <v-dialog
       v-model="statusModal"
@@ -130,8 +134,14 @@
             ADICIONE O STATUS
           </span>
           <div class="form">
+            <v-select
+              v-model="newStatus.type"
+              :items="getStatusPadraoTitles()"
+              color="cyan darken-2"
+              label="Tipo"
+            />
             <v-text-field
-              v-model="infoStatus"
+              v-model="newStatus.info"
               :rules="[(v) => !!v || 'Campo Obrigatório']"
               color="cyan darken-2"
               label="Status"
@@ -139,6 +149,9 @@
           </div>
         </div>
         <div class="btn-section">
+          <v-btn color="#43A047" text @click="statusPadraoModal = true"> <!-- eslint-disable-line -->
+            Status Padrão
+          </v-btn>
           <v-btn color="#43A047" text @click="statusModal = false">
             Cancelar
           </v-btn>
@@ -149,6 +162,57 @@
       </v-card>
     </v-dialog>
     <!-- Dialog de criação de status -->
+    <!-- Dialog de status status padrao -->
+    <v-dialog
+      v-model="statusPadraoModal"
+      max-width="800px"
+      no-click-animation
+      persistent
+    >
+      <v-card class="modal-card">
+        <div class="modal-title-section">
+          <span class="modal-title">
+            STATUS PADRÕES
+          </span>
+          <div class="form">
+            <v-text-field
+              v-model="searchStatusPadrao"
+              append-icon="mdi-magnify"
+              label="Pesquisar"
+              single-line
+              hide-details
+            />
+          </div>
+          <div class="form over">
+            <div
+              v-for="(padrao, p) in filteredStatusPadrao"
+              :key="padrao"
+              class="status-padrao-item"
+            >
+              <span class="status-text"> {{ padrao.title }} </span>
+              <v-divider v-if="p + '1' !== filteredStatusPadrao.length" class="status-padrao-divider" /> <!-- eslint-disable-line -->
+            </div>
+          </div>
+          <div v-if="openCreateStatusPadrao" class="form pt-1">
+            <v-text-field
+              v-model="statusPadraoTitle"
+              :rules="[(v) => !!v || 'Campo Obrigatório']"
+              color="cyan darken-2"
+              label="Status Padrão"
+            />
+          </div>
+        </div>
+        <div class="btn-section">
+          <v-btn color="#43A047" text @click="statusPadraoModal = false">
+            Sair
+          </v-btn>
+          <v-btn color="#43A047" text @click="criaStatusPadrao()">
+            Adicionar
+          </v-btn>
+        </div>
+      </v-card>
+    </v-dialog>
+    <!-- Dialog de status status padrao -->
   </v-container>
 </template>
 
@@ -167,6 +231,10 @@ export default {
       type: Array,
       required: true
     },
+    statusEnum: {
+      type: Array,
+      required: true
+    },
     filteredEquip: {
       type: Array,
       required: true
@@ -179,21 +247,72 @@ export default {
 
   data() {
     return {
-      statusFiltered: [],
-      infoStatus: '',
-      flagId: '',
+      statusPadraoModal: false,
+      searchStatusPadrao: '',
+      statusEnumAtt: this.statusEnum,
+      statusPadraoFiltered: [],
+      openCreateStatusPadrao: false,
+      statusPadraoTitle: '',
 
-      user_created: false,
-      user_updated: false
+      statusInfoModal: false,
+      statusId: '0',
+
+      statusAtt: this.status,
+      statusFiltered: [],
+      newStatus: {
+        type: '',
+        info: ''
+      },
+      flagId: ''
+    }
+  },
+
+  computed: {
+    filteredStatusPadrao() {
+      const self = this
+      self.statusPadraoFiltered = self.statusEnumAtt.filter((f) =>
+        f.title.toLowerCase().includes(self.searchStatusPadrao.toLowerCase())
+      )
+      return self.statusPadraoFiltered
     }
   },
 
   methods: {
     filterStatus(equipId) {
-      return (this.statusFiltered = this.status.filter(
+      return (this.statusFiltered = this.statusAtt.filter(
         (equip) =>
           equip.equipamento_id === this.filteredEquip[equipId][0].id.toString()
       ))
+    },
+
+    criaStatusPadrao() {
+      if (this.openCreateStatusPadrao === false) {
+        this.openCreateStatusPadrao = true
+      } else {
+        const statusPadrao = {
+          title: this.statusPadraoTitle
+        }
+        this.$axios
+          .post('statusEnum', statusPadrao)
+          .then(() => {
+            this.$axios.get('statusEnum').then((res) => {
+              this.statusEnumAtt = res.data
+              this.openCreateStatusPadrao = false
+              this.statusPadraoTitle = ''
+            })
+          })
+          .catch(({ response }) => {
+            this.$toast.error(response.data.mensagem, { duration: 5000 })
+          })
+      }
+    },
+
+    getStatusPadraoTitles() {
+      const statusTitles = []
+      this.statusEnumAtt.forEach((item) => {
+        statusTitles.push(item.title)
+      })
+      return statusTitles
     },
 
     feito() {
@@ -214,13 +333,26 @@ export default {
       })
     },
 
+    openInfo(id) {
+      console.log(id)
+      this.statusId = id - 1
+      this.statusInfoModal = true
+    },
+
     criaStatus() {
-      const infoStatus = {
-        info: this.infoStatus,
+      let enumId = 0
+      this.statusEnumAtt.forEach((s) => {
+        if (s.title === this.newStatus.type) {
+          enumId = s.id
+        }
+      })
+      const newStatus = {
+        info: this.newStatus.info,
+        status_enum_id: enumId,
         equipamento_id: this.filteredEquip[this.selectedEquip][0].id
       }
       this.$axios
-        .$post('status', infoStatus)
+        .$post('status', newStatus)
         .then(() => {
           location.reload()
         })
@@ -267,6 +399,24 @@ export default {
 
 .form-btns {
   margin-right: 25px;
+}
+
+.over {
+  height: 300px;
+  overflow: auto;
+}
+
+.status-padrao-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+  height: 35px;
+}
+
+.status-padrao-divider {
+  background-color: #777;
+  width: 100%;
 }
 
 .status {
@@ -327,25 +477,12 @@ export default {
   align-items: center;
 }
 
-.icons {
-  color: black;
-  font-size: 1em;
-}
-
-.hover-info {
-  position: absolute;
-  height: 20px;
-  width: auto;
-  background-color: white;
+.created-infos {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  margin-left: 70px;
-}
-
-.hover-text {
-  font-family: 'Exo Regular';
-  font-size: 12px;
+  flex-flow: row;
+  padding-top: 15px;
 }
 
 @media screen and (max-width: 1262px) {

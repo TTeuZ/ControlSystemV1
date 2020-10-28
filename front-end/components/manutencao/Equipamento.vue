@@ -76,6 +76,7 @@
             :show-form="showForm"
             :selected-equip="selectedEquip"
             :status="stat"
+            :status-enum="statusEnum"
             :filtered-equip="filteredEquip"
             :status-modal="statusModal"
           />
@@ -164,6 +165,10 @@ export default {
       required: true
     },
     stat: {
+      type: Array,
+      required: true
+    },
+    statusEnum: {
       type: Array,
       required: true
     }

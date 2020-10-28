@@ -12,7 +12,7 @@ class StatusEnumController extends Controller
 {
     public function index()
     {
-        return response()->json(StatusEnum::all());
+        return response()->json(StatusEnum::orderBy('title')->get());
     }
 
     public function store(Request $request)
