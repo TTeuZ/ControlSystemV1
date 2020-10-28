@@ -26,8 +26,14 @@ class StatusEnumController extends Controller
                 $validator->errors()
             ], 400);
 
-        $statusEnum = StatusEnum::create($request->all());
-        return response()->json($statusEnum);
+        if ($request->user()->id <= 5) {
+            $statusEnum = StatusEnum::create($request->all());
+            return response()->json($statusEnum);
+        } else {
+            return response()->json([
+                'mensagem' => 'você não tem permissão para adicionar itens'
+            ], 401);
+        }
     }
 
     public function update(Request $request, StatusEnum $statusEnum)
@@ -41,12 +47,24 @@ class StatusEnumController extends Controller
                 $validator->errors()
             ], 400);
 
-        $statusEnum->update($request->all());
-        return response()->json($statusEnum);
+        if ($request->user()->id <= 5) {
+            $statusEnum->update($request->all());
+            return response()->json($statusEnum);
+        } else {
+            return response()->json([
+                'mensagem' => 'você não tem permissão para adicionar itens'
+            ], 401);
+        }
     }
 
-    public function destroy(StatusEnum $statusEnum) // wtf como isso funciona, mas ta funcionando
+    public function destroy(Request $request, StatusEnum $statusEnum) // wtf como isso funciona, mas ta funcionando
     {
-        $statusEnum->delete();
+        if ($request->user()->id <= 5) {
+            $statusEnum->delete();
+        } else {
+            return response()->json([
+                'mensagem' => 'você não tem permissão para adicionar itens'
+            ], 401);
+        }
     }
 }
