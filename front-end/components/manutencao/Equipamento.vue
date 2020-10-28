@@ -8,7 +8,7 @@
           label="Pesquisar"
           single-line
           hide-details
-          @keyup="sortEquips(), (selectedEquip = 100)"
+          @keyup="sortEquips(), (selectedEquip = '100')"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -55,7 +55,7 @@
             <v-divider id="divider" />
           </div>
 
-          <div v-if="selectedEquip !== 100" id="info-geral">
+          <div v-if="selectedEquip !== '100'" id="info-geral">
             <span v-if="showForm" id="equip-title">
               {{ filteredEquip[selectedEquip][0].name.toUpperCase() }}
             </span>
@@ -81,7 +81,7 @@
             :status-modal="statusModal"
           />
 
-          <v-col v-if="showForm && selectedEquip !== 100" id="buttons" class="ma-o pa-0" cols="12"> <!-- eslint-disable-line -->
+          <v-col v-if="showForm && selectedEquip !== '100'" id="buttons" class="ma-o pa-0" cols="12"> <!-- eslint-disable-line -->
             <v-btn
               class="form-btns"
               rounded
@@ -184,7 +184,7 @@ export default {
       nome: '',
 
       showForm: false,
-      selectedEquip: '',
+      selectedEquip: '100',
 
       statusFiltered: [],
 

@@ -325,7 +325,7 @@ export default {
 
   methods: {
     veriResp(responsaveis) {
-      if (responsaveis.length === '0') {
+      if (responsaveis.length === 0) {
         this.modalDeCriacaoResp = !this.modalDeCriacaoResp
       } else {
         this.modalDeInfosResp = !this.modalDeInfosResp
@@ -344,7 +344,7 @@ export default {
           self.totalDeLacresNOk = 0
         } else {
           self.autos[self.selectedAutoEletrica][1].forEach((item) => {
-            if (item.situacao === 0) {
+            if (item.situacao === '0') {
               self.totalDeLacresOk++
             } else {
               self.totalDeLacresNOk++

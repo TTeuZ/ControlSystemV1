@@ -2,7 +2,7 @@
   <v-container>
     <v-row class="ma-0 pa-0" justify="center" align="center">
       <v-col
-        v-if="showForm && selectedEquip !== 100"
+        v-if="selectedEquip !== '100'"
         class="ma-0 pa-0 table-section"
         xl="6"
         lg="6"
@@ -14,13 +14,13 @@
         <div class="table-total">
           <span class="table-title">STATUS ATUAL</span>
           <div class="table">
-            <div v-for="status in statusFiltered" :key="status" @click="openInfo(status.id)"> <!-- eslint-disable-line -->
+            <div v-for="status in statusFiltered" :key="status"> <!-- eslint-disable-line -->
               <div v-if="status.flag === '0'" class="status">
-                <span class="status-text">
+                <span class="status-text" @click="openInfo(status.id)">
                   {{ status.status_enum.title }}
                 </span>
                 <div>
-                  <span class="status-text-time">
+                  <span class="status-text-time" @click="openInfo(status.id)">
                     {{
                       status.created_at
                         .split(' ')[0]
@@ -46,7 +46,7 @@
         </div>
       </v-col>
       <v-col
-        v-if="showForm && selectedEquip !== 100"
+        v-if="selectedEquip !== '100'"
         class="ma-0 pa-0 table-section"
         xl="6"
         lg="6"
@@ -58,7 +58,7 @@
         <div class="table-total">
           <span class="table-title">FEITO</span>
           <div class="table">
-            <div v-for="status in statusFiltered" :key="status" @click="openInfo(status.id)"> <!-- eslint-disable-line -->
+            <div v-for="status in statusFiltered" :key="status"> <!-- eslint-disable-line -->
               <div v-if="status.flag === '1'" class="status">
                 <div class="change-flag">
                   <v-icon
@@ -69,7 +69,7 @@
                   </v-icon>
                 </div>
                 <div>
-                  <span class="status-text-time">
+                  <span class="status-text-time" @click="openInfo(status.id)">
                     {{
                       status.updated_at
                         .split(' ')[0]
@@ -81,7 +81,7 @@
                     }}
                   </span>
                 </div>
-                <span class="status-text">
+                <span class="status-text" @click="openInfo(status.id)">
                   {{ status.status_enum.title }}
                 </span>
               </div>
@@ -92,7 +92,7 @@
     </v-row>
     <!-- Dialog de info do status -->
     <v-dialog
-      v-if="showForm && selectedEquip !== 100"
+      v-if="selectedEquip !== '100' && statusId !== '0'"
       v-model="statusInfoModal"
       max-width="800px"
       no-click-animation
@@ -224,7 +224,7 @@ export default {
       required: true
     },
     selectedEquip: {
-      type: Number,
+      type: String,
       required: true
     },
     status: {
