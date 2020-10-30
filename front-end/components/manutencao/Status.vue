@@ -255,6 +255,7 @@ export default {
       statusPadraoTitle: '',
 
       statusInfoModal: false,
+      equipamentoId: '0',
       statusId: '0',
 
       statusAtt: this.status,
@@ -279,6 +280,7 @@ export default {
 
   methods: {
     filterStatus(equipId) {
+      this.equipamentoId = equipId
       return (this.statusFiltered = this.statusAtt.filter(
         (equip) =>
           equip.equipamento_id === this.filteredEquip[equipId][0].id.toString()
@@ -320,7 +322,10 @@ export default {
         flag: 1
       }
       this.$axios.put('status/' + this.flagId, attFlag).then(() => {
-        location.reload()
+        this.$axios.get('status').then((res) => {
+          this.statusAtt = res.data
+          this.filterStatus(this.equipamentoId)
+        })
       })
     },
 
@@ -329,12 +334,14 @@ export default {
         flag: 0
       }
       this.$axios.put('status/' + this.flagId, attFlag).then(() => {
-        location.reload()
+        this.$axios.get('status').then((res) => {
+          this.statusAtt = res.data
+          this.filterStatus(this.equipamentoId)
+        })
       })
     },
 
     openInfo(id) {
-      console.log(id)
       this.statusId = id - 1
       this.statusInfoModal = true
     },
@@ -354,7 +361,13 @@ export default {
       this.$axios
         .$post('status', newStatus)
         .then(() => {
-          location.reload()
+          this.$axios.get('status').then((res) => {
+            this.statusAtt = res.data
+            this.filterStatus(this.equipamentoId)
+            this.statusModal = false
+            this.newStatus.info = ''
+            this.enumId = 0
+          })
         })
         .catch(({ response }) => {
           this.$toast.error(response.data.mensagem, { duration: 5000 })
