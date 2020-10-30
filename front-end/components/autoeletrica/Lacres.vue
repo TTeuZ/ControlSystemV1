@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row class="ma-0 pa-0 esp-infos" justify="space-around" align="center">
+    <v-row class="ma-0 pa-0 esp-infos" justify="space-around" align="center"> <!-- eslint-disable-line -->
       <v-col
         class="equip-state-box border"
         xl="5"
@@ -14,7 +14,7 @@
           EM ESTOQUE
         </span>
         <div
-          v-for="(equip, e) in autos[selectedAutoEletrica][1]"
+          v-for="(equip, e) in autosAtt[selectedAutoEletrica][1]"
           :key="equip"
           style="width: 100%"
           @click="infoEquip(e)"
@@ -42,7 +42,7 @@
           COM DEFEITOS
         </span>
         <div
-          v-for="(equip, e) in autos[selectedAutoEletrica][1]"
+          v-for="(equip, e) in autosAtt[selectedAutoEletrica][1]"
           :key="equip"
           style="width: 100%"
           @click="infoEquip(e)"
@@ -64,7 +64,10 @@
 
     <!-- Dialog com todas as infos e funços para o lacre -->
     <v-dialog
-      v-if="autos.length != '0' && autos[selectedAutoEletrica][1].length != '0'"
+      v-if="
+        autosAtt.length != '0' &&
+          autosAtt[selectedAutoEletrica][1].length != '0'
+      "
       v-model="modalInfoEquip"
       max-width="800px"
       no-click-animation
@@ -74,18 +77,18 @@
         <div class="modal-ajust">
           <div class="first">
             <span class="modal-text">
-              Nome: {{ autos[selectedAutoEletrica][1][selectedEquip].nome.toUpperCase() }} <!-- eslint-disable-line -->
+              Nome: {{ autosAtt[selectedAutoEletrica][1][selectedEquip].nome.toUpperCase() }} <!-- eslint-disable-line -->
             </span>
             <span class="modal-text">
-              Tipo: {{ autos[selectedAutoEletrica][1][selectedEquip].tipo.toUpperCase() }}<!-- eslint-disable-line -->
+              Tipo: {{ autosAtt[selectedAutoEletrica][1][selectedEquip].tipo.toUpperCase() }}<!-- eslint-disable-line -->
             </span>
           </div>
-          <div class="first" v-if="autos[selectedAutoEletrica][1][selectedEquip].situacao == 0"> <!-- eslint-disable-line -->
-            <span class="modal-text"> Criado por: {{ autos[selectedAutoEletrica][1][selectedEquip].user_name_created.toUpperCase() }} </span> <!-- eslint-disable-line -->
+          <div class="first" v-if="autosAtt[selectedAutoEletrica][1][selectedEquip].situacao == 0"> <!-- eslint-disable-line -->
+            <span class="modal-text"> Criado por: {{ autosAtt[selectedAutoEletrica][1][selectedEquip].user_name_created.toUpperCase() }} </span> <!-- eslint-disable-line -->
             <span class="modal-text">
               Data:
               {{
-                autos[selectedAutoEletrica][1][selectedEquip].created_at
+                autosAtt[selectedAutoEletrica][1][selectedEquip].created_at
                   .split(' ')[0]
                   .split('-')
                   .reverse()
@@ -93,18 +96,18 @@
                   ' ' +
                   'às' +
                   ' ' +
-                  autos[selectedAutoEletrica][1][
+                  autosAtt[selectedAutoEletrica][1][
                     selectedEquip
                   ].created_at.split(' ')[1]
               }}
             </span>
           </div>
-          <div class="first" v-if="autos[selectedAutoEletrica][1][selectedEquip].situacao == '1'"> <!-- eslint-disable-line -->
-            <span class="modal-text"> Enviado p/ defeito por: {{ autos[selectedAutoEletrica][1][selectedEquip].user_name_updated.toUpperCase() }} </span> <!-- eslint-disable-line -->
+          <div class="first" v-if="autosAtt[selectedAutoEletrica][1][selectedEquip].situacao == '1'"> <!-- eslint-disable-line -->
+            <span class="modal-text"> Enviado p/ defeito por: {{ autosAtt[selectedAutoEletrica][1][selectedEquip].user_name_updated.toUpperCase() }} </span> <!-- eslint-disable-line -->
             <span class="modal-text">
               Data:
               {{
-                autos[selectedAutoEletrica][1][selectedEquip].updated_at
+                autosAtt[selectedAutoEletrica][1][selectedEquip].updated_at
                   .split(' ')[0]
                   .split('-')
                   .reverse()
@@ -112,7 +115,7 @@
                   ' ' +
                   'às' +
                   ' ' +
-                  autos[selectedAutoEletrica][1][
+                  autosAtt[selectedAutoEletrica][1][
                     selectedEquip
                   ].updated_at.split(' ')[1]
               }}
@@ -121,25 +124,29 @@
         </div>
         <div class="btn-section">
           <v-btn
-            v-if="autos[selectedAutoEletrica][1][selectedEquip].situacao == '0'"
+            v-if="
+              autosAtt[selectedAutoEletrica][1][selectedEquip].situacao == '0'
+            "
             color="#43A047"
             text
-            @click="sendTo(autos[selectedAutoEletrica][1][selectedEquip].id)"
+            @click="sendTo(autosAtt[selectedAutoEletrica][1][selectedEquip].id)"
           >
             para defeito
           </v-btn>
           <v-btn
-            v-if="autos[selectedAutoEletrica][1][selectedEquip].situacao == '1'"
+            v-if="
+              autosAtt[selectedAutoEletrica][1][selectedEquip].situacao == '1'
+            "
             color="#43A047"
             text
-            @click="sendTo(autos[selectedAutoEletrica][1][selectedEquip].id)"
+            @click="sendTo(autosAtt[selectedAutoEletrica][1][selectedEquip].id)"
           >
             para estoque
           </v-btn>
-          <v-btn color="#43A047" text @click="attEquip(autos[selectedAutoEletrica][1][selectedEquip].id)"> <!-- eslint-disable-line -->
+          <v-btn color="#43A047" text @click="attEquip(autosAtt[selectedAutoEletrica][1][selectedEquip].id)"> <!-- eslint-disable-line -->
             atualizar
           </v-btn>
-          <v-btn color="#43A047" text @click="delEquip(autos[selectedAutoEletrica][1][selectedEquip].id)"> <!-- eslint-disable-line -->
+          <v-btn color="#43A047" text @click="delEquip(autosAtt[selectedAutoEletrica][1][selectedEquip].id)"> <!-- eslint-disable-line -->
             excluir
           </v-btn>
           <v-btn color="#43A047" text @click="modalInfoEquip = !modalInfoEquip">
@@ -151,7 +158,7 @@
     <!-- Dialog com todas as infos e funços para o lacre -->
     <!-- Dialog para criação de lacres -->
     <v-dialog
-      v-if="autos.length != '0'"
+      v-if="autosAtt.length != '0'"
       v-model="modalAdd"
       max-width="800px"
       no-click-animation
@@ -194,7 +201,10 @@
     <!-- Dialog para criação de lacres -->
     <!-- Dialog para atualizacao de lacres -->
     <v-dialog
-      v-if="autos.length != '0' && autos[selectedAutoEletrica][1].length != '0'"
+      v-if="
+        autosAtt.length != '0' &&
+          autosAtt[selectedAutoEletrica][1].length != '0'
+      "
       v-model="modalAttEquip"
       max-width="800px"
       no-click-animation
@@ -206,7 +216,9 @@
             <span class="modal-title">
               EDITE
               {{
-                autos[selectedAutoEletrica][1][selectedEquip].nome.toUpperCase()
+                autosAtt[selectedAutoEletrica][1][
+                  selectedEquip
+                ].nome.toUpperCase()
               }}
             </span>
           </div>
@@ -231,7 +243,7 @@
           <v-btn color="#43A047" text @click="modalAttEquip = !modalAttEquip">
             Cancelar
           </v-btn>
-          <v-btn color="#43A047" text @click="attEquip(autos[selectedAutoEletrica][1][selectedEquip].id)"> <!-- eslint-disable-line -->
+          <v-btn color="#43A047" text @click="attEquip(autosAtt[selectedAutoEletrica][1][selectedEquip].id)"> <!-- eslint-disable-line -->
             Atualizar
           </v-btn>
         </div>
@@ -259,6 +271,7 @@ export default {
   },
   data() {
     return {
+      autosAtt: this.autos,
       modalAdd: false,
 
       modalInfoEquip: false,
@@ -285,7 +298,7 @@ export default {
   },
   methods: {
     openAdd() {
-      this.selectId = this.autos[this.selectedAutoEletrica][0].id
+      this.selectId = this.autosAtt[this.selectedAutoEletrica][0].id
       this.modalAdd = !this.modalAdd
     },
 
@@ -299,7 +312,12 @@ export default {
         this.$axios
           .post('equip_auto', equipamento)
           .then(() => {
-            window.location.reload()
+            this.$axios.get('autoeletrica').then((res) => {
+              this.autosAtt = res.data
+              this.modalAdd = false
+              this.equipForm.nome.data = ''
+              this.equipForm.tipo.data = ''
+            })
           })
           .catch(({ response }) => {
             this.$toast.error(response.data.mensagem, { duration: 5000 })
@@ -317,7 +335,10 @@ export default {
         this.$axios
           .post('equip_change/' + id)
           .then(() => {
-            window.location.reload()
+            this.$axios.get('autoeletrica').then((res) => {
+              this.autosAtt = res.data
+              this.modalInfoEquip = false
+            })
           })
           .catch(({ response }) => {
             this.$toast.error(response.data.mensagem, { duration: 5000 })
@@ -327,7 +348,7 @@ export default {
 
     attEquip(id) {
       if (this.modalAttEquip === false) {
-        const selecionado = this.autos[this.selectedAutoEletrica][1][this.selectedEquip] /*eslint-disable-line*/
+        const selecionado = this.autosAtt[this.selectedAutoEletrica][1][this.selectedEquip] /*eslint-disable-line*/
         this.modalAttEquip = true
         this.equipForm.nome.data = selecionado.nome
         this.equipForm.tipo.data = selecionado.tipo
@@ -339,7 +360,11 @@ export default {
         this.$axios
           .put('equip_auto/' + id, equipAtualizado)
           .then(() => {
-            window.location.reload()
+            this.$axios.get('autoeletrica').then((res) => {
+              this.autosAtt = res.data
+              this.modalInfoEquip = false
+              this.modalAttEquip = false
+            })
           })
           .catch(({ response }) => {
             this.$toast.error(response.data.mensagem, { duration: 5000 })
@@ -355,7 +380,11 @@ export default {
         this.$axios
           .delete('equip_auto/' + id)
           .then(() => {
-            window.location.reload()
+            this.$axios.get('autoeletrica').then((res) => {
+              this.autosAtt = res.data
+              this.selectedEquip = 0
+              this.modalInfoEquip = false
+            })
           })
           .catch(({ response }) => {
             this.$toast.error(response.data.mensagem, { duration: 5000 })

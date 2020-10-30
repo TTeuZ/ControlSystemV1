@@ -44,7 +44,7 @@
       >
         <span class="cabos-card-title"> LOG </span>
         <div id="log">
-        <div v-for="log in autos[selectedAutoEletrica][2]" :key="log" style="width: 100%"> <!-- eslint-disable-line -->
+        <div v-for="log in autosAtt[selectedAutoEletrica][2]" :key="log" style="width: 100%"> <!-- eslint-disable-line -->
           <div v-if="log.situacao === '1' && log.nome === 'CABO ALIMENTACAO'" class="cabos"> <!-- eslint-disable-line -->
             <span class="cabo-text"> Enviado p/ defeito por: {{ log.user_name_updated }} </span> <!-- eslint-disable-line -->
             <span class="cabo-text"> {{ log.tipo }} </span> <!-- eslint-disable-line -->
@@ -72,7 +72,7 @@
 
     <!-- Dialog de criação de cabos de alimentacao -->
     <v-dialog
-      v-if="autos.length != '0'"
+      v-if="autosAtt.length != '0'"
       v-model="modalAdd"
       max-width="800px"
       no-click-animation
@@ -113,7 +113,7 @@
     <!-- Dialog de criação de cabos de alimentacao -->
     <!-- Dialog de modificaçoes -->
     <v-dialog
-      v-if="autos.length != '0'"
+      v-if="autosAtt.length != '0'"
       v-model="modalDeModificacos"
       max-width="800px"
       no-click-animation
@@ -173,11 +173,15 @@ export default {
     autos: {
       type: Array,
       required: true
+    },
+    selectedAutoEletrica: {
+      type: String,
+      required: true
     }
   },
   data() {
     return {
-      selectedAutoEletrica: 0,
+      autosAtt: this.autos,
 
       modalAdd: false,
       modalDeModificacos: false,
@@ -215,7 +219,7 @@ export default {
   },
   methods: {
     openAdd() {
-      this.selectId = this.autos[this.selectedAutoEletrica][0].id
+      this.selectId = this.autosAtt[this.selectedAutoEletrica][0].id
       this.modalAdd = !this.modalAdd
     },
 
@@ -226,7 +230,7 @@ export default {
 
     getQuantidade(auto) {
       this.selectedAutoEletrica = auto
-      const cabos = this.autos[this.selectedAutoEletrica][2]
+      const cabos = this.autosAtt[this.selectedAutoEletrica][2]
       this.caboAlimentacaoOK = []
       this.caboAlimentacaoNOK = []
       this.geralOK = 0
@@ -242,7 +246,6 @@ export default {
             this.geralOK++
           } else if (item.nome === 'CABO ALIMENTACAO' && item.situacao === '1') { /*eslint-disable-line*/
             this.caboAlimentacaoNOK.push(cabo)
-            console.log('adicionou')
             this.geralNOK++
           }
         })
@@ -256,15 +259,17 @@ export default {
         auto_eletrica_id: this.selectId
       }
       for (let i = 0; i < this.caboData.quantidade; i++) {
-        this.$axios
-          .post('cabos', newCabo)
-          .then(() => {
-            window.location.reload()
-          })
-          .catch(({ response }) => {
-            this.$toast.error(response.data.mensagem, { duration: 5000 })
-          })
+        this.$axios.post('cabos', newCabo).catch(({ response }) => {
+          this.$toast.error(response.data.mensagem, { duration: 5000 })
+        })
       }
+      this.$axios.get('autoeletrica').then((res) => {
+        this.autosAtt = res.data
+        this.modalAdd = false
+        this.caboData.tipo = ''
+        this.caboData.quantidade = ''
+        this.getQuantidade(this.selectedAutoEletrica)
+      })
     },
 
     sendTo(type, quant, array) {
@@ -280,15 +285,17 @@ export default {
         window.alert('numero de cabos selecionados maior que os existentes!')
       } else {
         for (let i = 0; i < quant; i++) {
-          this.$axios
-            .post('cabo_change/' + ids[i])
-            .then(() => {
-              window.location.reload()
-            })
-            .catch(({ response }) => {
-              this.$toast.error(response.data.mensagem, { duration: 5000 })
-            })
+          this.$axios.post('cabo_change/' + ids[i]).catch(({ response }) => {
+            this.$toast.error(response.data.mensagem, { duration: 5000 })
+          })
         }
+        this.$axios.get('autoeletrica').then((res) => {
+          this.autosAtt = res.data
+          this.modalDeModificacos = false
+          this.selects.quant.data = ''
+          this.selects.tipo.data = ''
+          this.getQuantidade(this.selectedAutoEletrica)
+        })
       }
     },
 
@@ -305,15 +312,17 @@ export default {
         window.alert('numero de cabos selecionados maior que os existentes!')
       } else {
         for (let i = 0; i < quant; i++) {
-          this.$axios
-            .delete('cabos/' + ids[i])
-            .then(() => {
-              window.location.reload()
-            })
-            .catch(({ response }) => {
-              this.$toast.error(response.data.mensagem, { duration: 5000 })
-            })
+          this.$axios.delete('cabos/' + ids[i]).catch(({ response }) => {
+            this.$toast.error(response.data.mensagem, { duration: 5000 })
+          })
         }
+        this.$axios.get('autoeletrica').then((res) => {
+          this.autosAtt = res.data
+          this.modalDeModificacos = false
+          this.selects.quant.data = ''
+          this.selects.tipo.data = ''
+          this.getQuantidade(this.selectedAutoEletrica)
+        })
       }
     }
   }

@@ -333,6 +333,9 @@ export default {
     },
 
     totalInfos() {
+      this.$axios.get('autoeletrica').then((res) => {
+        this.autos = res.data
+      })
       this.modalDeInfosResp = false
       this.modalDeCriacaoResp = false
       this.totalDeLacresOk = 0

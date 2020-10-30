@@ -1,7 +1,10 @@
 <template>
   <v-container>
     <v-dialog
-      v-if="autos.length != '0' && autos[selectedAutoEletrica][3].length != '0'"
+      v-if="
+        autosAtt.length != '0' &&
+          autosAtt[selectedAutoEletrica][3].length != '0'
+      "
       v-model="modalDeInfosResp"
       max-width="800px"
       no-click-animation
@@ -14,7 +17,7 @@
           </span>
           <div class="select-resp-section">
             <v-btn
-              v-for="(resps, r) in autos[selectedAutoEletrica][3]"
+              v-for="(resps, r) in autosAtt[selectedAutoEletrica][3]"
               :key="resps"
               depressed
               text-captalize
@@ -27,18 +30,18 @@
             </v-btn>
           </div>
           <div class="resp-infos-section">
-            <span class="modal-text">Nome: {{ autos[selectedAutoEletrica][3][respSelect].nome }}</span> <!-- eslint-disable-line -->
-            <span class="modal-text">Telefone: {{ autos[selectedAutoEletrica][3][respSelect].telefone }}</span> <!-- eslint-disable-line -->
+            <span class="modal-text">Nome: {{ autosAtt[selectedAutoEletrica][3][respSelect].nome }}</span> <!-- eslint-disable-line -->
+            <span class="modal-text">Telefone: {{ autosAtt[selectedAutoEletrica][3][respSelect].telefone }}</span> <!-- eslint-disable-line -->
           </div>
         </div>
         <div class="btn-section">
           <v-btn color="#43A047" text @click="modalDeCriacaoResp = !modalDeCriacaoResp"> <!-- eslint-disable-line -->
             Adicionar
           </v-btn>
-          <v-btn color="#43A047" text @click="attResp(autos[selectedAutoEletrica][3][respSelect].id)"> <!-- eslint-disable-line -->
+          <v-btn color="#43A047" text @click="attResp(autosAtt[selectedAutoEletrica][3][respSelect].id)"> <!-- eslint-disable-line -->
             Atualizar
           </v-btn>
-          <v-btn color="#43A047" text @click="delResp(autos[selectedAutoEletrica][3][respSelect].id)"> <!-- eslint-disable-line -->
+          <v-btn color="#43A047" text @click="delResp(autosAtt[selectedAutoEletrica][3][respSelect].id)"> <!-- eslint-disable-line -->
             Excluir
           </v-btn>
           <v-btn color="#43A047" text @click="modalDeInfosResp = !modalDeInfosResp"> <!-- eslint-disable-line -->
@@ -106,7 +109,7 @@
           <v-btn color="#43A047" text @click="modalDeAttResp = !modalDeAttResp"> <!-- eslint-disable-line -->
             Cancelar
           </v-btn>
-          <v-btn color="#43A047" text @click="attResp(autos[selectedAutoEletrica][3][respSelect].id)"> <!-- eslint-disable-line -->
+          <v-btn color="#43A047" text @click="attResp(autosAtt[selectedAutoEletrica][3][respSelect].id)"> <!-- eslint-disable-line -->
             Atualizar
           </v-btn>
         </div>
@@ -138,6 +141,7 @@ export default {
   },
   data() {
     return {
+      autosAtt: this.autos,
       modalDeAttResp: false,
       respSelect: 0,
       respForm: {
@@ -163,8 +167,8 @@ export default {
   methods: {
     firstResp() {
       if (
-        this.autos[this.selectedAutoEletrica] &&
-        this.autos[this.selectedAutoEletrica][3].length === '0'
+        this.autosAtt[this.selectedAutoEletrica] &&
+        this.autosAtt[this.selectedAutoEletrica][3].length === '0'
       ) {
         this.modalDeCriacaoResp = true
       }
@@ -181,7 +185,12 @@ export default {
         this.$axios
           .post('responsaveis', responsavel) // chama o axios criando o responsavel
           .then(() => {
-            window.location.reload()
+            this.$axios.get('autoeletrica').then((res) => {
+              this.autosAtt = res.data
+              this.modalDeCriacaoResp = false
+              this.respForm.nome.data = ''
+              this.respForm.telefone.data = ''
+            })
           })
           .catch(({ response }) => {
             this.$toast.error(response.data.mensagem, { duration: 5000 })
@@ -202,7 +211,12 @@ export default {
         this.$axios
           .put('responsaveis/' + id, respAtualizada)
           .then(() => {
-            window.location.reload()
+            this.$axios.get('autoeletrica').then((res) => {
+              this.autosAtt = res.data
+              this.modalDeAttResp = false
+              this.respForm.nome.data = ''
+              this.respForm.telefone.data = ''
+            })
           })
           .catch(({ response }) => {
             this.$toast.error(response.data.mensagem, { duration: 5000 })
@@ -218,7 +232,10 @@ export default {
         this.$axios
           .delete('responsaveis/' + id)
           .then(() => {
-            window.location.reload()
+            this.$axios.get('autoeletrica').then((res) => {
+              this.autosAtt = res.data
+              this.respSelect = 0
+            })
           })
           .catch(({ response }) => {
             this.$toast.error(response.data.mensagem, { duration: 5000 })
