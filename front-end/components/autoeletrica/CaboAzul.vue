@@ -102,8 +102,14 @@
             </span>
           </div>
           <div class="form">
+            <v-text-field
+              v-model="caboData.quantidade"
+              :rules="[(v) => !!v || 'Quantidade é necessário']"
+              color="cyan darken-2"
+              label="Quantidade"
+            />
             <v-select
-              v-model="caboData"
+              v-model="caboData.tipo"
               :items="caboTipos"
               color="cyan darken-2"
               label="Tipo"
@@ -205,7 +211,10 @@ export default {
       completoNOK: 0,
 
       caboTipos: ['grande', 'pequeno', 'completo'],
-      caboData: '',
+      caboData: {
+        tipo: '',
+        quantidade: ''
+      },
 
       selects: {
         quant: {
@@ -302,17 +311,19 @@ export default {
     newCabo() {
       const newCabo = {
         nome: 'CABO AZUL',
-        tipo: this.caboData,
+        tipo: this.caboData.tipo,
         auto_eletrica_id: this.selectId
       }
-      this.$axios
-        .post('cabos', newCabo)
-        .then(() => {
-          window.location.reload()
-        })
-        .catch(({ response }) => {
-          this.$toast.error(response.data.mensagem, { duration: 5000 })
-        })
+      for (let i = 0; i < this.caboData.quantidade; i++) {
+        this.$axios
+          .post('cabos', newCabo)
+          .then(() => {
+            window.location.reload()
+          })
+          .catch(({ response }) => {
+            this.$toast.error(response.data.mensagem, { duration: 5000 })
+          })
+      }
     },
 
     sendTo(type, quant, array) {
