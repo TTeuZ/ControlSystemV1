@@ -9,7 +9,7 @@
             <span class="auto-desc mt-3">Lacres</span>
             <div class="text-box">
               <span v-if="infoLacre(a) <= 2" class="font-error auto-desc">
-                Estoque de lacres abaixo de 2
+                Estoque de lacres abaixo/igual de 2
               </span>
               <span v-if="infoLacre(a) > 2" class="font-OK auto-desc">
                 Estoque de lacres OK
@@ -22,8 +22,6 @@
                 <span v-if="!infoCabo('azul', a).ok" class="font-error auto-desc"> <!-- eslint-disable-line -->
                   Estoque de cabos azuis abaixo de 2
                 </span>
-                <span v-if="infoCabo('azul', a).caboType1 <= 2" class="font-error auto-desc"> (Grande) </span> <!-- eslint-disable-line -->
-                <span v-if="infoCabo('azul', a).caboType2 <= 2" class="font-error auto-desc"> (Pequeno) </span> <!-- eslint-disable-line -->
                 <span v-if="infoCabo('azul', a).caboType3 <= 2" class="font-error auto-desc"> (Completo) </span> <!-- eslint-disable-line -->
               </div>
               <span v-if="infoCabo('azul', a).ok" class="font-OK auto-desc"> <!-- eslint-disable-line -->
@@ -38,7 +36,6 @@
                 </span>
                 <span v-if="infoCabo('sensor', a).caboType1 <= 2" class="font-error auto-desc"> (Novo) </span> <!-- eslint-disable-line -->
                 <span v-if="infoCabo('sensor', a).caboType2 <= 2" class="font-error auto-desc"> (Antigo A) </span> <!-- eslint-disable-line -->
-                <span v-if="infoCabo('sensor', a).caboType3 <= 2" class="font-error auto-desc"> (Antigo P) </span> <!-- eslint-disable-line -->
               </div>
               <span v-if="infoCabo('sensor', a).ok" class="font-OK auto-desc"> <!-- eslint-disable-line -->
                 Estoque de cabos de sensores OK
@@ -108,7 +105,7 @@ export default {
               situation.quantidade++
             }
           })
-          if (situation.quantidade > 3 && situation.caboType1 > 2 && situation.caboType2 > 2 && situation.caboType3 > 2) ok = true /* eslint-disable-line */
+          if (situation.quantidade > 2 && situation.caboType3 > 2) situation.ok = true /* eslint-disable-line */
           break
         }
         case 'sensor': {
@@ -131,7 +128,7 @@ export default {
               situation.quantidade++
             }
           })
-          if (situation.quantidade > 3 && situation.caboType1 > 2 && situation.caboType2 > 2 && situation.caboType3 > 2) ok = true /* eslint-disable-line */
+          if (situation.quantidade > 2 && situation.caboType1 > 2 && situation.caboType2 > 2) situation.ok = true /* eslint-disable-line */
           break
         }
         case 'alimentacao': {
