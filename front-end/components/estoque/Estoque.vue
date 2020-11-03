@@ -27,26 +27,6 @@
             ></v-text-field>
           </div>
 
-          <!-- <div id="switches">
-            <div v-for="(btn, b) in filters" :key="btn">
-              <v-btn
-                depressed
-                rounded
-                color="orange"
-                :@click="(filterSelected = btn.filter)"
-                :class="{ btnSelected: b === isSelected ? true : false }"
-                @click="isSelected = b"
-                ><span>{{ btn.label }}</span></v-btn
-              >
-            </div>
-          </div> -->
-
-          <!-- <div id="switches">
-            <v-switch v-model="cabos" label="Cabos" />
-            <v-switch v-model="lacre" label="Lacre" />
-            <v-switch v-model="todos" label="Todos" />
-          </div> -->
-
           <div id="new-item">
             <v-btn rounded depressed color="blue" @click="logModal = true">
               LOG
@@ -268,6 +248,7 @@
                   label=" Quantidade"
                 />
                 <v-text-field
+                  v-if="admin"
                   v-model="editedItem.quantidade_min"
                   v-maska="'#*'"
                   :rules="[(v) => !!v || 'Campo Obrigatório']"
@@ -315,6 +296,7 @@ export default {
   data() {
     return {
       attModel: false,
+      admin: false,
       newItemModal: false,
       logModal: false,
 
@@ -369,6 +351,14 @@ export default {
     attModalChange(item) {
       this.attModel = true
       this.editedItem = Object.assign({}, item)
+      if (
+        this.$auth.$state.user.name === 'pauloalves' ||
+        this.$auth.$state.user.name === 'joao'
+      ) {
+        this.admin = true
+      } else {
+        this.admin = false
+      }
     },
 
     close() {
@@ -428,6 +418,7 @@ export default {
         .post('estoque', newItem)
         .then(() => {
           this.close()
+          this.verificaFlag()
           window.location.reload()
         })
         .catch(({ response }) => {

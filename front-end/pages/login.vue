@@ -41,6 +41,10 @@ export default {
           }
         })
         .then(() => {
+          const user = {
+            name: this.email
+          }
+          this.$auth.setUser(user)
           this.$router.push('/')
         })
         .catch(({ response }) => {
