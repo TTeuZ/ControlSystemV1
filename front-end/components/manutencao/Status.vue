@@ -188,8 +188,17 @@
               v-for="(padrao, p) in filteredStatusPadrao"
               :key="padrao"
               class="status-padrao-item"
+              @click="statusPadraoId = padrao.id"
             >
-              <span class="status-text"> {{ padrao.title }} </span>
+              <span
+                class="status-text"
+                :class="{
+                  statusPadraoSelecionado:
+                    statusPadraoId === padrao.id ? true : false
+                }"
+              >
+                {{ padrao.title }}
+              </span>
               <v-divider v-if="p + '1' !== filteredStatusPadrao.length" class="status-padrao-divider" /> <!-- eslint-disable-line -->
             </div>
           </div>
@@ -203,11 +212,17 @@
           </div>
         </div>
         <div class="btn-section">
+          <v-btn v-if="statusPadraoId !== ''" color="#43A047" text @click="delStatusPadrao(statusPadraoId)"> <!-- eslint-disable-line -->
+            Excluir
+          </v-btn>
+          <v-btn v-if="statusPadraoId !== ''" color="#43A047" text @click="editaStatusPadrao(statusPadraoId)"> <!-- eslint-disable-line -->
+            Editar
+          </v-btn>
+          <v-btn v-if="!statusPEditableMode" color="#43A047" text @click="criaStatusPadrao()"> <!-- eslint-disable-line -->
+            Adicionar
+          </v-btn>
           <v-btn color="#43A047" text @click="statusPadraoModal = false">
             Sair
-          </v-btn>
-          <v-btn color="#43A047" text @click="criaStatusPadrao()">
-            Adicionar
           </v-btn>
         </div>
       </v-card>
@@ -253,6 +268,8 @@ export default {
       statusPadraoFiltered: [],
       openCreateStatusPadrao: false,
       statusPadraoTitle: '',
+      statusPadraoId: '',
+      statusPEditableMode: false,
 
       statusInfoModal: false,
       equipamentoId: '0',
@@ -301,6 +318,54 @@ export default {
               this.statusEnumAtt = res.data
               this.openCreateStatusPadrao = false
               this.statusPadraoTitle = ''
+            })
+          })
+          .catch(({ response }) => {
+            this.$toast.error(response.data.mensagem, { duration: 5000 })
+          })
+      }
+    },
+
+    editaStatusPadrao(id) {
+      let statusEnumSelected = {}
+      statusEnumSelected = this.statusEnumAtt.filter((item) => item.id === id)
+      if (this.openCreateStatusPadrao === false) {
+        this.openCreateStatusPadrao = true
+        this.statusPEditableMode = true
+        this.statusPadraoTitle = statusEnumSelected[0].title
+      } else {
+        const statusPadraoAtt = {
+          title: this.statusPadraoTitle
+        }
+        this.$axios
+          .put('statusEnum/' + id, statusPadraoAtt)
+          .then(() => {
+            this.$axios.get('statusEnum').then((res) => {
+              this.statusEnumAtt = res.data
+              this.openCreateStatusPadrao = false
+              this.statusPEditableMode = false
+              this.statusPadraoTitle = ''
+            })
+          })
+          .catch(({ response }) => {
+            this.$toast.error(response.data.mensagem, { duration: 5000 })
+          })
+      }
+    },
+
+    delStatusPadrao(id) {
+      const ok = window.confirm(
+        'Você tem certeza que deseja excluir esse status padrão?'
+      )
+      if (ok) {
+        this.$axios
+          .delete('statusEnum/' + id)
+          .then(() => {
+            this.$axios.get('statusEnum').then((res) => {
+              this.statusEnumAtt = res.data
+              this.openCreateStatusPadrao = false
+              this.statusPEditableMode = false
+              this.statusPadraoId = ''
             })
           })
           .catch(({ response }) => {
@@ -430,6 +495,10 @@ export default {
 .status-padrao-divider {
   background-color: #777;
   width: 100%;
+}
+
+.statusPadraoSelecionado {
+  color: orange;
 }
 
 .status {
