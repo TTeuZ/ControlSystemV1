@@ -624,6 +624,13 @@ export default {
   }
 }
 
+@media screen and (max-width: 430px) {
+  .btn-section {
+    flex-flow: column-reverse;
+    padding-right: 0px !important;
+  }
+}
+
 @media screen and (max-width: 365px) {
   .modal-title {
     font-size: 16px;

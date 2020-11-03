@@ -530,6 +530,9 @@ export default {
   .modal-title {
     font-size: 24px;
   }
+  .modal-text {
+    font-size: 15px;
+  }
 }
 
 @media screen and (max-width: 500px) {
@@ -541,6 +544,13 @@ export default {
   }
   .modal-title {
     font-size: 20px;
+  }
+  .btn-section {
+    flex-flow: column;
+    padding-right: 0px !important;
+  }
+  .first {
+    flex-flow: column;
   }
 }
 </style>

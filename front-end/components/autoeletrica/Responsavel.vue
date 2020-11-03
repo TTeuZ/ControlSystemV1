@@ -326,6 +326,13 @@ export default {
   }
 }
 
+@media screen and (max-width: 500px) {
+  .btn-section {
+    flex-flow: column;
+    padding-right: 0px !important;
+  }
+}
+
 @media screen and (max-width: 400px) {
   .btn-section {
     flex-flow: column;
