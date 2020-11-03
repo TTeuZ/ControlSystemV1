@@ -14,13 +14,16 @@
         <div class="table-total">
           <span class="table-title">STATUS ATUAL</span>
           <div class="table">
-            <div v-for="status in statusFiltered" :key="status"> <!-- eslint-disable-line -->
+            <div v-for="(status, s) in statusFiltered" :key="status"> <!-- eslint-disable-line -->
               <div v-if="status.flag === '0'" class="status">
-                <span class="status-text" @click="openInfo(status.id)">
+                <span class="status-text" @click="openInfo(status.id, s)">
                   {{ status.status_enum.title }}
                 </span>
                 <div>
-                  <span class="status-text-time" @click="openInfo(status.id)">
+                  <span
+                    class="status-text-time"
+                    @click="openInfo(status.id, s)"
+                  >
                     {{
                       status.created_at
                         .split(' ')[0]
@@ -58,7 +61,7 @@
         <div class="table-total">
           <span class="table-title">FEITO</span>
           <div class="table">
-            <div v-for="status in statusFiltered" :key="status"> <!-- eslint-disable-line -->
+            <div v-for="(status, s) in statusFiltered" :key="status"> <!-- eslint-disable-line -->
               <div v-if="status.flag === '1'" class="status">
                 <div class="change-flag">
                   <v-icon
@@ -69,7 +72,10 @@
                   </v-icon>
                 </div>
                 <div>
-                  <span class="status-text-time" @click="openInfo(status.id)">
+                  <span
+                    class="status-text-time"
+                    @click="openInfo(status.id, s)"
+                  >
                     {{
                       status.updated_at
                         .split(' ')[0]
@@ -81,7 +87,7 @@
                     }}
                   </span>
                 </div>
-                <span class="status-text" @click="openInfo(status.id)">
+                <span class="status-text" @click="openInfo(status.id, s)">
                   {{ status.status_enum.title }}
                 </span>
               </div>
@@ -104,16 +110,37 @@
             STATUS
           </span>
           <div class="form">
-            <div class="resp">
-              <span class="status-text">descrição: {{ statusAtt[statusId].info }} </span> <!-- eslint-disable-line -->
+            <div class="status-infos">
+              <span class="status-text">Tipo: {{ statusFiltered[statusSelected].status_enum.title }} </span> <!-- eslint-disable-line -->
+              <span class="status-text">Descrição: {{ statusFiltered[statusSelected].info }} </span> <!-- eslint-disable-line -->
             </div>
             <div class="created-infos">
-              <span class="status-text"> Criado por: {{ statusAtt[statusId].user_name_created }} </span> <!-- eslint-disable-line -->
-              <span class="status-text"> Finalizado por: {{ statusAtt[statusId].user_name_updated }} </span> <!-- eslint-disable-line -->
+              <span class="status-text"> Criado por: {{ statusFiltered[statusSelected].user_name_created }} </span> <!-- eslint-disable-line -->
+              <span class="status-text"> Finalizado por: {{ statusFiltered[statusSelected].user_name_updated }} </span> <!-- eslint-disable-line -->
             </div>
+          </div>
+          <div v-if="statusEditableMode" class="form">
+            <v-select
+              v-model="newStatus.type"
+              :items="getStatusPadraoTitles()"
+              color="cyan darken-2"
+              label="Tipo"
+            />
+            <v-text-field
+              v-model="newStatus.info"
+              :rules="[(v) => !!v || 'Campo Obrigatório']"
+              color="cyan darken-2"
+              label="Status"
+            />
           </div>
         </div>
         <div class="btn-section">
+          <v-btn color="#43A047" text @click="delStatus(statusId)">
+            excluir
+          </v-btn>
+          <v-btn color="#43A047" text @click="attStatus(statusId)">
+            editar
+          </v-btn>
           <v-btn color="#43A047" text @click="statusInfoModal = false">
             sair
           </v-btn>
@@ -272,7 +299,9 @@ export default {
       statusPEditableMode: false,
 
       statusInfoModal: false,
+      statusEditableMode: false,
       equipamentoId: '0',
+      statusSelected: '0',
       statusId: '0',
 
       statusAtt: this.status,
@@ -302,6 +331,36 @@ export default {
         (equip) =>
           equip.equipamento_id === this.filteredEquip[equipId][0].id.toString()
       ))
+    },
+
+    openInfo(id, selected) {
+      this.statusId = id
+      this.statusSelected = selected
+      this.statusInfoModal = true
+    },
+
+    feito() {
+      const attFlag = {
+        flag: 1
+      }
+      this.$axios.put('status/' + this.flagId, attFlag).then(() => {
+        this.$axios.get('status').then((res) => {
+          this.statusAtt = res.data
+          this.filterStatus(this.equipamentoId)
+        })
+      })
+    },
+
+    voltarStatus() {
+      const attFlag = {
+        flag: 0
+      }
+      this.$axios.put('status/' + this.flagId, attFlag).then(() => {
+        this.$axios.get('status').then((res) => {
+          this.statusAtt = res.data
+          this.filterStatus(this.equipamentoId)
+        })
+      })
     },
 
     criaStatusPadrao() {
@@ -382,35 +441,6 @@ export default {
       return statusTitles
     },
 
-    feito() {
-      const attFlag = {
-        flag: 1
-      }
-      this.$axios.put('status/' + this.flagId, attFlag).then(() => {
-        this.$axios.get('status').then((res) => {
-          this.statusAtt = res.data
-          this.filterStatus(this.equipamentoId)
-        })
-      })
-    },
-
-    voltarStatus() {
-      const attFlag = {
-        flag: 0
-      }
-      this.$axios.put('status/' + this.flagId, attFlag).then(() => {
-        this.$axios.get('status').then((res) => {
-          this.statusAtt = res.data
-          this.filterStatus(this.equipamentoId)
-        })
-      })
-    },
-
-    openInfo(id) {
-      this.statusId = id - 1
-      this.statusInfoModal = true
-    },
-
     criaStatus() {
       let enumId = 0
       this.statusEnumAtt.forEach((s) => {
@@ -437,6 +467,66 @@ export default {
         .catch(({ response }) => {
           this.$toast.error(response.data.mensagem, { duration: 5000 })
         })
+    },
+
+    attStatus(id) {
+      let statusSelected = {}
+      statusSelected = this.statusAtt.filter((item) => item.id === id)
+      if (this.statusEditableMode === false) {
+        this.statusEditableMode = true
+        this.newStatus.type = statusSelected[0].status_enum.title
+        this.newStatus.info = statusSelected[0].info
+      } else {
+        let enumId = 0
+        this.statusEnumAtt.forEach((s) => {
+          if (s.title === this.newStatus.type) {
+            enumId = s.id
+          }
+        })
+        const attStatus = {
+          info: this.newStatus.info,
+          status_enum_id: enumId
+        }
+        this.$axios
+          .put('status/' + id, attStatus)
+          .then(() => {
+            this.$axios.get('status').then((res) => {
+              this.statusAtt = res.data
+              this.filterStatus(this.equipamentoId)
+              this.statusInfoModal = false
+              this.statusEditableMode = false
+              this.newStatus.info = ''
+              this.newStatus.type = ''
+              this.enumId = 0
+            })
+          })
+          .catch(({ response }) => {
+            this.$toast.error(response.data.mensagem, { duration: 5000 })
+          })
+      }
+    },
+
+    delStatus(id) {
+      const ok = window.confirm(
+        'Você tem certeza que deseja excluir esse status?'
+      )
+      if (ok) {
+        this.$axios
+          .delete('status/' + id)
+          .then(() => {
+            this.$axios.get('status').then((res) => {
+              this.statusAtt = res.data
+              this.filterStatus(this.equipamentoId)
+              this.statusInfoModal = false
+              this.statusEditableMode = false
+              this.statusId = '0'
+              this.statusSelected = '0'
+            })
+          })
+          .catch(({ response }) => {
+            this.$toast.error(response.data.mensagem, { duration: 5000 })
+          })
+      }
     }
   }
 }
@@ -559,6 +649,13 @@ export default {
   align-items: center;
 }
 
+.status-infos {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-flow: row;
+}
+
 .created-infos {
   display: flex;
   justify-content: space-between;
@@ -580,9 +677,8 @@ export default {
 }
 
 @media screen and (max-width: 700px) {
-  .resp {
-    display: flex;
-    justify-content: center;
+  .status-infos {
+    flex-flow: column;
   }
   .created-infos {
     flex-flow: column;
