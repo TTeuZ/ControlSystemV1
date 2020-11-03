@@ -104,7 +104,7 @@
             STATUS
           </span>
           <div class="form">
-            <div>
+            <div class="resp">
               <span class="status-text">descrição: {{ statusAtt[statusId].info }} </span> <!-- eslint-disable-line -->
             </div>
             <div class="created-infos">
@@ -510,6 +510,16 @@ export default {
   }
 }
 
+@media screen and (max-width: 700px) {
+  .resp {
+    display: flex;
+    justify-content: center;
+  }
+  .created-infos {
+    flex-flow: column;
+  }
+}
+
 @media screen and (max-width: 564px) {
   #buttons {
     flex-flow: column;
@@ -529,6 +539,13 @@ export default {
   }
   .modal-title {
     font-size: 20px;
+  }
+  .status-text {
+    font-size: 14px;
+  }
+  .btn-section {
+    flex-flow: column;
+    padding-right: 0px !important;
   }
 }
 </style>
