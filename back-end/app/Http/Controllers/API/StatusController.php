@@ -30,7 +30,7 @@ class StatusController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'info' => 'required|string|max:15',
+            'info' => 'required|string|max:500',
             'flag' => 'boolean',
             'equipamento_id' => 'required|integer',
             'status_enum_id' => 'required|integer'
@@ -73,7 +73,7 @@ class StatusController extends Controller
     public function update(Request $request, Status $status)
     {
         $validator = Validator::make($request->all(),[
-            'info' => 'string|max:100',
+            'info' => 'string|max:500',
             'flag' => 'boolean',
         ]);
         if ($validator->fails())
