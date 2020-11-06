@@ -40,4 +40,5 @@ Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('responsaveis', 'API\AutoEletrica\ResponsavelController');
     Route::apiResource('equip_auto', 'API\AutoEletrica\EquipamentosAutoEletricaController');
     Route::post('equip_change/{id}', 'API\AutoEletrica\EquipamentosAutoEletricaController@changeSituation');
+    Route::apiResource('log_equip_auto', 'API\AutoEletrica\LogEquipamentoAutoEletricaController');
 });

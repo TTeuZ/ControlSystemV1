@@ -5,9 +5,9 @@ namespace App\zModalAutoEletrica;
 use Illuminate\Database\Eloquent\Model;
 use App\zModalAutoEletrica\AutoEletrica;
 
-class EquipamentoAutoEletrica extends Model
+class LogEquipamentoAutoEletrica extends Model
 {
-    protected $fillable = ['nome', 'tipo', 'situacao', 'auto_eletrica_id', 'user_name_created', 'user_name_updated'];
+    protected $fillable = ['nome', 'acao', 'tipo', 'auto_eletrica_id', 'user_name'];
     protected $with = ['auto_eletrica'];
 
     public function auto_eletrica() {

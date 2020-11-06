@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\AutoEletrica;
 
 use App\zModalAutoEletrica\EquipamentoAutoEletrica;
+use App\zModalAutoEletrica\LogEquipamentoAutoEletrica;
 use App\zModalAutoEletrica\AutoEletrica;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -35,6 +36,17 @@ class EquipamentosAutoEletricaController extends Controller
         if ($request->user()->id <= 5) {
             $request->request->add(['user_name_created' => $request->user()->name]);
             $equip_auto = EquipamentoAutoEletrica::create($request->all());
+
+            //Criação do item no log
+            $log_equip = [
+                'nome' => $request->nome,
+                'tipo' => $request->tipo,
+                'auto_eletrica_id' => $request->auto_eletrica_id,
+                'user_name' => $request->user_name_created,
+                'acao' => 'Criado'
+            ];
+            LogEquipamentoAutoEletrica::create($log_equip);
+
             return response()->json($equip_auto);
         } else {
             return response()->json([
@@ -59,6 +71,17 @@ class EquipamentosAutoEletricaController extends Controller
             $request->request->add(['user_name_updated' => $request->user()->name]);
             $equipamento = EquipamentoAutoEletrica::find($id);
             $equipamento->update($request->all());
+
+            //Criação do item no log
+            $log_equip = [
+                'nome' => $request->nome,
+                'tipo' => $request->tipo,
+                'auto_eletrica_id' => $equipamento->auto_eletrica_id,
+                'user_name' => $request->user_name_updated,
+                'acao' => 'Atualizado'
+            ];
+            LogEquipamentoAutoEletrica::create($log_equip);
+
             return response()->json($equipamento);
         } else {
             return response()->json([
@@ -73,6 +96,27 @@ class EquipamentosAutoEletricaController extends Controller
         if ($request->user()->id <= 5) {
             $equipamento->situacao = !$equipamento->situacao;
             $equipamento->user_name_updated = $request->user()->name;
+
+            //Criação do item no log
+            if ($equipamento->situacao == 1) {
+                $log_equip = [
+                    'nome' => $equipamento->nome,
+                    'tipo' => $equipamento->tipo,
+                    'auto_eletrica_id' => $equipamento->auto_eletrica_id,
+                    'user_name' => $equipamento->user_name_updated,
+                    'acao' => 'Para defeito'
+                ];
+            } else {
+                $log_equip = [
+                    'nome' => $equipamento->nome,
+                    'tipo' => $equipamento->tipo,
+                    'auto_eletrica_id' => $equipamento->auto_eletrica_id,
+                    'user_name' => $equipamento->user_name_updated,
+                    'acao' => 'Para estoque'
+                ];
+            }
+            LogEquipamentoAutoEletrica::create($log_equip);
+
             $equipamento->update();
             return response()->json($equipamento);
         } else {
@@ -86,6 +130,17 @@ class EquipamentosAutoEletricaController extends Controller
     {
         if ($request->user()->id <= 5) {
             $equipamento = EquipamentoAutoEletrica::find($id);
+
+            //Criação do item no log
+            $log_equip = [
+                'nome' => $equipamento->nome,
+                'tipo' => $equipamento->tipo,
+                'auto_eletrica_id' => $equipamento->auto_eletrica_id,
+                'user_name' => $equipamento->user_name_created,
+                'acao' => 'Retirado'
+            ];
+            LogEquipamentoAutoEletrica::create($log_equip);
+
             $equipamento->delete();
         } else {
             return response()->json([
