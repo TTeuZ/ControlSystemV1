@@ -1,8 +1,8 @@
 <?php
 
-namespace App;
+namespace App\zModalManutencao;
 use Illuminate\Database\Eloquent\Model;
-use App\Status;
+use App\zModalManutencao\Status;
 
 class Equipamento extends Model
 {

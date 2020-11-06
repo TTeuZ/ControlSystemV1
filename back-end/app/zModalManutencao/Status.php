@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\zModalManutencao;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Equipamento;
-use App\StatusEnum;
+use App\zModalManutencao\Equipamento;
+use App\zModalManutencao\StatusEnum;
 
 class Status extends Model
 {

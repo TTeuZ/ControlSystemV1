@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Estoque;
 
-use App\Estoque;
+use App\zModalEstoque\Estoque;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;

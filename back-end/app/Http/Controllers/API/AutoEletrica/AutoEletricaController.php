@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\AutoEletrica;
 
-use App\AutoEletrica;
+use App\zModalAutoEletrica\AutoEletrica;
+use App\zModalAutoEletrica\Cabos;
+use App\zModalAutoEletrica\Responsavel;
+use App\zModalAutoEletrica\EquipamentoAutoEletrica;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Cabos;
-use App\Responsavel;
-use App\EquipamentoAutoEletrica;
 use Validator;
 
 class AutoEletricaController extends Controller

@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Manutencao;
 
-use App\Status;
+use App\zModalManutencao\Equipamento;
+use App\zModalManutencao\Status;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Equipamento;
-use App\StatusEnum;
 use Validator;
 
-class StatusController extends Controller
+class EquipamentosController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +17,12 @@ class StatusController extends Controller
      */
     public function index()
     {
-        return response()->json(Status::all());
+        $data= [];
+
+        foreach(Equipamento::all() as $equipamento){
+           array_push($data, [$equipamento, Status::all()->where('equipamento_id', $equipamento->id)]);
+        }
+        return response()->json($data);
     }
 
     /**
@@ -30,10 +34,8 @@ class StatusController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'info' => 'required|string|max:500',
-            'flag' => 'boolean',
-            'equipamento_id' => 'required|integer',
-            'status_enum_id' => 'required|integer'
+            'name' => 'required|string|max:15',
+            'done' => 'boolean'
         ]);
         if ($validator->fails())
             return response()->json([
@@ -41,40 +43,35 @@ class StatusController extends Controller
                 $validator->errors()
             ], 400);
 
-        if (!Equipamento::find($request->equipamento_id))
-            return response()->json('Equipamento nao existe');
-        if (!StatusEnum::find($request->status_enum_id))
-            return response()->json('Status base nao existe');
-
         $request->request->add(['user_name_created' => $request->user()->name]);
-        // dd($request->status_enum_id);
-        $status = Status::create($request->all());
-        return response()->json($status);
+        $equipamento = Equipamento::create($request->all());
+        return response()->json($equipamento);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Status  $status
+     * @param  \App\Equipamento  $equipamento
      * @return \Illuminate\Http\Response
      */
-    public function show(Status $status)
+    public function show(Equipamento $equipamento)
     {
-        //
+        $data = [$equipamento, $equipamento->status()];
+        return response()->json($data);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Status  $status
+     * @param  \App\Equipamento  $equipamento
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Status $status)
+    public function update(Request $request, Equipamento $equipamento) // nao funciona
     {
         $validator = Validator::make($request->all(),[
-            'info' => 'string|max:500',
-            'flag' => 'boolean',
+            'name' => 'string|max:15',
+            'done' => 'boolean'
         ]);
         if ($validator->fails())
             return response()->json([
@@ -83,18 +80,18 @@ class StatusController extends Controller
             ], 400);
 
         $request->request->add(['user_name_updated' => $request->user()->name]);
-        $status->update($request->all());
-        return response()->json($status);
+        $equipamento->update($request->all());
+        return response()->json($equipamento);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Status  $status
+     * @param  \App\Equipamento  $equipamento
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Status $status)
+    public function destroy(Equipamento $equipamento)
     {
-        $status->delete();
+        $equipamento->delete();
     }
 }

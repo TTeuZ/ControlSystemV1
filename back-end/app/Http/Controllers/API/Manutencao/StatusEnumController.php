@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Manutencao;
 
-use App\StatusEnum;
+use App\zModalManutencao\StatusEnum;
+use App\zModalManutencao\Status;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Status;
 use Validator;
 
 class StatusEnumController extends Controller

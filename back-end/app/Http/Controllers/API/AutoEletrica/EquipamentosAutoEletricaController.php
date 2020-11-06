@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\AutoEletrica;
 
-use App\Cabos;
+use App\zModalAutoEletrica\EquipamentoAutoEletrica;
+use App\zModalAutoEletrica\AutoEletrica;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\AutoEletrica;
 use Validator;
 
-class CabosController extends Controller
+class EquipamentosAutoEletricaController extends Controller
 {
     public function index()
     {
-        return response()->json(Cabos::all());
+        return response()->json(EquipamentoAutoEletrica::all());
     }
 
     public function store(Request $request)
@@ -34,11 +34,11 @@ class CabosController extends Controller
 
         if ($request->user()->id <= 5) {
             $request->request->add(['user_name_created' => $request->user()->name]);
-            $cabo = Cabos::create($request->all());
-            return response()->json($cabo);
+            $equip_auto = EquipamentoAutoEletrica::create($request->all());
+            return response()->json($equip_auto);
         } else {
             return response()->json([
-                'mensagem' => 'você não tem permissão para criar cabos'
+                'mensagem' => 'você não tem permissão para adicionar equipamentos'
             ]);
         }
     }
@@ -48,7 +48,6 @@ class CabosController extends Controller
         $validator = Validator::make($request->all(),[
             'nome' => 'string|max:150',
             'tipo' =>  'string|max:150',
-            'quantidade' => 'integer'
         ]);
         if ($validator->fails())
             return response()->json([
@@ -57,25 +56,25 @@ class CabosController extends Controller
             ], 400);
 
         if ($request->user()->id <= 5) {
-            $cabo = Cabos::find($id);
             $request->request->add(['user_name_updated' => $request->user()->name]);
-            $cabo->update($request->all());
-            return response()->json($cabo);
+            $equipamento = EquipamentoAutoEletrica::find($id);
+            $equipamento->update($request->all());
+            return response()->json($equipamento);
         } else {
             return response()->json([
-                'mensagem' => 'você não tem permissão para atualizar cabos'
+                'mensagem' => 'você não tem permissão para atualizar equipamentos'
             ]);
         }
     }
 
     public function changeSituation(Request $request, $id) {
-        $cabo = Cabos::find($id);
+        $equipamento = EquipamentoAutoEletrica::find($id);
 
         if ($request->user()->id <= 5) {
-            $cabo->situacao = !$cabo->situacao;
-            $cabo->user_name_updated = $request->user()->name;
-            $cabo->update();
-            return response()->json($cabo);
+            $equipamento->situacao = !$equipamento->situacao;
+            $equipamento->user_name_updated = $request->user()->name;
+            $equipamento->update();
+            return response()->json($equipamento);
         } else {
             return response()->json([
                 'mensagem' => 'você não tem permissão'
@@ -86,11 +85,11 @@ class CabosController extends Controller
     public function destroy($id, Request $request)
     {
         if ($request->user()->id <= 5) {
-            $cabo = Cabos::find($id);
-            $cabo->delete();
+            $equipamento = EquipamentoAutoEletrica::find($id);
+            $equipamento->delete();
         } else {
             return response()->json([
-                'mensagem' => 'você não tem permissão para deletar cabos'
+                'mensagem' => 'você não tem permissão para deletar equipamentos'
             ]);
         }
     }
