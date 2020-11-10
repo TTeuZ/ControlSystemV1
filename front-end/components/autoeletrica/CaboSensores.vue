@@ -49,37 +49,13 @@
           <span class="cabo-text"> {{ antPNOK }} </span>
         </div>
       </v-col>
-      <v-col
-        class="cabo-state-box border mt-5"
-        xl="11"
-        lg="11"
-        md="11"
-        sm="12"
-        xs="12"
-        cols="12"
-      >
-        <span class="cabos-card-title"> LOG </span>
-        <div id="log">
-          <div v-for="log in autosAtt[selectedAutoEletrica][2]" :key="log" style="width: 100%"> <!-- eslint-disable-line -->
-            <div v-if="log.situacao === '1' && log.nome === 'CABO SENSORES'" class="cabos"> <!-- eslint-disable-line -->
-              <span class="cabo-text"> Enviado p/ defeito por: {{ log.user_name_updated }} </span> <!-- eslint-disable-line -->
-              <span class="cabo-text"> {{ log.tipo }} </span> <!-- eslint-disable-line -->
-              <span class="cabo-text">
-                {{
-                  log.updated_at
-                    .split(' ')[0]
-                    .split('-')
-                    .reverse()
-                    .join('/') +
-                    ' ' +
-                    'às' +
-                    ' ' +
-                    log.updated_at.split(' ')[1]
-                }}
-              </span>
-            </div>
-          </div>
-        </div>
+      <v-col id="log" cols="12">
+        <Log
+          :which-item="'CABO SENSORES'"
+          :modal-log="modalLog"
+          :cabos-log="cabosLog"
+          :auto-eletrica-id="autoId"
+        />
       </v-col>
       <button id="add-item" @click="openAdd()">
         <v-icon class="add-icon"> mdi-plus </v-icon>
@@ -184,7 +160,11 @@
 </template>
 
 <script>
+import Log from '~/components/autoeletrica/Logs.vue'
+
 export default {
+  components: { Log },
+
   props: {
     autos: {
       type: Array,
@@ -192,6 +172,14 @@ export default {
     },
     selectedAutoEletrica: {
       type: String,
+      required: true
+    },
+    autoId: {
+      type: String,
+      required: true
+    },
+    cabosLog: {
+      type: Array,
       required: true
     }
   },

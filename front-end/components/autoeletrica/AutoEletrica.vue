@@ -11,7 +11,9 @@
           :class="{
             selectedColorClass: selectedAutoEletrica == i ? true : false
           }"
-          @click=";(selectedAutoEletrica = i), totalInfos()"
+          @click="
+            ;(selectedAutoEletrica = i), (autoId = item[0].id), totalInfos()
+          "
           >{{ item[0].nome }}</v-btn
         >
       </div>
@@ -141,21 +143,27 @@
           ref="caboAzul"
           :class="{ hidden: selectedType !== 1 ? true : false }"
           :autos="autos"
+          :cabos-log="cabosLog"
           :selected-auto-eletrica="selectedAutoEletrica"
+          :auto-id="autoId"
           :selected-type="selectedType"
         />
         <CaboSensores
           ref="caboSensores"
           :class="{ hidden: selectedType !== 2 ? true : false }"
           :autos="autos"
+          :cabos-log="cabosLog"
           :selected-auto-eletrica="selectedAutoEletrica"
+          :auto-id="autoId"
           :selected-type="selectedType"
         />
         <CaboAlimentacao
           ref="caboAlimentacao"
           :class="{ hidden: selectedType !== 3 ? true : false }"
           :autos="autos"
+          :cabos-log="cabosLog"
           :selected-auto-eletrica="selectedAutoEletrica"
+          :auto-id="autoId"
           :selected-type="selectedType"
         />
       </v-col>
@@ -269,11 +277,20 @@ export default {
     autos: {
       type: Array,
       required: true
+    },
+    lacresLog: {
+      type: Array,
+      required: true
+    },
+    cabosLog: {
+      type: Array,
+      required: true
     }
   },
   data() {
     return {
       selectedAutoEletrica: 0,
+      autoId: 1,
       totalDeLacresOk: 0,
       totalDeLacresNOk: 0,
       modalDeCriacao: false,
