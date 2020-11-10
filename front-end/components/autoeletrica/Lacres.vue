@@ -57,6 +57,9 @@
           </div>
         </div>
       </v-col>
+      <v-col id="log" cols="12">
+        <Log :lacres-log="lacresLog" :auto-eletrica-id="autoId" />
+      </v-col>
       <button id="add-item" @click="openAdd()">
         <v-icon class="add-icon"> mdi-plus </v-icon>
       </button>
@@ -254,7 +257,11 @@
 </template>
 
 <script>
+import Log from '~/components/autoeletrica/LacresLogs.vue'
+
 export default {
+  components: { Log },
+
   props: {
     autos: {
       type: Array,
@@ -266,6 +273,14 @@ export default {
     },
     selectedType: {
       type: Number,
+      required: true
+    },
+    autoId: {
+      type: String,
+      required: true
+    },
+    lacresLog: {
+      type: Array,
       required: true
     }
   },

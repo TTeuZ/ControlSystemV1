@@ -136,7 +136,9 @@
         <Lacres
           :class="{ hidden: selectedType !== 0 ? true : false }"
           :autos="autos"
+          :lacres-log="lacresLog"
           :selected-auto-eletrica="selectedAutoEletrica"
+          :auto-id="autoId"
           :selected-type="selectedType"
         />
         <CaboAzul
