@@ -159,7 +159,7 @@
 </template>
 
 <script>
-import Log from '~/components/autoeletrica/Logs.vue'
+import Log from '~/components/autoeletrica/CabosLogs.vue'
 
 export default {
   components: { Log },
