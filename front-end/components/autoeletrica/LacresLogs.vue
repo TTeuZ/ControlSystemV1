@@ -111,7 +111,7 @@ export default {
         this.lacresLogAtt = res.data
       })
       this.currentInfo = this.lacresLogAtt.filter(
-        (item) => this.autoEletricaId === item.auto_eletrica_id /*eslint-disable-line*/
+        (item) => this.autoEletricaId.toString() === item.auto_eletrica_id /*eslint-disable-line*/
       )
       this.filterForAction()
     },

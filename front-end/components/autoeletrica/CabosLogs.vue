@@ -115,7 +115,7 @@ export default {
         this.cabosLogAtt = res.data
       })
       this.currentInfo = this.cabosLogAtt.filter(
-        (item) => this.autoEletricaId === item.auto_eletrica_id && item.nome === this.whichItem /*eslint-disable-line*/
+        (item) => this.autoEletricaId.toString() === item.auto_eletrica_id && item.nome === this.whichItem /*eslint-disable-line*/
       )
       this.getTypes()
       this.filterForAction()
