@@ -92,7 +92,7 @@ export default {
 
       search: '',
       actionSelected: 'Todos',
-      actionItens: ['Todos', 'Criado', 'Para Defeito', 'Para Estoque'],
+      actionItens: ['Todos', 'Criado', 'Para Defeito', 'Para Estoque', 'Retirado'], /*eslint-disable-line*/
 
       typeSelected: 'Todos',
       typeItens: ['Todos']
