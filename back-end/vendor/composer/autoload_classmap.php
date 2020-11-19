@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\AllEquipamento' => $baseDir . '/app/AllEquipamento.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\API\\AuthController' => $baseDir . '/app/Http/Controllers/API/AuthController.php',
@@ -20,6 +21,7 @@ return array(
     'App\\Http\\Controllers\\API\\Manutencao\\EquipamentosController' => $baseDir . '/app/Http/Controllers/API/Manutencao/EquipamentosController.php',
     'App\\Http\\Controllers\\API\\Manutencao\\StatusController' => $baseDir . '/app/Http/Controllers/API/Manutencao/StatusController.php',
     'App\\Http\\Controllers\\API\\Manutencao\\StatusEnumController' => $baseDir . '/app/Http/Controllers/API/Manutencao/StatusEnumController.php',
+    'App\\Http\\Controllers\\AllEquipamentoController' => $baseDir . '/app/Http/Controllers/AllEquipamentoController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',
     'App\\Http\\Middleware\\Api\\JsonMiddleware' => $baseDir . '/app/Http/Middleware/Api/JsonMiddleware.php',

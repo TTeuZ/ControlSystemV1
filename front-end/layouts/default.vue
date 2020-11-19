@@ -92,8 +92,8 @@ export default {
           link: '/'
         },
         {
-          label: 'Estoque',
-          link: '/estoque'
+          label: 'Central',
+          link: '/centralEquipamentos'
         },
         {
           label: 'Auto Eletricas',
@@ -103,6 +103,10 @@ export default {
         {
           label: 'Histórico',
           link: '/historico'
+        },
+        {
+          label: 'Estoque',
+          link: '/estoque'
         }
       ],
 
@@ -112,8 +116,8 @@ export default {
           drawerLink: '/'
         },
         {
-          drawerLabel: 'Estoque',
-          drawerLink: '/estoque'
+          drawerLabel: 'Central',
+          drawerLink: '/centralEquipamentos'
         },
         {
           drawerLabel: 'Auto Eletricas',
@@ -123,6 +127,10 @@ export default {
         {
           drawerLabel: 'Histórico',
           drawerLink: '/historico'
+        },
+        {
+          drawerLabel: 'Estoque',
+          drawerLink: '/estoque'
         }
       ]
     }

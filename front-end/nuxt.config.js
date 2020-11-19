@@ -65,9 +65,9 @@ export default {
     prefix: '/api/'
   },
 
-  // '/api/': { target: 'https://detecplkdobrasil1.websiteseguro.com/' }
+  // '/api/': { target: 'https://detecplkdobrasil1.websiteseguro.com/' } '/api/': { target: 'http://localhost:8000/' }
   proxy: {
-    '/api/': { target: 'http://localhost:8000/' }
+    '/api/': { target: 'https://detecplkdobrasil1.websiteseguro.com/' }
   },
 
   auth: {

@@ -24,6 +24,10 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('atualiza', 'API\AuthController@atualizar');
     Route::get('meu-perfil', 'API\AuthController@meuPerfil')->name('perfil');
 
+    // Rotas da central de equipamentos
+    Route::apiResource('all_equip', 'API\CentralEquip\AllEquipamentoController');
+    Route::post('all_equip_change/{id}', 'API\CentralEquip\AllEquipamentoController@changeSituation');
+
     // Rotas de Manutenção
     Route::apiResource('status', 'API\Manutencao\StatusController');
     Route::apiResource('statusEnum', 'API\Manutencao\StatusEnumController');

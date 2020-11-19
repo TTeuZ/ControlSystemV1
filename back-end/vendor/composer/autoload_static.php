@@ -465,6 +465,7 @@ class ComposerStaticInit8f8ead165624cfd72c5b8fd2d76d0518
     );
 
     public static $classMap = array (
+        'App\\AllEquipamento' => __DIR__ . '/../..' . '/app/AllEquipamento.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\API\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/AuthController.php',
@@ -479,6 +480,7 @@ class ComposerStaticInit8f8ead165624cfd72c5b8fd2d76d0518
         'App\\Http\\Controllers\\API\\Manutencao\\EquipamentosController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/Manutencao/EquipamentosController.php',
         'App\\Http\\Controllers\\API\\Manutencao\\StatusController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/Manutencao/StatusController.php',
         'App\\Http\\Controllers\\API\\Manutencao\\StatusEnumController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/Manutencao/StatusEnumController.php',
+        'App\\Http\\Controllers\\AllEquipamentoController' => __DIR__ . '/../..' . '/app/Http/Controllers/AllEquipamentoController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Api\\JsonMiddleware' => __DIR__ . '/../..' . '/app/Http/Middleware/Api/JsonMiddleware.php',
