@@ -91,14 +91,14 @@ export default {
           label: 'Home',
           link: '/'
         },
-        {
-          label: 'Central',
-          link: '/centralEquipamentos'
-        },
-        {
-          label: 'Auto Eletricas',
-          link: '/autoEletricas'
-        },
+        // {
+        //   label: 'Central',
+        //   link: '/centralEquipamentos'
+        // },
+        // {
+        //   label: 'Auto Eletricas',
+        //   link: '/autoEletricas'
+        // },
         { label: 'Manutenção', link: '/manutencao' },
         {
           label: 'Histórico',
@@ -115,14 +115,14 @@ export default {
           drawerLabel: 'Home',
           drawerLink: '/'
         },
-        {
-          drawerLabel: 'Central',
-          drawerLink: '/centralEquipamentos'
-        },
-        {
-          drawerLabel: 'Auto Eletricas',
-          drawerLink: '/autoEletricas'
-        },
+        // {
+        //   drawerLabel: 'Central',
+        //   drawerLink: '/centralEquipamentos'
+        // },
+        // {
+        //   drawerLabel: 'Auto Eletricas',
+        //   drawerLink: '/autoEletricas'
+        // },
         { drawerLabel: 'Manutenção', drawerLink: '/manutencao' },
         {
           drawerLabel: 'Histórico',

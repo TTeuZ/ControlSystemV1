@@ -2,7 +2,8 @@
   <v-container fluid class="ma-0 pa-0">
     <v-row class="ma-0 pa-0" justify="center" aling="center">
       <v-col class="users-side" xl="4" lg="4" md="11" sm="11" xs="11" cols="11">
-        <AboutAutos :autos="autos" />
+        <!-- <AboutAutos :autos="autos" /> -->
+        <Users :usuarios="Users" />
       </v-col>
       <v-col xl="4" lg="4" md="11" sm="11" xs="11" cols="11">
         <EquipNoEsc :equip="equipamento" />
@@ -11,7 +12,7 @@
         <BuyList :estoque="estoque" />
       </v-col>
     </v-row>
-    <v-btn class="user-btn" color="orange" @click="usersModal = !usersModal"
+    <!-- <v-btn class="user-btn" color="orange" @click="usersModal = !usersModal"
       >Usuarios</v-btn
     >
     <v-dialog
@@ -28,7 +29,7 @@
           </v-btn>
         </div>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
   </v-container>
 </template>
 
@@ -36,14 +37,14 @@
 import Users from '~/components/home/Users'
 import EquipNoEsc from '~/components/home/EquipNoEsc'
 import BuyList from '~/components/home/BuyList'
-import AboutAutos from '~/components/home/AboutAutos'
+// import AboutAutos from '~/components/home/AboutAutos'
 
 export default {
   components: {
     Users,
     EquipNoEsc,
-    BuyList,
-    AboutAutos
+    BuyList
+    // AboutAutos
   },
 
   data() {

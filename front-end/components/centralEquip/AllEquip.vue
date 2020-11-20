@@ -77,11 +77,19 @@
           </span>
           <div class="form">
             <v-text-field
-              v-model="name"
+              v-model="equip.name"
               label="Equipamento"
               single-line
               hide-details
             ></v-text-field>
+          </div>
+          <div class="form">
+            <v-select
+              v-model="equip.type"
+              :items="types"
+              color="cyan darken-2"
+              label="Tipo"
+            />
           </div>
         </div>
         <div class="btn-section">
@@ -110,7 +118,11 @@ export default {
   data() {
     return {
       addModal: false,
-      name: '',
+      equip: {
+        name: '',
+        type: ''
+      },
+      types: ['CO2 NOVO', 'CO2 ANTIGO', 'LARANJA', 'PWS', 'TABUA'],
 
       search: '',
       filterSelected: 'Nome',
@@ -170,14 +182,16 @@ export default {
     },
     addEquip() {
       const newEquip = {
-        name: this.name
+        name: this.equip.name,
+        tipo: this.equip.type
       }
       this.$axios.post('all_equip', newEquip).then(() => {
         this.$axios.get('all_equip').then((res) => {
           this.allEquipsAtt = res.data
         })
         this.addModal = false
-        this.name = ''
+        this.equip.name = ''
+        this.equip.type = ''
       })
     }
   }
