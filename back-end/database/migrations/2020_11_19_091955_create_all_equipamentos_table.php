@@ -17,6 +17,7 @@ class CreateAllEquipamentosTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('user_name');
+            $table->string('tipo');
             $table->string('situacao');
             $table->boolean('disponivel')->default(true);
             $table->timestamps();

@@ -41,7 +41,8 @@ class AllEquipamentoController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'name' => 'required|string|max:15',
+            'name' => 'required|string|max:150',
+            'tipo' => 'required|string|max:150'
         ]);
         if ($validator->fails())
             return response()->json([
@@ -54,6 +55,30 @@ class AllEquipamentoController extends Controller
             $request->request->add(['situacao' => 'Adicionado no sistema']);
             $equipamento = AllEquipamento::create($request->all());
             return response()->json($equipamento);
+        }
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(),[
+            'name' => 'string|max:150',
+            'tipo' =>  'string|max:150',
+        ]);
+        if ($validator->fails())
+            return response()->json([
+                'mensagem' => 'Preencha todos os campos',
+                $validator->errors()
+            ], 400);
+
+        if ($request->user()->id <= 5) {
+            $equipamento = AllEquipamento::find($id);
+            $equipamento->update($request->all());
+
+            return response()->json($equipamento);
+        } else {
+            return response()->json([
+                'mensagem' => 'você não tem permissão para atualizar equipamentos'
+            ]);
         }
     }
 
