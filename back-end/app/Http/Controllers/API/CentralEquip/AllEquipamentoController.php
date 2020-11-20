@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\CentralEquip;
 
 use App\zModalCentralEquip\AllEquipamento;
+use App\zModalAutoEletrica\EquipamentoAutoEletrica;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;
@@ -12,6 +13,29 @@ class AllEquipamentoController extends Controller
     public function index()
     {
         return response()->json(AllEquipamento::orderBy('name')->get());
+    }
+
+    public function disp_index()
+    {
+        $equipamento = AllEquipamento::all();
+
+        $equipamento = $equipamento->filter(function ($item) use ($equipamento) {
+            return $item->disponivel == true;
+        })->values();
+
+        $equipamento = $equipamento->filter(function ($item) use ($equipamento) {
+            $auto_equip = EquipamentoAutoEletrica::all();
+            $exist = false;
+            foreach ($auto_equip as $key) {
+                if ($key->nome == $item->name) {
+                    $exist = true;
+                break;
+                };
+            };
+            return !$exist;
+        })->values();
+
+        return response()->json($equipamento);
     }
 
     public function store(Request $request)
@@ -46,6 +70,14 @@ class AllEquipamentoController extends Controller
             ], 400);
         $request->request->add(['user_name' => $request->user()->name]);
         $equipamento->update($request->all());
+        return response()->json($equipamento);
+    }
+
+    public function changeDisponibilidade($id)
+    {
+        $equipamento = AllEquipamento::find($id);
+        $equipamento->disponivel = !$equipamento->disponivel;
+        $equipamento->update();
         return response()->json($equipamento);
     }
 

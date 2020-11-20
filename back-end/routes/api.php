@@ -27,6 +27,8 @@ Route::middleware(['auth:api'])->group(function () {
     // Rotas da central de equipamentos
     Route::apiResource('all_equip', 'API\CentralEquip\AllEquipamentoController');
     Route::post('all_equip_change/{id}', 'API\CentralEquip\AllEquipamentoController@changeSituation');
+    Route::post('all_equip_disp/{id}', 'API\CentralEquip\AllEquipamentoController@changeDisponibilidade');
+    Route::get('disp_index', 'API\CentralEquip\AllEquipamentoController@disp_index');
 
     // Rotas de Manutenção
     Route::apiResource('status', 'API\Manutencao\StatusController');

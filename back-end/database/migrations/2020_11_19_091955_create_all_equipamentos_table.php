@@ -18,6 +18,7 @@ class CreateAllEquipamentosTable extends Migration
             $table->string('name');
             $table->string('user_name');
             $table->string('situacao');
+            $table->boolean('disponivel')->default(true);
             $table->timestamps();
         });
     }
