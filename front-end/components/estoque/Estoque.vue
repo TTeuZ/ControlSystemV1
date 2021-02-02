@@ -351,7 +351,6 @@ export default {
   mounted() {
     this.itens.forEach((estoque) => {
       this.verificaFlag(estoque.quantidade_min, estoque.quantidade, estoque.id)
-      console.log('atualizou o estoque = ', estoque.name)
     })
   },
   methods: {
@@ -442,10 +441,8 @@ export default {
     },
 
     verificaFlag(quantMin, quant, id) {
-      const flag = {
-        flag: true
-      }
-      if (quantMin >= quant) {
+      const flag = {}
+      if (parseInt(quantMin, 10) >= parseInt(quant, 10)) {
         flag.flag = true
         this.$axios.put('estoque/' + id, flag)
       } else {
