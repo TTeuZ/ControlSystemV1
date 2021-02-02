@@ -347,6 +347,13 @@ export default {
       }))
     }
   },
+
+  mounted() {
+    this.itens.forEach((estoque) => {
+      this.verificaFlag(estoque.quantidade_min, estoque.quantidade, estoque.id)
+      console.log('atualizou o estoque = ', estoque.name)
+    })
+  },
   methods: {
     attModalChange(item) {
       this.attModel = true
@@ -399,7 +406,11 @@ export default {
             }
             return e
           })
-          this.verificaFlag()
+          this.verificaFlag(
+            this.editedItem.quantidade_min,
+            this.editedItem.quantidade,
+            this.editedItem.id
+          )
           this.close()
         })
         .catch(({ response }) => {
@@ -418,25 +429,28 @@ export default {
         .post('estoque', newItem)
         .then((res) => {
           this.itens.push(res.data)
+          this.verificaFlag(
+            this.newItem.quantidade_min,
+            this.newItem.quantidade,
+            res.data.id
+          )
           this.close()
-          this.verificaFlag()
         })
         .catch(({ response }) => {
           this.$toast.error(response.data.mensagem, { duration: 5000 })
         })
     },
 
-    verificaFlag() {
+    verificaFlag(quantMin, quant, id) {
       const flag = {
         flag: true
       }
-      const noFlag = {
-        flag: false
-      }
-      if (this.editedItem.quantidade_min >= this.editedItem.quantidade) {
-        this.$axios.put('estoque/' + this.editedItem.id, flag)
+      if (quantMin >= quant) {
+        flag.flag = true
+        this.$axios.put('estoque/' + id, flag)
       } else {
-        this.$axios.put('estoque/' + this.editedItem.id, noFlag)
+        flag.flag = false
+        this.$axios.put('estoque/' + id, flag)
       }
     }
   }
