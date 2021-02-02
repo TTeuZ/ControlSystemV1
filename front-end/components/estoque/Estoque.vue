@@ -416,10 +416,10 @@ export default {
       }
       this.$axios
         .post('estoque', newItem)
-        .then(() => {
+        .then((res) => {
+          this.itens.push(res.data)
           this.close()
           this.verificaFlag()
-          window.location.reload()
         })
         .catch(({ response }) => {
           this.$toast.error(response.data.mensagem, { duration: 5000 })
@@ -448,7 +448,6 @@ export default {
   border: 1px solid black;
   box-shadow: 0px 0px 14px -2px rgba(0, 0, 0, 0.49);
   height: auto;
-  max-height: 700px;
   width: 100%;
   margin-top: 10px !important;
 }
