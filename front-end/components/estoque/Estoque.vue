@@ -347,12 +347,6 @@ export default {
       }))
     }
   },
-
-  mounted() {
-    this.itens.forEach((estoque) => {
-      this.verificaFlag(estoque.quantidade_min, estoque.quantidade, estoque.id)
-    })
-  },
   methods: {
     attModalChange(item) {
       this.attModel = true
