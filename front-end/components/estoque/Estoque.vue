@@ -187,6 +187,60 @@
             </v-card>
           </v-dialog>
           <!-- dialog para criar -->
+          <!-- dialog para atualizar -->
+          <v-dialog
+            v-model="attModel"
+            max-width="800px"
+            no-click-animation
+            persistent
+          >
+            <v-card class="modal-card">
+              <div class="modal-title-section">
+                <span class="modal-title">
+                  ATUALIZE O ITEM
+                </span>
+                <div class="form">
+                  <v-text-field
+                    v-model="editedItem.name"
+                    :rules="[(v) => !!v || 'Campo Obrigatório']"
+                    color="cyan darken-2"
+                    label=" Nome"
+                  />
+                  <v-text-field
+                    v-model="editedItem.quantidade"
+                    v-maska="'#*'"
+                    :rules="[(v) => !!v || 'Campo Obrigatório']"
+                    color="cyan darken-2"
+                    label=" Quantidade"
+                  />
+                  <v-text-field
+                    v-if="admin"
+                    v-model="editedItem.quantidade_min"
+                    v-maska="'#*'"
+                    :rules="[(v) => !!v || 'Campo Obrigatório']"
+                    color="cyan darken-2"
+                    label=" Minimo"
+                  />
+                  <v-select
+                    v-model="editedItem.tipe"
+                    :items="tipes"
+                    :rules="[(v) => !!v || 'Campo Obrigatório']"
+                    color="cyan darken-2"
+                    label=" Tipo"
+                  />
+                </div>
+              </div>
+              <div class="btn-section">
+                <v-btn color="#43A047" text @click="close">
+                  Cancelar
+                </v-btn>
+                <v-btn color="#43A047" text @click="atualizaItem()">
+                  Salvar
+                </v-btn>
+              </div>
+            </v-card>
+          </v-dialog>
+          <!-- dialog para atualizar -->
         </div>
       </v-col>
       <v-col
@@ -218,63 +272,29 @@
               <v-icon medium color="error" @click="deletaItem(item)">
                 mdi-delete
               </v-icon>
+              <v-menu right close-on-click>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    depressed
+                    height="25"
+                    width="25"
+                    fab
+                    :class="item.color"
+                    v-bind="attrs"
+                    v-on="on"
+                  />
+                </template>
+                <v-list>
+                  <v-list-item v-for="color in colors" :key="color">
+                    <v-list-item-title @click="updatePriorit(color, item.id)">{{
+                      color
+                    }}</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
             </template>
           </v-data-table>
         </div>
-        <!-- dialog para atualizar -->
-        <v-dialog
-          v-model="attModel"
-          max-width="800px"
-          no-click-animation
-          persistent
-        >
-          <v-card class="modal-card">
-            <div class="modal-title-section">
-              <span class="modal-title">
-                ATUALIZE O ITEM
-              </span>
-              <div class="form">
-                <v-text-field
-                  v-model="editedItem.name"
-                  :rules="[(v) => !!v || 'Campo Obrigatório']"
-                  color="cyan darken-2"
-                  label=" Nome"
-                />
-                <v-text-field
-                  v-model="editedItem.quantidade"
-                  v-maska="'#*'"
-                  :rules="[(v) => !!v || 'Campo Obrigatório']"
-                  color="cyan darken-2"
-                  label=" Quantidade"
-                />
-                <v-text-field
-                  v-if="admin"
-                  v-model="editedItem.quantidade_min"
-                  v-maska="'#*'"
-                  :rules="[(v) => !!v || 'Campo Obrigatório']"
-                  color="cyan darken-2"
-                  label=" Minimo"
-                />
-                <v-select
-                  v-model="editedItem.tipe"
-                  :items="tipes"
-                  :rules="[(v) => !!v || 'Campo Obrigatório']"
-                  color="cyan darken-2"
-                  label=" Tipo"
-                />
-              </div>
-            </div>
-            <div class="btn-section">
-              <v-btn color="#43A047" text @click="close">
-                Cancelar
-              </v-btn>
-              <v-btn color="#43A047" text @click="atualizaItem()">
-                Salvar
-              </v-btn>
-            </div>
-          </v-card>
-        </v-dialog>
-        <!-- dialog para atualizar -->
       </v-col>
     </v-row>
   </v-container>
@@ -331,7 +351,8 @@ export default {
         { text: '', value: 'action', align: 'right', sortable: false }
       ],
 
-      tipes: ['Lacre', 'Cabo']
+      tipes: ['Lacre', 'Cabo'],
+      colors: ['Verde', 'Amarelo', 'Vermelho']
     }
   },
 
@@ -342,6 +363,7 @@ export default {
         name: e.name,
         quantidade: e.quantidade,
         quantidade_min: e.quantidade_min,
+        color: e.color,
         flag: e.flag,
         tipe: e.tipe
       }))
@@ -427,11 +449,54 @@ export default {
             this.newItem.quantidade,
             res.data.id
           )
+          this.newItem = {}
           this.close()
         })
         .catch(({ response }) => {
           this.$toast.error(response.data.mensagem, { duration: 5000 })
         })
+    },
+
+    updatePriorit(color, id) {
+      const newPriorit = {}
+      switch (color) {
+        case 'Verde': {
+          newPriorit.color = 'green'
+          this.$axios.put('estoque/' + id, newPriorit).then((res) => {
+            this.itens = this.itens.map((e) => {
+              if (e.id === id) {
+                return Object.assign(e, newPriorit)
+              }
+              return e
+            })
+          })
+          break
+        }
+        case 'Amarelo': {
+          newPriorit.color = 'yellow'
+          this.$axios.put('estoque/' + id, newPriorit).then((res) => {
+            this.itens = this.itens.map((e) => {
+              if (e.id === id) {
+                return Object.assign(e, newPriorit)
+              }
+              return e
+            })
+          })
+          break
+        }
+        case 'Vermelho': {
+          newPriorit.color = 'red'
+          this.$axios.put('estoque/' + id, newPriorit).then((res) => {
+            this.itens = this.itens.map((e) => {
+              if (e.id === id) {
+                return Object.assign(e, newPriorit)
+              }
+              return e
+            })
+          })
+          break
+        }
+      }
     },
 
     verificaFlag(quantMin, quant, id) {
@@ -512,18 +577,6 @@ export default {
   margin-top: 15px;
 }
 
-/* #switches {
-  display: flex;
-  flex-flow: row;
-  justify-content: space-around;
-  align-items: center;
-
-  width: 100%;
-  height: auto;
-
-  margin-top: 30px;
-} */
-
 #new-item {
   align-self: flex-end;
   position: relative;
@@ -570,6 +623,16 @@ export default {
   background-color: black;
 }
 
+.green {
+  background-color: lightgreen !important;
+}
+.red {
+  background-color: rgb(235, 57, 57) !important;
+}
+.yellow {
+  background-color: rgb(240, 240, 50) !important;
+}
+
 @media screen and (max-width: 960px) {
   #options-side {
     height: 300px;
@@ -589,13 +652,6 @@ export default {
 
   .log-text {
     margin-left: 5px;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  #data-table {
-    overflow: auto;
-    max-height: 550px;
   }
 }
 </style>
