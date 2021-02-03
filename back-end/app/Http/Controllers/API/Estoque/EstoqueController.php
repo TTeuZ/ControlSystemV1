@@ -58,6 +58,7 @@ class EstoqueController extends Controller
             'tipe' => 'required|string|max:50',
             'quantidade' => 'required|integer',
             'quantidade_min' => 'required|integer',
+            'color' => 'string',
             'flag' => 'boolean'
         ]);
         if ($validator->fails())
@@ -102,6 +103,7 @@ class EstoqueController extends Controller
             'tipe' => 'string|max:50',
             'quantidade' => 'integer',
             'quantidade_min' => 'integer',
+            'color' => 'string',
             'flag' => 'boolean'
         ]);
         if ($validator->fails())

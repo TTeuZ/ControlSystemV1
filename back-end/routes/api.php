@@ -38,6 +38,8 @@ Route::middleware(['auth:api'])->group(function () {
     // Rotas de Estoque
     Route::apiResource('estoque', 'API\Estoque\EstoqueController');
     Route::get('atthis', 'API\Estoque\EstoqueController@attHis');
+    Route::apiResource('fornecedor', 'API\Estoque\FornecedorController');
+    Route::apiResource('fornecedorItem', 'API\Estoque\FornecedorItensController');
 
     // Rotas de Auto Elétrica
     Route::apiResource('autoeletrica', 'API\AutoEletrica\AutoEletricaController');
