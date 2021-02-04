@@ -107,6 +107,10 @@ export default {
         {
           label: 'Estoque',
           link: '/estoque'
+        },
+        {
+          label: 'Fornecedores',
+          link: '/fornecedores'
         }
       ],
 

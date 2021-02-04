@@ -20,7 +20,7 @@ class FornecedorController extends Controller
         $data= [];
 
         foreach(Fornecedor::all() as $fornecedor){
-           array_push($data, [$fornecedor, FornecedorItens::all()->where('fornecedor_id', $fornecedor->id)]);
+           array_push($data, [$fornecedor, FornecedorItens::all()->where('fornecedor_id', $fornecedor->id)->values()]);
         }
         return response()->json($data);
     }

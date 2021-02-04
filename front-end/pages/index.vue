@@ -54,25 +54,15 @@ export default {
   },
 
   async asyncData({ $axios }) {
-    const [
-      equipamentoRes,
-      statusRes,
-      estoqueRes,
-      userRes,
-      autosRes
-    ] = await Promise.all([
+    const [equipamentoRes, estoqueRes, userRes] = await Promise.all([
       $axios.get('equipamento'),
-      $axios.get('status'),
       $axios.get('estoque'),
-      $axios.get('usuarios'),
-      $axios.get('autoeletrica')
+      $axios.get('usuarios')
     ])
     return {
       equipamento: equipamentoRes.data,
-      status: statusRes.data,
       estoque: estoqueRes.data,
-      Users: userRes.data.dados,
-      autos: autosRes.data
+      Users: userRes.data.dados
     }
   },
 
