@@ -50,9 +50,14 @@
           </div>
 
           <div v-if="selectedEquip !== 100" id="history-info">
-            <span v-if="showForm" id="equip-title">
-              {{ filteredEquip[selectedEquip][0].name.toUpperCase() }}
-            </span>
+            <div id="part-title">
+              <span v-if="showForm" id="equip-title">
+                {{ filteredEquip[selectedEquip][0].name.toUpperCase() }}
+              </span>
+              <span v-if="showForm" class="time-text">
+                Tempo de manutenção: {{ filteredEquip[selectedEquip][0].time }} Hrs <!-- eslint-disable-line -->
+              </span>
+            </div>
 
             <div id="part-info">
               <span v-if="showForm" class="history-text"
@@ -287,18 +292,15 @@ export default {
   display: flex;
   justify-content: flex-end;
 }
-
 #ajust-itens {
   margin-top: 40px !important;
 }
-
 #selector-side {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-flow: column;
 }
-
 #itens-list {
   border: 1px solid black;
   width: 400px;
@@ -307,7 +309,6 @@ export default {
   overflow: auto;
   box-shadow: 0px 0px 14px -2px rgba(0, 0, 0, 0.49);
 }
-
 #list-item {
   width: 100%;
   height: auto;
@@ -316,26 +317,22 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
 #divider {
   background-color: black;
   width: 100%;
 }
-
 #item-title {
   font-family: 'Exo Regular';
   font-size: 16px;
   padding-bottom: 15px !important;
   padding-top: 15px !important;
 }
-
 #info-side {
   border: 1px solid black;
   height: 690px;
   display: flex;
   box-shadow: 0px 0px 14px -2px rgba(0, 0, 0, 0.49);
 }
-
 #title-section {
   display: flex;
   flex-flow: column;
@@ -343,25 +340,20 @@ export default {
   height: 55px;
   justify-self: start;
 }
-
 #info-title {
   font-family: 'Exo Regular';
   font-size: 36px;
   margin-left: 20px;
 }
-
 #divider {
   background-color: black;
 }
-
 #equip-title {
   font-family: 'Exo Regular';
   font-size: 30px;
   width: 30%;
   height: 40px;
-  margin-left: 30px;
 }
-
 #history-info {
   display: flex;
   align-items: center;
@@ -369,7 +361,6 @@ export default {
   flex-flow: row;
   width: 100%;
 }
-
 #all-info {
   display: flex;
   flex-flow: row;
@@ -380,7 +371,13 @@ export default {
   width: 100%;
   height: 400px;
 }
-
+#part-title {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-left: 30px;
+}
 #part-info {
   display: flex;
   flex-flow: column;
@@ -389,7 +386,6 @@ export default {
   width: 70%;
   margin-right: 30px;
 }
-
 #part-info-two {
   display: flex;
   flex-flow: column;
@@ -398,30 +394,30 @@ export default {
   width: 100%;
   height: 100%;
 }
-
 #table {
   border: 1px solid black;
   width: 100%;
   height: 100%;
   overflow: auto;
 }
-
 #status-title {
   font-family: 'Exo Regular';
   font-size: 24px;
 }
-
+.time-text {
+  font-family: 'Exo Regular';
+  font-size: 15px;
+  padding-top: 35px;
+}
 .history-text {
   font-family: 'Exo Regular';
   font-size: 16px;
 }
-
 .status-geral {
   display: flex;
   flex-flow: column;
   border-bottom: 1px solid black;
 }
-
 .status {
   width: 100%;
   height: auto;
@@ -431,7 +427,6 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
-
 .status-text {
   padding: 0 10px;
   font-size: 16px;
@@ -443,29 +438,24 @@ export default {
   font-family: 'Exo Regular';
   padding-right: 10px !important;
 }
-
 .created_info {
   display: flex;
   flex-flow: row;
   justify-content: space-between;
   width: 100%;
 }
-
 #buttons {
   display: flex;
   flex-flow: row;
   justify-content: flex-end;
 }
-
 .form-btns {
   margin-right: 25px;
 }
-
 .ajust-info {
   display: flex;
   flex-flow: row;
 }
-
 .hover-info {
   position: absolute;
   height: 20px;
@@ -476,18 +466,15 @@ export default {
   align-items: center;
   margin-left: 70px;
 }
-
 .hover-text {
   font-family: 'Exo Regular';
   font-size: 12px;
 }
-
 .icons {
   color: black;
   font-size: 1em;
   margin-right: 5px;
 }
-
 @media screen and (max-width: 1262px) {
   #itens-list {
     width: 100%;
@@ -512,7 +499,6 @@ export default {
     justify-content: center;
   }
 }
-
 @media screen and (max-width: 730px) {
   #info-title {
     font-size: 26px;
@@ -528,7 +514,6 @@ export default {
     width: 100%;
   }
 }
-
 @media screen and (max-width: 564px) {
   #buttons {
     flex-flow: column;
@@ -563,13 +548,11 @@ export default {
     flex-flow: column;
   }
 }
-
 @media screen and (max-width: 530px) {
   #info-title {
     font-size: 20px;
   }
 }
-
 @media screen and (max-width: 430px) {
   #info-title {
     font-size: 15px;
@@ -579,7 +562,6 @@ export default {
     font-size: 15px;
   }
 }
-
 @media screen and (max-width: 355px) {
   .history-text {
     font-size: 13px;

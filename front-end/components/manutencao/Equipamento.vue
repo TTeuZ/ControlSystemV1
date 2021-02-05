@@ -266,8 +266,12 @@ export default {
       )
       if (ok) {
         const sendToHis = {
-          done: 1
+          done: 1,
+          time: 0
         }
+        this.filteredEquip[this.selectedEquip][1].forEach((e) => {
+          sendToHis.time += parseInt(e.status_enum.time, 10)
+        })
         this.$axios
           .put(
             'equipamento/' + this.filteredEquip[this.selectedEquip][0].id,

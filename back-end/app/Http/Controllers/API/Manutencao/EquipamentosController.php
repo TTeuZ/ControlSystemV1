@@ -20,7 +20,7 @@ class EquipamentosController extends Controller
         $data= [];
 
         foreach(Equipamento::all() as $equipamento){
-           array_push($data, [$equipamento, Status::all()->where('equipamento_id', $equipamento->id)]);
+           array_push($data, [$equipamento, Status::all()->where('equipamento_id', $equipamento->id)->values()]);
         }
         return response()->json($data);
     }
@@ -71,7 +71,8 @@ class EquipamentosController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'name' => 'string|max:15',
-            'done' => 'boolean'
+            'done' => 'boolean',
+            'time' => 'integer'
         ]);
         if ($validator->fails())
             return response()->json([
