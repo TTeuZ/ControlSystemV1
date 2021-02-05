@@ -13,9 +13,47 @@
               class="expansion-panel"
               @click="getItens(f[0].id)"
             >
-              <span class="text"> Nome: {{ f[0].nome }} </span>
-              <span class="text"> email: {{ f[0].email }} </span>
-              <span class="text"> Telefone: {{ f[0].telefone }} </span>
+              <div
+                v-if="!(isEdit === f[0].id)"
+                class="fornecedor-info"
+                @click="isEdit = ''"
+              >
+                <span class="text"> Nome: {{ f[0].nome }} </span>
+                <span class="text"> email: {{ f[0].email }} </span>
+                <span class="text"> Telefone: {{ f[0].telefone }} </span>
+              </div>
+              <div v-if="isEdit === f[0].id" class="att-form">
+                <v-text-field
+                  v-model="attFornecedorObj.nome"
+                  :rules="[(v) => !!v || 'Nome Obrigatório']"
+                  color="cyan darken-2"
+                  label=" Nome"
+                  class="inputs"
+                ></v-text-field>
+                <v-text-field
+                  v-model="attFornecedorObj.email"
+                  :rules="[(v) => !!v || 'Email Obrigatório']"
+                  color="cyan darken-2"
+                  label=" Email"
+                  class="inputs"
+                ></v-text-field>
+                <v-text-field
+                  v-model="attFornecedorObj.telefone"
+                  v-maska="'(##) #####-####'"
+                  :rules="[(v) => !!v || 'Telefone Obrigatório']"
+                  color="cyan darken-2"
+                  label=" Telefone"
+                  class="inputs"
+                ></v-text-field>
+              </div>
+              <div class="edit-icon">
+                <v-icon
+                  v-if="canEdit === f[0].id"
+                  color="primary"
+                  @click="attFornecedor(f[0].id)"
+                  >mdi-circle-edit-outline</v-icon
+                >
+              </div>
             </v-expansion-panel-header>
             <v-expansion-panel-content class="expansion-panel pa-0">
               <div v-if="f[1].length != 0">
@@ -24,9 +62,44 @@
                   :key="item"
                   class="fornecedor-itens-section"
                 >
-                  <span class="text"> Item: {{ item.nome }} </span>
-                  <span class="text"> Quantidade: {{ item.quantidade }} </span>
-                  <span class="text"> Valor: {{ item.valor }} </span>
+                  <div v-if="!(isEditItem === item.id)" class="item-info">
+                    <span class="text"> Item: {{ item.nome }} </span>
+                    <span class="text">
+                      Quantidade: {{ item.quantidade }}
+                    </span>
+                    <span class="text"> Valor: {{ item.valor }} </span>
+                  </div>
+                  <div v-if="isEditItem === item.id" class="att-form">
+                    <v-select
+                      v-model="attItemObj.nome"
+                      :rules="[(v) => !!v || 'Item Obrigatório']"
+                      color="cyan darken-2"
+                      label=" Item"
+                      :items="estoqueItems"
+                      class="inputs"
+                    ></v-select>
+                    <v-text-field
+                      v-model="attItemObj.quantidade"
+                      v-maska="'#*'"
+                      :rules="[(v) => !!v || 'Quantidade Obrigatório']"
+                      color="cyan darken-2"
+                      label=" Quantidade"
+                      class="inputs"
+                    ></v-text-field>
+                    <v-text-field
+                      v-model="attItemObj.valor"
+                      v-maska="'R$ #*'"
+                      :rules="[(v) => !!v || 'Valor Obrigatório']"
+                      color="cyan darken-2"
+                      label=" Valor"
+                      class="inputs"
+                    ></v-text-field>
+                  </div>
+                  <div class="edit-icon-item">
+                    <v-icon color="primary" @click="attItem(item.id)"
+                      >mdi-circle-edit-outline</v-icon
+                    >
+                  </div>
                 </div>
                 <div v-if="f[1].length > 3" class="show-more-section">
                   <span class="show-text" @click="showAll(f[0].id)"
@@ -173,6 +246,9 @@ export default {
       estoqueItems: [],
       panel: [],
 
+      canEdit: '',
+      isEdit: '',
+      isEditItem: '',
       isCreate: false,
       isAdd: false,
       showAllDialog: false,
@@ -181,7 +257,17 @@ export default {
         email: '',
         telfone: ''
       },
+      attFornecedorObj: {
+        nome: '',
+        email: '',
+        telfone: ''
+      },
       newItem: {
+        nome: '',
+        quantidade: '',
+        tvalor: ''
+      },
+      attItemObj: {
         nome: '',
         quantidade: '',
         tvalor: ''
@@ -236,10 +322,66 @@ export default {
           })
       }
     },
+    attFornecedor(id) {
+      if (this.isEdit !== id) {
+        this.isEdit = id
+        this.fornecedoresUti.forEach((f) => {
+          if (f[0].id === id) {
+            this.attFornecedorObj.nome = f[0].nome
+            this.attFornecedorObj.telefone = f[0].telefone
+            this.attFornecedorObj.email = f[0].email
+          }
+        })
+      } else {
+        const update = {}
+        update.nome = this.attFornecedorObj.nome
+        update.telefone = this.attFornecedorObj.telefone
+        update.email = this.attFornecedorObj.email
+        this.$axios
+          .put('fornecedor/' + id, update)
+          .then(() => {
+            this.atualizaFornecedores()
+            this.attFornecedorObj = {}
+            this.isEdit = ''
+            this.canEdit = ''
+          })
+          .catch(({ response }) => {
+            this.$toast.error(response.data.mensagem, { duration: 5000 })
+          })
+      }
+    },
+    attItem(id) {
+      if (this.isEditItem !== id) {
+        this.isEditItem = id
+        this.fornecedorItens.forEach((f) => {
+          if (f.id === id) {
+            this.attItemObj.nome = f.nome
+            this.attItemObj.quantidade = f.quantidade
+            this.attItemObj.valor = f.valor
+          }
+        })
+      } else {
+        const update = {}
+        update.nome = this.attItemObj.nome
+        update.quantidade = this.attItemObj.quantidade
+        update.valor = this.attItemObj.valor
+        this.$axios
+          .put('fornecedorItem/' + id, update)
+          .then(() => {
+            this.atualizaFornecedores()
+            this.attItemObjt = {}
+            this.isEditItem = ''
+          })
+          .catch(({ response }) => {
+            this.$toast.error(response.data.mensagem, { duration: 5000 })
+          })
+      }
+    },
     getItens(id) {
       let max = this.fornecedoresUti[id - 1][1].length
       const item = this.fornecedoresUti[id - 1][1]
       let count = 1
+      this.canEdit = id
       const items = []
       while (count <= 4) {
         if (!(item[max] === undefined)) {
@@ -275,12 +417,32 @@ export default {
 .text {
   font-family: 'Exo Regular';
 }
+.edit-icon {
+  width: 30px;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 10px;
+}
+.edit-icon-item {
+  width: 30px;
+  display: flex;
+  justify-content: flex-end;
+}
 .fornecedores-total {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-flow: column;
   width: 100%;
+}
+.fornecedor-info {
+  display: flex;
+  justify-content: space-between;
+}
+.item-info {
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
 }
 #header-title {
   font-family: 'Exo Regular';
@@ -336,6 +498,12 @@ export default {
 }
 .create-form {
   width: 100%;
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+}
+.att-form {
+  width: 60%;
   display: flex;
   flex-flow: row;
   justify-content: space-between;
