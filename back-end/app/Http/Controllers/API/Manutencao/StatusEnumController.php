@@ -18,7 +18,8 @@ class StatusEnumController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'title' => 'required|string|max:150'
+            'title' => 'required|string|max:150',
+            'time' => 'required|string|max:15'
         ]);
         if ($validator->fails())
             return response()->json([
@@ -39,7 +40,8 @@ class StatusEnumController extends Controller
     public function update(Request $request, StatusEnum $statusEnum)
     {
         $validator = Validator::make($request->all(),[
-            'title' => 'string|max:150'
+            'title' => 'string|max:150',
+            'time' => 'string|max:15'
         ]);
         if ($validator->fails())
             return response()->json([

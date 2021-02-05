@@ -222,7 +222,6 @@ export default {
     reload() {
       location.reload()
     },
-
     sortEquips() {
       if (this.equipamentos.length !== 0) {
         this.filteredEquip = this.equipamentos
@@ -240,7 +239,6 @@ export default {
         this.filteredEquip = []
       }
     },
-
     criaEquipamento() {
       const equipamento = {
         name: this.nome
@@ -254,7 +252,6 @@ export default {
           this.$toast.error(response.data.mensagem, { duration: 5000 })
         })
     },
-
     returnEquip() {
       const retEquip = {
         done: 0
@@ -263,7 +260,6 @@ export default {
         this.reload()
       })
     },
-
     sendToHistory() {
       const ok = window.confirm(
         'Você tem certeza que deseja finalizar esse equipamento?'
@@ -282,7 +278,6 @@ export default {
           })
       }
     },
-
     IDS() {
       const self = this
       this.equipamentos.forEach(function(item) {
@@ -291,7 +286,6 @@ export default {
         }
       })
     },
-
     catchId() {
       const self = this
       this.equipamentos.forEach(function(item) {
@@ -310,18 +304,15 @@ export default {
   display: flex;
   justify-content: flex-end;
 }
-
 #ajust-itens {
   margin-top: 40px !important;
 }
-
 #selector-side {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-flow: column;
 }
-
 #itens-list {
   border: 1px solid black;
   width: 400px;
@@ -330,7 +321,6 @@ export default {
   overflow: auto;
   box-shadow: 0px 0px 14px -2px rgba(0, 0, 0, 0.49);
 }
-
 #list-item {
   width: 100%;
   height: auto;
@@ -339,19 +329,16 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
 #divider {
   background-color: black;
   width: 100%;
 }
-
 #item-title {
   font-family: 'Exo Regular';
   font-size: 16px;
   padding-bottom: 15px !important;
   padding-top: 15px !important;
 }
-
 #add-item {
   width: 50px;
   height: 50px;
@@ -361,22 +348,18 @@ export default {
   background-color: black;
   box-shadow: 0px 0px 14px -2px rgba(0, 0, 0, 0.49);
 }
-
 #add-item:focus {
   outline-style: none;
 }
-
 #add-icon {
   color: orange;
 }
-
 #info-side {
   border: 1px solid black;
   height: 690px;
   display: flex;
   box-shadow: 0px 0px 14px -2px rgba(0, 0, 0, 0.49);
 }
-
 #title-section {
   display: flex;
   flex-flow: column;
@@ -384,13 +367,11 @@ export default {
   height: 55px;
   justify-self: start;
 }
-
 #info-title {
   font-family: 'Exo Regular';
   font-size: 36px;
   margin-left: 20px;
 }
-
 #info-geral {
   display: flex;
   flex-flow: row;
@@ -398,7 +379,6 @@ export default {
   align-items: center;
   width: 100%;
 }
-
 #info-geral-2 {
   display: flex;
   flex-flow: column;
@@ -407,16 +387,13 @@ export default {
   margin-right: 50px;
   width: 50%;
 }
-
 .info-text {
   font-family: 'Exo Regular';
   font-size: 16px;
 }
-
 #divider {
   background-color: black;
 }
-
 #equip-title {
   font-family: 'Exo Regular';
   font-size: 30px;
@@ -424,36 +401,30 @@ export default {
   height: 40px;
   margin-left: 30px;
 }
-
 #buttons {
   display: flex;
   flex-flow: row;
   justify-content: flex-end;
 }
-
 .form-btns {
   margin-right: 25px;
 }
-
 .modal-title-section {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-flow: column;
 }
-
 .modal-title {
   font-family: 'Exo Regular';
   font-size: 30px;
   margin-top: 15px;
 }
-
 .form {
   width: 80%;
   padding-top: 20px;
   padding-bottom: 30px;
 }
-
 .btn-section {
   padding-bottom: 30px;
   padding-right: 30px;
@@ -461,12 +432,10 @@ export default {
   justify-content: flex-end;
   align-items: center;
 }
-
 .icons {
   color: black;
   font-size: 1em;
 }
-
 @media screen and (max-width: 1262px) {
   #itens-list {
     width: 100%;
@@ -490,13 +459,11 @@ export default {
     justify-content: center;
   }
 }
-
 @media screen and (max-width: 710px) {
   #info-title {
     font-size: 26px;
   }
 }
-
 @media screen and (max-width: 564px) {
   #buttons {
     flex-flow: column;
@@ -521,13 +488,11 @@ export default {
     width: 100%;
   }
 }
-
 @media screen and (max-width: 530px) {
   #info-title {
     font-size: 20px;
   }
 }
-
 @media screen and (max-width: 430px) {
   #info-title {
     font-size: 15px;

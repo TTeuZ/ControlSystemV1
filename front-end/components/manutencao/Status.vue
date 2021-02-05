@@ -232,9 +232,15 @@
           <div v-if="openCreateStatusPadrao" class="form pt-1">
             <v-text-field
               v-model="statusPadraoTitle"
-              :rules="[(v) => !!v || 'Campo Obrigatório']"
+              :rules="[(v) => !!v || 'Nome Obrigatório']"
               color="cyan darken-2"
               label="Status Padrão"
+            />
+            <v-text-field
+              v-model="statusPadraoTime"
+              :rules="[(v) => !!v || 'Tempo Obrigatório']"
+              color="cyan darken-2"
+              label="Tempo"
             />
           </div>
         </div>
@@ -368,7 +374,8 @@ export default {
         this.openCreateStatusPadrao = true
       } else {
         const statusPadrao = {
-          title: this.statusPadraoTitle
+          title: this.statusPadraoTitle,
+          time: this.statusPadraoTime
         }
         this.$axios
           .post('statusEnum', statusPadrao)
@@ -377,6 +384,7 @@ export default {
               this.statusEnumAtt = res.data
               this.openCreateStatusPadrao = false
               this.statusPadraoTitle = ''
+              this.statusPadraoTime = ''
             })
           })
           .catch(({ response }) => {
@@ -392,9 +400,11 @@ export default {
         this.openCreateStatusPadrao = true
         this.statusPEditableMode = true
         this.statusPadraoTitle = statusEnumSelected[0].title
+        this.statusPadraoTime = statusEnumSelected[0].time
       } else {
         const statusPadraoAtt = {
-          title: this.statusPadraoTitle
+          title: this.statusPadraoTitle,
+          time: this.statusPadraoTime
         }
         this.$axios
           .put('statusEnum/' + id, statusPadraoAtt)
