@@ -62,38 +62,71 @@
                   :key="item"
                   class="fornecedor-itens-section"
                 >
-                  <div v-if="!(isEditItem === item.id)" class="item-info">
+                  <div
+                    v-if="!(isEditItem === item.id)"
+                    class="item-info"
+                    @click="showOb(item.id, '0')"
+                  >
                     <span class="text"> Item: {{ item.nome }} </span>
                     <span class="text">
                       Quantidade: {{ item.quantidade }}
                     </span>
                     <span class="text"> Valor: {{ item.valor }} </span>
+                    <span class="text"> Data: {{ item.data }} </span>
                   </div>
-                  <div v-if="isEditItem === item.id" class="att-form">
-                    <v-select
-                      v-model="attItemObj.nome"
-                      :rules="[(v) => !!v || 'Item Obrigatório']"
-                      color="cyan darken-2"
-                      label=" Item"
-                      :items="estoqueItems"
-                      class="inputs"
-                    ></v-select>
-                    <v-text-field
-                      v-model="attItemObj.quantidade"
-                      v-maska="'#*'"
-                      :rules="[(v) => !!v || 'Quantidade Obrigatório']"
-                      color="cyan darken-2"
-                      label=" Quantidade"
-                      class="inputs"
-                    ></v-text-field>
-                    <v-text-field
-                      v-model="attItemObj.valor"
-                      v-maska="'R$ #*'"
-                      :rules="[(v) => !!v || 'Valor Obrigatório']"
-                      color="cyan darken-2"
-                      label=" Valor"
-                      class="inputs"
-                    ></v-text-field>
+                  <div v-if="isEditItem === item.id" style="width:100%;">
+                    <div class="att-form">
+                      <v-select
+                        v-model="attItemObj.nome"
+                        :rules="[(v) => !!v || 'Item Obrigatório']"
+                        color="cyan darken-2"
+                        label=" Item"
+                        :items="estoqueItems"
+                        class="inputs"
+                      ></v-select>
+                      <v-text-field
+                        v-model="attItemObj.quantidade"
+                        v-maska="'#*'"
+                        :rules="[(v) => !!v || 'Quantidade Obrigatório']"
+                        color="cyan darken-2"
+                        label=" Quantidade"
+                        class="inputs"
+                      ></v-text-field>
+                      <v-text-field
+                        v-model="attItemObj.valor"
+                        v-maska="'R$ #*,#*'"
+                        :rules="[(v) => !!v || 'Valor Obrigatório']"
+                        color="cyan darken-2"
+                        label=" Valor"
+                        class="inputs"
+                      ></v-text-field>
+                      <v-menu
+                        ref="menu"
+                        v-model="menu"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="attItemObj.data"
+                            label="Data da compra"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker v-model="date" no-title scrollable>
+                          <v-spacer></v-spacer>
+                          <v-btn text color="primary" @click="setData(date)">
+                            OK
+                          </v-btn>
+                        </v-date-picker>
+                      </v-menu>
+                    </div>
+                    <v-text-field label="Observação" dense v-model="attItemObj.observacao"></v-text-field> <!-- eslint-disable-line -->
                   </div>
                   <div class="edit-icon-item">
                     <v-icon color="primary" @click="attItem(item.id)"
@@ -113,31 +146,59 @@
                 </span>
               </div>
               <div style="display:flex; justify-content:flex-end; align-items:center"> <!-- eslint-disable-line -->
-                <div v-if="isAdd" class="create-form">
-                  <v-select
-                    v-model="newItem.nome"
-                    :rules="[(v) => !!v || 'Item Obrigatório']"
-                    color="cyan darken-2"
-                    label=" Item"
-                    :items="estoqueItems"
-                    class="inputs"
-                  ></v-select>
-                  <v-text-field
-                    v-model="newItem.quantidade"
-                    v-maska="'#*'"
-                    :rules="[(v) => !!v || 'Quantidade Obrigatório']"
-                    color="cyan darken-2"
-                    label=" Quantidade"
-                    class="inputs"
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="newItem.valor"
-                    v-maska="'R$ #*'"
-                    :rules="[(v) => !!v || 'Valor Obrigatório']"
-                    color="cyan darken-2"
-                    label=" Valor"
-                    class="inputs"
-                  ></v-text-field>
+                <div v-if="isAdd" style="width:100%;"> <!-- eslint-disable-line -->
+                  <div class="create-form">
+                    <v-select
+                      v-model="newItem.nome"
+                      :rules="[(v) => !!v || 'Item Obrigatório']"
+                      color="cyan darken-2"
+                      label=" Item"
+                      :items="estoqueItems"
+                      class="inputs"
+                    ></v-select>
+                    <v-text-field
+                      v-model="newItem.quantidade"
+                      v-maska="'#*'"
+                      :rules="[(v) => !!v || 'Quantidade Obrigatório']"
+                      color="cyan darken-2"
+                      label=" Quantidade"
+                      class="inputs"
+                    ></v-text-field>
+                    <v-text-field
+                      v-model="newItem.valor"
+                      v-maska="'R$ #*,#*'"
+                      :rules="[(v) => !!v || 'Valor Obrigatório']"
+                      color="cyan darken-2"
+                      label=" Valor"
+                      class="inputs"
+                    ></v-text-field>
+                    <v-menu
+                      ref="menu"
+                      v-model="menu"
+                      :close-on-content-click="false"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          v-model="newItem.data"
+                          label="Data da compra"
+                          prepend-icon="mdi-calendar"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker v-model="date" no-title scrollable>
+                        <v-spacer></v-spacer>
+                        <v-btn text color="primary" @click="setData(date), menu = false"> <!-- eslint-disable-line -->
+                          OK
+                        </v-btn>
+                      </v-date-picker>
+                    </v-menu>
+                  </div>
+                  <v-text-field label="Observação" dense v-model="newItem.observacao"></v-text-field> <!-- eslint-disable-line -->
                 </div>
                 <v-btn
                   class="add-btn"
@@ -209,6 +270,7 @@
             v-for="item in fornecedorItensAll"
             :key="item"
             class="fornecedor-itens-all"
+            @click="showOb(item.id, '1')"
           >
             <span class="text"> Item: {{ item.nome }} </span>
             <span class="text"> Quantidade: {{ item.quantidade }} </span>
@@ -223,6 +285,35 @@
       </v-card>
     </v-dialog>
     <!-- dialog show all -->
+    <!-- dialog de observacao -->
+    <v-dialog
+      v-model="obDialog"
+      max-width="600px"
+      no-click-animation
+      persistent
+    >
+      <v-card class="modal-card">
+        <div class="modal-title-section">
+          <span class="modal-title">
+            OBSERVAÇÃO
+          </span>
+          <div v-if="obItem.length === 1" class="ob-info">
+            <div style="display:flex; justify-content:space-between;">
+              <span class="text"> Item: {{ obItem[0].nome }} </span>
+              <span class="text"> Quantidade: {{ obItem[0].quantidade }} </span>
+              <span class="text"> Valor: {{ obItem[0].valor }} </span>
+            </div>
+            <span class="text"> Observação: {{ obItem[0].observacao }} </span>
+          </div>
+        </div>
+        <div class="btn-section">
+          <v-btn color="#43A047" text @click="obDialog = false">
+            sair
+          </v-btn>
+        </div>
+      </v-card>
+    </v-dialog>
+    <!-- dialog de observacao -->
   </v-container>
 </template>
 
@@ -245,6 +336,7 @@ export default {
       fornecedorItensAll: [],
       estoqueItems: [],
       panel: [],
+      menu: false,
 
       canEdit: '',
       isEdit: '',
@@ -252,6 +344,8 @@ export default {
       isCreate: false,
       isAdd: false,
       showAllDialog: false,
+      obDialog: false,
+      obItem: {},
       newFornecedor: {
         nome: '',
         email: '',
@@ -262,15 +356,20 @@ export default {
         email: '',
         telfone: ''
       },
+      date: new Date().toISOString().substr(0, 10),
       newItem: {
         nome: '',
         quantidade: '',
-        tvalor: ''
+        valor: '',
+        data: '',
+        observacao: ''
       },
       attItemObj: {
         nome: '',
         quantidade: '',
-        tvalor: ''
+        valor: '',
+        data: '',
+        observacao: ''
       }
     }
   },
@@ -301,6 +400,10 @@ export default {
           })
       }
     },
+    setData(data) {
+      this.newItem.data = data.split(' ')[0].split('-').reverse().join('/') /*eslint-disable-line*/
+      this.attItemObj.data = data.split(' ')[0].split('-').reverse().join('/') /*eslint-disable-line*/
+    },
     addItem(id) {
       if (!this.isAdd) {
         this.isAdd = true
@@ -310,6 +413,8 @@ export default {
         item.nome = this.newItem.nome
         item.quantidade = this.newItem.quantidade
         item.valor = this.newItem.valor
+        item.data = this.newItem.data.toString()
+        item.observacao = this.newItem.observacao
         this.$axios
           .post('fornecedorItem', item)
           .then(() => {
@@ -358,6 +463,8 @@ export default {
             this.attItemObj.nome = f.nome
             this.attItemObj.quantidade = f.quantidade
             this.attItemObj.valor = f.valor
+            this.attItemObj.data = f.data
+            this.attItemObj.observacao = f.observacao
           }
         })
       } else {
@@ -365,6 +472,8 @@ export default {
         update.nome = this.attItemObj.nome
         update.quantidade = this.attItemObj.quantidade
         update.valor = this.attItemObj.valor
+        update.data = this.attItemObj.data
+        update.observacao = this.attItemObj.observacao
         this.$axios
           .put('fornecedorItem/' + id, update)
           .then(() => {
@@ -403,6 +512,14 @@ export default {
         else return -1
       })
       this.showAllDialog = true
+    },
+    showOb(id, location) {
+      this.obDialog = true
+      if (location === '1') {
+        this.obItem = this.fornecedorItensAll.filter((f) => f.id === id)
+      } else {
+        this.obItem = this.fornecedorItens.filter((f) => f.id === id)
+      }
     },
     atualizaFornecedores() {
       this.$axios.get('fornecedor').then((res) => {
@@ -503,7 +620,7 @@ export default {
   justify-content: space-between;
 }
 .att-form {
-  width: 60%;
+  width: 100%;
   display: flex;
   flex-flow: row;
   justify-content: space-between;
@@ -542,5 +659,10 @@ export default {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+}
+.ob-info {
+  display: flex;
+  flex-flow: column;
+  width: 90%;
 }
 </style>

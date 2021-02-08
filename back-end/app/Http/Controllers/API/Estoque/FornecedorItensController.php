@@ -32,7 +32,9 @@ class FornecedorItensController extends Controller
             'nome' => 'required|string|max:100',
             'quantidade' => 'required|string|max:100',
             'valor' => 'required|string|max:100',
-            'fornecedor_id' => 'required|integer'
+            'fornecedor_id' => 'required|integer',
+            'data' => 'required|string|max:100',
+            'observacao' => 'required|string|max:500'
         ]);
         if ($validator->fails())
             return response()->json([
@@ -52,7 +54,9 @@ class FornecedorItensController extends Controller
         $validator = Validator::make($request->all(),[
             'nome' => 'string|max:100',
             'quantidade' => 'string|max:100',
-            'valor' => 'string|max:100'
+            'valor' => 'string|max:100',
+            'data' => 'string|max:100',
+            'observacao' => 'string|max:500'
         ]);
         if ($validator->fails())
             return response()->json([
