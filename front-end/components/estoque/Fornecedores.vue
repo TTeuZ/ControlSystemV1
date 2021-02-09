@@ -392,7 +392,6 @@ export default {
   },
   mounted() {
     this.estoque.forEach((item) => {
-      console.log(item.name)
       this.estoqueItems.push(item.name)
     })
   },
@@ -414,7 +413,7 @@ export default {
       })
       while (count <= fornecedoresId.length - 1) {
         this.fornecedoresUti.forEach((f) => {
-          if (fornecedoresId[count] === f[0].id) {
+          if (parseInt(fornecedoresId[count], 10) === f[0].id) {
             filteredFornecedores.push(f)
           }
         })
