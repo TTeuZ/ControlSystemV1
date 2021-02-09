@@ -276,6 +276,16 @@
           <span class="modal-title">
             TODOS OS ITENS
           </span>
+          <div class="serch-section">
+            <v-text-field
+              v-model="searchItem"
+              append-icon="mdi-magnify"
+              label="Pesquisar (Item)"
+              single-line
+              hide-details
+              @keyup="filterItens()"
+            ></v-text-field>
+          </div>
           <div
             v-for="item in fornecedorItensAll"
             :key="item"
@@ -348,9 +358,11 @@ export default {
   data() {
     return {
       search: '',
+      searchItem: '',
       fornecedoresUti: this.fornecedores,
       fornecedorItens: [],
       fornecedorItensAll: [],
+      fornecedorItensAllRes: [],
       estoqueItems: [],
       panel: [],
       menu: false,
@@ -420,6 +432,12 @@ export default {
         count += 1
       }
       this.fornecedoresUti = filteredFornecedores
+    },
+    filterItens() {
+      this.fornecedorItensAll = this.fornecedorItensAllRes
+      this.fornecedorItensAll = this.fornecedorItensAll.filter((i) =>
+        i.nome.toLowerCase().includes(this.searchItem.toLowerCase())
+      )
     },
     createFornecedor() {
       if (!this.isCreate) {
@@ -552,6 +570,7 @@ export default {
         if (a.nome > b.nome) return 1
         else return -1
       })
+      this.fornecedorItensAllRes = this.fornecedorItensAll
       this.showAllDialog = true
     },
     showOb(id, location) {
@@ -573,9 +592,10 @@ export default {
 
 <style scoped>
 .serch-section {
-  margin-bottom: 15px;
-  width: 300px;
+  margin-bottom: 35px;
+  width: 500px;
   margin-right: 20px;
+  align-self: flex-end;
 }
 .text {
   font-family: 'Exo Regular';
