@@ -3,15 +3,25 @@
     <div class="fornecedores-total">
       <span id="header-title"> FORNECEDORES </span>
       <div class="panels-section">
+        <div class="serch-section">
+          <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Pesquisar (Item)"
+            single-line
+            hide-details
+            @keyup="filterFornecedores()"
+          ></v-text-field>
+        </div>
         <v-expansion-panels v-model="panel" accordion flat>
           <v-expansion-panel
-            v-for="f in fornecedoresUti"
+            v-for="(f, index) in fornecedoresUti"
             :key="f"
             class="expansion-panel"
           >
             <v-expansion-panel-header
               class="expansion-panel"
-              @click="getItens(f[0].id)"
+              @click="getItens(f[0].id, index)"
             >
               <div
                 v-if="!(isEdit === f[0].id)"
@@ -135,7 +145,7 @@
                   </div>
                 </div>
                 <div v-if="f[1].length > 3" class="show-more-section">
-                  <span class="show-text" @click="showAll(f[0].id)"
+                  <span class="show-text" @click="showAll(f[0].id, index)"
                     >Mostrar mais</span
                   >
                 </div>
@@ -275,6 +285,7 @@
             <span class="text"> Item: {{ item.nome }} </span>
             <span class="text"> Quantidade: {{ item.quantidade }} </span>
             <span class="text"> Valor: {{ item.valor }} </span>
+            <span class="text"> Data {{ item.data }} </span>
           </div>
         </div>
         <div class="btn-section">
@@ -302,6 +313,7 @@
               <span class="text"> Item: {{ obItem[0].nome }} </span>
               <span class="text"> Quantidade: {{ obItem[0].quantidade }} </span>
               <span class="text"> Valor: {{ obItem[0].valor }} </span>
+              <span class="text"> Data: {{ obItem[0].data }} </span>
             </div>
             <span class="text"> Observação: {{ obItem[0].observacao }} </span>
           </div>
@@ -327,10 +339,15 @@ export default {
     estoque: {
       type: Array,
       required: true
+    },
+    buyedItems: {
+      type: Array,
+      required: true
     }
   },
   data() {
     return {
+      search: '',
       fornecedoresUti: this.fornecedores,
       fornecedorItens: [],
       fornecedorItensAll: [],
@@ -380,6 +397,31 @@ export default {
     })
   },
   methods: {
+    filterFornecedores() {
+      let count = 0
+      let fornecedoresId = []
+      const filteredFornecedores = []
+      this.fornecedoresUti = this.fornecedores
+      const items = this.buyedItems.filter((i) =>
+        i.nome.toLowerCase().includes(this.search.toLowerCase())
+      )
+      items.forEach((i) => {
+        fornecedoresId.push(i.fornecedor_id)
+      })
+      // função que elimina os repitidos
+      fornecedoresId = fornecedoresId.filter((atual, posterior) => {
+        return fornecedoresId.indexOf(atual) === posterior
+      })
+      while (count <= fornecedoresId.length - 1) {
+        this.fornecedoresUti.forEach((f) => {
+          if (fornecedoresId[count] === f[0].id) {
+            filteredFornecedores.push(f)
+          }
+        })
+        count += 1
+      }
+      this.fornecedoresUti = filteredFornecedores
+    },
     createFornecedor() {
       if (!this.isCreate) {
         this.isCreate = true
@@ -413,7 +455,7 @@ export default {
         item.nome = this.newItem.nome
         item.quantidade = this.newItem.quantidade
         item.valor = this.newItem.valor
-        item.data = this.newItem.data.toString()
+        item.data = this.newItem.data
         item.observacao = this.newItem.observacao
         this.$axios
           .post('fornecedorItem', item)
@@ -486,9 +528,9 @@ export default {
           })
       }
     },
-    getItens(id) {
-      let max = this.fornecedoresUti[id - 1][1].length
-      const item = this.fornecedoresUti[id - 1][1]
+    getItens(id, index) {
+      let max = this.fornecedoresUti[index][1].length
+      const item = this.fornecedoresUti[index][1]
       let count = 1
       this.canEdit = id
       const items = []
@@ -501,9 +543,9 @@ export default {
       }
       this.fornecedorItens = items
     },
-    showAll(id) {
+    showAll(id, index) {
       this.fornecedorItensAll = []
-      const item = this.fornecedoresUti[id - 1][1]
+      const item = this.fornecedoresUti[index][1]
       item.forEach((i) => {
         this.fornecedorItensAll.push(i)
       })
@@ -531,6 +573,11 @@ export default {
 </script>
 
 <style scoped>
+.serch-section {
+  margin-bottom: 15px;
+  width: 300px;
+  margin-right: 20px;
+}
 .text {
   font-family: 'Exo Regular';
 }
@@ -569,6 +616,9 @@ export default {
 .panels-section {
   width: 100%;
   margin-top: 20px;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-end;
 }
 .expansion-panel >>> .v-expansion-panel-header {
   background-color: #fafafa;

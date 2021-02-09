@@ -5,7 +5,11 @@
         <BuyList :estoque="estoque" />
       </v-col>
       <v-col class="fornecedores-section" sm="12" md="12" lg="8" cols="12">
-        <Fornecedores :fornecedores="fornecedor" :estoque="estoque" />
+        <Fornecedores
+          :fornecedores="fornecedor"
+          :estoque="estoque"
+          :buyed-items="fornItens"
+        />
       </v-col>
     </v-row>
   </v-container>
@@ -18,13 +22,15 @@ export default {
   components: { Fornecedores, BuyList },
 
   async asyncData({ $axios }) {
-    const [estoqueRes, fornecedorRes] = await Promise.all([
+    const [estoqueRes, fornecedorRes, fornItemRes] = await Promise.all([
       $axios.get('estoque'),
-      $axios.get('fornecedor')
+      $axios.get('fornecedor'),
+      $axios.get('fornecedorItem')
     ])
     return {
       estoque: estoqueRes.data,
-      fornecedor: fornecedorRes.data
+      fornecedor: fornecedorRes.data,
+      fornItens: fornItemRes.data
     }
   }
 }
