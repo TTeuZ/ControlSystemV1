@@ -74,7 +74,7 @@ export default {
   border: 1px solid black;
   display: flex;
   flex-flow: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-content: center;
   margin-top: 30px;
   width: 100%;

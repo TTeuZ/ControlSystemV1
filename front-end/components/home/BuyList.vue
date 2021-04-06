@@ -75,6 +75,9 @@ export default {
   padding-bottom: 5px;
   padding-top: 5px;
 }
+#quantidade {
+  font-family: 'Exo Regular';
+}
 
 #buy-list {
   width: 100%;
@@ -114,6 +117,14 @@ export default {
 @media screen and (max-width: 1262px) {
   #equip-table {
     max-height: 300px;
+  }
+}
+@media screen and (max-width: 1400px) {
+  #item-title {
+    font-size: 13px;
+  }
+  #quantidade {
+    font-size: 13px;
   }
 }
 </style>

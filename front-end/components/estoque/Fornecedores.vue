@@ -28,9 +28,11 @@
                 class="fornecedor-info"
                 @click="isEdit = ''"
               >
-                <span class="text"> Nome: {{ f[0].nome }} </span>
-                <span class="text"> email: {{ f[0].email }} </span>
-                <span class="text"> Telefone: {{ f[0].telefone }} </span>
+                <span class="text forn-text"> Nome: {{ f[0].nome }} </span>
+                <span class="text forn-text"> email: {{ f[0].email }} </span>
+                <span class="text forn-text">
+                  Telefone: {{ f[0].telefone }}
+                </span>
               </div>
               <div v-if="isEdit === f[0].id" class="att-form">
                 <v-text-field
@@ -77,12 +79,14 @@
                     class="item-info"
                     @click="showOb(item.id, '0')"
                   >
-                    <span class="text"> Item: {{ item.nome }} </span>
-                    <span class="text">
+                    <span class="text text-name"> Item: {{ item.nome }} </span>
+                    <span class="text text-quant">
                       Quantidade: {{ item.quantidade }}
                     </span>
-                    <span class="text"> Valor: {{ item.valor }} </span>
-                    <span class="text"> Data: {{ item.data }} </span>
+                    <span class="text text-value">
+                      Valor: {{ item.valor }}
+                    </span>
+                    <span class="text text-date"> Data: {{ item.data }} </span>
                   </div>
                   <div v-if="isEditItem === item.id" style="width:100%;">
                     <div class="att-form">
@@ -600,6 +604,18 @@ export default {
 .text {
   font-family: 'Exo Regular';
 }
+.text-name {
+  width: 44%;
+}
+.text-quant {
+  width: 18%;
+}
+.text-value {
+  width: 18%;
+}
+.text-date {
+  width: 20%;
+}
 .edit-icon {
   width: 30px;
   display: flex;
@@ -623,7 +639,7 @@ export default {
   justify-content: space-between;
 }
 .item-info {
-  width: 70%;
+  width: 95%;
   display: flex;
   justify-content: space-between;
 }
@@ -733,5 +749,40 @@ export default {
   display: flex;
   flex-flow: column;
   width: 90%;
+}
+
+@media screen and (max-width: 1024px) {
+  .item-info {
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+  }
+  .text-name {
+    width: 100%;
+  }
+  .text-quant {
+    width: 100%;
+  }
+  .text-value {
+    width: 100%;
+  }
+  .text-date {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .fornecedor-info {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+  }
+  .forn-text {
+    font-size: 17px;
+    margin-bottom: 5px;
+  }
+  .serch-section {
+    width: 90%;
+  }
 }
 </style>
