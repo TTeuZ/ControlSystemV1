@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="teste">
     <v-row class="ma-0 pa-0" justify="center" align="center">
       <v-col
         v-if="selectedEquip !== '100'"
@@ -176,9 +176,6 @@
           </div>
         </div>
         <div class="btn-section">
-          <v-btn color="#43A047" text @click="statusPadraoModal = true"> <!-- eslint-disable-line -->
-            Status Padrão
-          </v-btn>
           <v-btn color="#43A047" text @click="statusModal = false">
             Cancelar
           </v-btn>
@@ -290,12 +287,15 @@ export default {
     statusModal: {
       type: Boolean,
       required: true
+    },
+    statusPadraoModal: {
+      type: Boolean,
+      required: true
     }
   },
 
   data() {
     return {
-      statusPadraoModal: false,
       searchStatusPadrao: '',
       statusEnumAtt: this.statusEnum,
       statusPadraoFiltered: [],

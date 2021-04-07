@@ -79,9 +79,13 @@
             :status-enum="statusEnum"
             :filtered-equip="filteredEquip"
             :status-modal="statusModal"
+            :status-padrao-modal="statusPadraoModal"
           />
 
           <v-col v-if="showForm && selectedEquip !== '100'" id="buttons" class="ma-o pa-0" cols="12"> <!-- eslint-disable-line -->
+          <v-btn color="#43A047" text @click="statusPadraoModal = !statusPadraoModal" class="form-btns"> <!-- eslint-disable-line -->
+              Status Padrão
+            </v-btn>
             <v-btn
               class="form-btns"
               rounded
@@ -181,6 +185,7 @@ export default {
       sortEquipamentos: [],
       modal: false,
       statusModal: false,
+      statusPadraoModal: false,
       nome: '',
 
       showForm: false,
