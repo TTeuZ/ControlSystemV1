@@ -13,29 +13,43 @@ use Illuminate\Http\Request;
 |
 */
 
-
+// Rota de login
 Route::post('login', 'API\AuthController@login')->name('login');
 
-Route::get('arquivos/{arquivo}', 'ArquivoController@show');
-
 Route::middleware(['auth:api'])->group(function () {
+    // Rotas de Usuario
     Route::post('registro', 'API\AuthController@registro')->name('registro');
     Route::post('deleta', 'API\AuthController@destroy');
     Route::get('usuarios', 'API\AuthController@show');
+    Route::post('atualiza', 'API\AuthController@atualizar');
+    Route::get('meu-perfil', 'API\AuthController@meuPerfil')->name('perfil');
 
-    Route::apiResource('status', 'API\StatusController');
-    Route::apiResource('equipamento', 'API\EquipamentosController');
-    Route::apiResource('estoque', 'API\EstoqueController');
+    // Rotas da central de equipamentos
+    Route::apiResource('all_equip', 'API\CentralEquip\AllEquipamentoController');
+    Route::post('all_equip_change/{id}', 'API\CentralEquip\AllEquipamentoController@changeSituation');
+    Route::post('all_equip_disp/{id}', 'API\CentralEquip\AllEquipamentoController@changeDisponibilidade');
+    Route::get('disp_index', 'API\CentralEquip\AllEquipamentoController@disp_index');
 
-    Route::get('meu-perfil', 'AuthController@meuPerfil')->name('perfil');
+    // Rotas de Manutenção
+    Route::apiResource('status', 'API\Manutencao\StatusController');
+    Route::apiResource('statusEnum', 'API\Manutencao\StatusEnumController');
+    Route::apiResource('equipamento', 'API\Manutencao\EquipamentosController');
 
-    Route::apiResource('arquivos', 'ArquivoController')->except([
-        'show'
-    ]);
+    // Rotas de Estoque
+    Route::apiResource('estoque', 'API\Estoque\EstoqueController');
+    Route::get('atthis', 'API\Estoque\EstoqueController@attHis');
+    Route::apiResource('fornecedor', 'API\Estoque\FornecedorController');
+    Route::apiResource('fornecedorItem', 'API\Estoque\FornecedorItensController');
 
+    // Rotas de Auto Elétrica
+    Route::apiResource('autoeletrica', 'API\AutoEletrica\AutoEletricaController');
+    Route::apiResource('cabos', 'API\AutoEletrica\CabosController');
+    Route::post('cabo_change/{id}', 'API\AutoEletrica\CabosController@changeSituation');
+    Route::apiResource('responsaveis', 'API\AutoEletrica\ResponsavelController');
+    Route::apiResource('equip_auto', 'API\AutoEletrica\EquipamentosAutoEletricaController');
+    Route::post('equip_change/{id}', 'API\AutoEletrica\EquipamentosAutoEletricaController@changeSituation');
+
+    // Rota de logs
+    Route::apiResource('log_equip_auto', 'API\AutoEletrica\LogEquipamentoAutoEletricaController');
+    Route::apiResource('log_cabos', 'API\AutoEletrica\LogCabosController');
 });
-
-Route::get('teste', function(){
-    return 'abc';
-});
-

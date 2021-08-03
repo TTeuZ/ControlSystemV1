@@ -37,7 +37,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: ['~/plugins/mask.js'],
   /*
    ** Nuxt.js dev-modules
    */
@@ -65,8 +65,9 @@ export default {
     prefix: '/api/'
   },
 
+  // '/api/': { target: 'https://detecplkdobrasil1.websiteseguro.com/' } '/api/': { target: 'http://localhost:8000/' }
   proxy: {
-    '/api/': { target: 'http://127.0.0.1:8000' }
+    '/api/': { target: 'https://detecplkdobrasil1.websiteseguro.com/' }
   },
 
   auth: {

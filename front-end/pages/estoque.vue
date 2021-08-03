@@ -1,21 +1,33 @@
 <template>
   <v-container fluid>
-    <estoque :itens="Estoque" />
+    <Estoque :itens="Estoque" :historico="Historico" />
   </v-container>
 </template>
 
 <script>
-import estoque from '~/components/estoque'
+import Estoque from '~/components/estoque/Estoque'
 
 export default {
   components: {
-    estoque
+    Estoque
   },
 
-  asyncData(context) {
-    return context.app.$axios
-      .get('estoque')
-      .then((res) => ({ Estoque: res.data }))
+  async asyncData({ $axios }) {
+    const [estoqueRes, atthisRes] = await Promise.all([
+      $axios.get('estoque'),
+      $axios.get('atthis')
+    ])
+    return {
+      Estoque: estoqueRes.data,
+      Historico: atthisRes.data
+    }
+  },
+
+  head() {
+    return {
+      title: 'Estoque'
+    }
   }
 }
 </script>
+<style scoped></style>

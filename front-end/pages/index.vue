@@ -2,45 +2,73 @@
   <v-container fluid class="ma-0 pa-0">
     <v-row class="ma-0 pa-0" justify="center" aling="center">
       <v-col class="users-side" xl="4" lg="4" md="11" sm="11" xs="11" cols="11">
-        <users :usuarios="Users"
-      /></v-col>
-      <v-col xl="4" lg="4" md="11" sm="11" xs="11" cols="11">
-        <equipNoEsc :equip="equipamento" />
+        <!-- <AboutAutos :autos="autos" /> -->
+        <Users :usuarios="Users" />
       </v-col>
       <v-col xl="4" lg="4" md="11" sm="11" xs="11" cols="11">
-        <buyList :estoque="estoque" />
+        <EquipNoEsc :equip="equipamento" />
+      </v-col>
+      <v-col xl="4" lg="4" md="11" sm="11" xs="11" cols="11">
+        <BuyList :estoque="estoque" />
       </v-col>
     </v-row>
-    <!-- <div id="footer">
-      <span id="footer-title">PLK - Feito por Paulo Mateus Luza Alves</span>
-    </div> -->
+    <!-- <v-btn class="user-btn" color="orange" @click="usersModal = !usersModal"
+      >Usuarios</v-btn
+    >
+    <v-dialog
+      v-model="usersModal"
+      max-width="800px"
+      no-click-animation
+      persistent
+    >
+      <v-card>
+        <Users :usuarios="Users" />
+        <div class="btn-section">
+          <v-btn color="#43A047" text @click="usersModal = !usersModal">
+            Sair
+          </v-btn>
+        </div>
+      </v-card>
+    </v-dialog> -->
   </v-container>
 </template>
 
 <script>
-import users from '~/components/users'
-import equipNoEsc from '~/components/equipNoEsc'
-import buyList from '~/components/buyList'
+import Users from '~/components/home/Users'
+import EquipNoEsc from '~/components/home/EquipNoEsc'
+import BuyList from '~/components/home/BuyList'
+// import AboutAutos from '~/components/home/AboutAutos'
 
 export default {
   components: {
-    users,
-    equipNoEsc,
-    buyList
+    Users,
+    EquipNoEsc,
+    BuyList
+    // AboutAutos
+  },
+
+  data() {
+    return {
+      usersModal: false
+    }
   },
 
   async asyncData({ $axios }) {
-    const [equipamentoRes, statusRes, estoqueRes, userRes] = await Promise.all([
+    const [equipamentoRes, estoqueRes, userRes] = await Promise.all([
       $axios.get('equipamento'),
-      $axios.get('status'),
       $axios.get('estoque'),
       $axios.get('usuarios')
     ])
     return {
       equipamento: equipamentoRes.data,
-      status: statusRes.data,
       estoque: estoqueRes.data,
       Users: userRes.data.dados
+    }
+  },
+
+  head() {
+    return {
+      title: 'Home'
     }
   },
 
@@ -49,29 +77,24 @@ export default {
 </script>
 
 <style scoped>
-#footer {
-  height: 80px;
-  width: 100%;
-
-  background-color: orange;
-
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  align-items: center;
-
+.user-btn {
   position: absolute;
-  bottom: 0%;
+  bottom: 35px;
+  right: 35px;
+}
+.btn-section {
+  padding-bottom: 30px;
+  padding-right: 30px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
-#footer-title {
-  font-family: 'Exo Regular';
-  font-size: 18px;
-}
-
-@media screen and (max-width: 350px) {
-  #footer-title {
-    font-size: 16px;
+@media screen and (max-width: 880px) {
+  .user-btn {
+    position: relative;
+    margin-top: 200px;
+    margin-left: 50px;
   }
 }
 </style>

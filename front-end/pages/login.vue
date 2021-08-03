@@ -9,7 +9,7 @@
     <input-auth v-model="password" placeholder="Senha" type="password" />
     <v-flex class="text-xs-right"> </v-flex>
     <v-row class="ma-0 pa-0" justify="center" aling="center">
-      <v-btn id="login-btn" color="orange" @click="realizarLogin">
+      <v-btn id="login-btn" color="orange" @click="login">
         Entrar
       </v-btn>
     </v-row>
@@ -29,9 +29,20 @@ export default {
       password: ''
     }
   },
-  computed: {},
+  mounted() {
+    window.addEventListener('keydown', this.loginWithEnter)
+  },
+  destroyed() {
+    window.removeEventListener('keydown', this.loginWithEnter)
+  },
   methods: {
-    async realizarLogin() {
+    loginWithEnter(e) {
+      if (e.code === 'Enter') {
+        this.login()
+      }
+    },
+
+    async login() {
       this.$nuxt.$loading.start()
       await this.$auth
         .loginWith('local', {
@@ -41,6 +52,10 @@ export default {
           }
         })
         .then(() => {
+          const user = {
+            name: this.email
+          }
+          this.$auth.setUser(user)
           this.$router.push('/')
         })
         .catch(({ response }) => {

@@ -1,25 +1,37 @@
 <template>
   <v-container fluid>
-    <manutencao :equipamentos="equipamento" :stat="status" />
+    <Manutencao
+      :equipamentos="equipamento"
+      :stat="status"
+      :status-enum="statusEnum"
+    />
   </v-container>
 </template>
 
 <script>
-import manutencao from '~/components/manutencao.vue'
+import Manutencao from '~/components/manutencao/Equipamento.vue'
 
 export default {
   components: {
-    manutencao
+    Manutencao
   },
 
   async asyncData({ $axios }) {
-    const [equipamentoRes, statusRes] = await Promise.all([
+    const [equipamentoRes, statusRes, statusEnumRes] = await Promise.all([
       $axios.get('equipamento'),
-      $axios.get('status')
+      $axios.get('status'),
+      $axios.get('statusEnum')
     ])
     return {
       equipamento: equipamentoRes.data,
-      status: statusRes.data
+      status: statusRes.data,
+      statusEnum: statusEnumRes.data
+    }
+  },
+
+  head() {
+    return {
+      title: 'Manutenção'
     }
   }
 }

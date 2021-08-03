@@ -1,15 +1,15 @@
 <template>
   <v-conteinaer fluid>
-    <historico :equipamentos="equipamento" :status="status" />
+    <Historico :equipamentos="equipamento" :status="status" />
   </v-conteinaer>
 </template>
 
 <script>
-import historico from '~/components/historico'
+import Historico from '~/components/historico/Historico'
 
 export default {
   components: {
-    historico
+    Historico
   },
 
   async asyncData({ $axios }) {
@@ -20,6 +20,12 @@ export default {
     return {
       equipamento: equipamentoRes.data,
       status: statusRes.data
+    }
+  },
+
+  head() {
+    return {
+      title: 'Historico'
     }
   }
 }

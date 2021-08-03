@@ -91,14 +91,26 @@ export default {
           label: 'Home',
           link: '/'
         },
+        // {
+        //   label: 'Central',
+        //   link: '/centralEquipamentos'
+        // },
+        // {
+        //   label: 'Auto Eletricas',
+        //   link: '/autoEletricas'
+        // },
         { label: 'Manutenção', link: '/manutencao' },
+        {
+          label: 'Histórico',
+          link: '/historico'
+        },
         {
           label: 'Estoque',
           link: '/estoque'
         },
         {
-          label: 'Histórico',
-          link: '/historico'
+          label: 'Fornecedores',
+          link: '/fornecedores'
         }
       ],
 
@@ -107,14 +119,22 @@ export default {
           drawerLabel: 'Home',
           drawerLink: '/'
         },
+        // {
+        //   drawerLabel: 'Central',
+        //   drawerLink: '/centralEquipamentos'
+        // },
+        // {
+        //   drawerLabel: 'Auto Eletricas',
+        //   drawerLink: '/autoEletricas'
+        // },
         { drawerLabel: 'Manutenção', drawerLink: '/manutencao' },
-        {
-          drawerLabel: 'Estoque',
-          drawerLink: '/estoque'
-        },
         {
           drawerLabel: 'Histórico',
           drawerLink: '/historico'
+        },
+        {
+          drawerLabel: 'Estoque',
+          drawerLink: '/estoque'
         }
       ]
     }
@@ -174,6 +194,12 @@ export default {
 
 .ajuste {
   margin-left: 16px;
+}
+
+@media screen and (max-width: 1400px) {
+  #title {
+    font-size: 35px;
+  }
 }
 
 @media screen and (max-width: 740px) {
